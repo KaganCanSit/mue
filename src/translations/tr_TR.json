@@ -13,7 +13,6 @@
     "background": {
       "credit": "Fotoğraf Sahibi ",
       "unsplash": ", Unsplash",
-      "pexels": ", Pexels",
       "information": "Bilgilendirme",
       "download": "İndir",
       "downloads": "İndirilenler",
@@ -104,7 +103,7 @@
           },
           "time": {
             "title": "Saat",
-            "format": "Format", 
+            "format": "Format",
             "type": "Tip",
             "type_subtitle": "Saat formatını dijital olarak, analog olarak veya günün tamamlanma yüzdesi olarak göstermeyi seçin.",
             "digital": {
@@ -291,7 +290,7 @@
               "title": "Ek Bilgi",
               "show_location": "Konumu Göster",
               "show_description": "Açıklamayı Göster",
-              "weather_description": "Weather description",
+              "weather_description": "Hava açıklaması",
               "cloudiness": "Bulutluluk",
               "humidity": "Nem",
               "visibility": "Görüş Mesafesi",
@@ -568,57 +567,9 @@
         },
         "create": {
           "title": "Oluştur",
-          "example": "Örnek",
-          "other_title": "Eklenti Oluştur",
-          "create_type": "{type} Paketi Oluştur",
-          "types": {
-            "settings": "Önceden Ayarlanmış Ayarlar Paketi",
-            "photos": "Fatoğraf Paketi",
-            "quotes": "Alıntı Paketi"
-          },
-          "descriptions": {
-            "settings": "Mue'yi özelleştirmek için kullanılan ayarların koleksiyonu.",
-            "photos": "Bir konuyla ilgili fotoğrafların koleksiyonu.",
-            "quotes": "Bir konuyla ilgili alıntıların koleksiyonu."
-          },
-          "information": "Bilgilendirme",
-          "information_subtitle": "Örneğin: 1.2.3 (büyük güncelleme, küçük güncelleme, yama güncellemesi)",
-          "import_custom": "Özel ayarlardan içeri aktarın.",
-          "publishing": {
-            "title": "Sonraki adım, Yayınla...",
-            "subtitle": "Yeni oluşturduğunuz eklentiyi nasıl yayınlayacağınızla ilgili bilgiler için Mue Bilgi Bankası'nı ziyaret edin.",
-            "button": "Daha fazla bilgi edin."
-          },
-          "metadata": {
-            "name": "İsmi",
-            "icon_url": "İkon URL'si ",
-            "screenshot_url": "Arka plan URL'si",
-            "description": "Açıklama",
-            "example": "Örneği İndir"
-          },
-          "finish": {
-            "title": "Kurulumu Bitir",
-            "download": "Eklentiyi İndir"
-          },
-          "settings": {
-            "current": "Mevcut kurulumu içe aktar",
-            "json": "JSON'u yükleyin"
-          },
-          "photos": {
-            "title": "Fotoğraf Ekle"
-          },
-          "quotes": {
-            "title": "Alıntı Ekle",
-            "api": {
-              "title": "API",
-              "url": "Alıntı URL'si",
-              "name": "JSON alıntı adı",
-              "author": "JSON alıntı yazarı (veya geçersiz kılma)"
-            },
-            "local": {
-              "title": "Yerel"
-            }
-          }
+          "moved_title": "Create add-on has moved!",
+          "moved_description": "Following the 7.1 update, the creation of addons has now moved to the web UI",
+          "moved_button": "Get Started"
         }
       }
     },
