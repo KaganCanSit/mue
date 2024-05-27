@@ -1,14 +1,14 @@
-import variables from 'modules/variables';
+import variables from 'config/variables';
 import { PureComponent } from 'react';
 import { ToastContainer } from 'react-toastify';
 
-import Background from 'components/widgets/background/Background';
-import Widgets from 'components/widgets/Widgets';
-import Modals from 'components/modals/Modals';
+import Background from 'features/background/Background';
+import Widgets from 'features/misc/views/Widgets';
+import Modals from 'features/misc/modals/Modals';
 
-import { loadSettings, moveSettings } from 'modules/helpers/settings';
+import { loadSettings, moveSettings } from 'utils/settings';
 
-import EventBus from 'modules/helpers/eventbus';
+import EventBus from 'utils/eventbus';
 
 export default class App extends PureComponent {
   componentDidMount() {
@@ -38,7 +38,7 @@ export default class App extends PureComponent {
   render() {
     return (
       <>
-        {localStorage.getItem('background') === 'true' ? <Background /> : null}
+        {localStorage.getItem('background') === 'true' && <Background />}
         <ToastContainer
           position="bottom-right"
           autoClose={localStorage.getItem('toastDisplayTime') || 2500}

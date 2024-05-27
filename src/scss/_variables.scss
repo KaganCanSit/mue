@@ -17,6 +17,7 @@ $modal-sidebarActive: 'modal-sidebarActive';
 $link: 'link';
 $weather: 'weather';
 $modal-secondaryColour: 'modal-secondaryColour';
+$slightGradient: 'slightGradient';
 $theme-colours: (
   'gradient': linear-gradient(90deg, #ffb032 0%, #dd3b67 100%),
   'main': rgb(242 243 244 / 100%),
@@ -36,7 +37,7 @@ $modal: (
   'tab-active': rgb(219 219 219 / 72%),
   'sidebar-dark': rgb(53 59 72),
   'tab-active-dark': rgb(65 71 84 / 90%),
-  'modal-link': #5352ed,
+  'modal-link': #d21a11,
   'modal-link-dark': #3498db,
 );
 $button-colours: (
@@ -66,7 +67,8 @@ $themes: (
     'modal-sidebar': rgb(240 240 240 / 100%),
     'modal-sidebarActive': rgb(219 219 219 / 72%),
     'modal-secondaryColour': #fafafa,
-    'link': rgb(83 82 237 / 100%),
+    'link': #5352ed,
+    'slightGradient': linear-gradient(#fff, #ddd),
   ),
   dark: (
     'weather': #e7e7e7,
@@ -83,6 +85,7 @@ $themes: (
     'modal-sidebarActive': #333,
     'modal-secondaryColour': #111,
     'link': rgb(115 115 255),
+    'slightGradient': linear-gradient(#0e1013, #322a2a),
   ),
 );
 
@@ -94,6 +97,7 @@ $themes: (
     box-shadow: t($boxShadow);
   }
 
+  backdrop-filter: blur(map.get($ui-elements, 'backgroundBlur'));
   backdrop-filter: blur(map.get($ui-elements, 'backgroundBlur'));
 
   .title {
@@ -120,6 +124,7 @@ $themes: (
     font-size: 38px;
     font-weight: 600;
     margin-bottom: 15px;
+    text-transform: capitalize;
 
     @include themed {
       color: t($color);
@@ -127,6 +132,7 @@ $themes: (
 
     .backTitle {
       cursor: pointer;
+      transition: 0.5s;
 
       @include themed {
         color: t($subColor);
@@ -183,12 +189,23 @@ $themes: (
       }
     }
 
+    @if $type == 'secondary' {
+      background: t($modal-sidebarActive);
+      box-shadow: t($boxShadow);
+      border: 0;
+      color: t($color);
+
+      &:hover {
+        background: t($modal-sidebar) !important;
+      }
+    }
+
     border-radius: 12px;
     height: 40px;
     font-size: 1rem;
     display: flex;
     align-items: center;
-    flex-flow: row-reverse;
+    flex-flow: row;
     justify-content: center;
     gap: 20px;
     transition: 0.5s;

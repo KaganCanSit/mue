@@ -1,14 +1,16 @@
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
+
 import * as Sentry from '@sentry/react';
 
 import App from './App';
-import variables from './modules/variables';
+import ErrorBoundary from './ErrorBoundary';
+import variables from './config/variables';
 
 import './scss/index.scss';
 // the toast css is based on default so we need to import it
 import 'react-toastify/dist/ReactToastify.min.css';
 
-import { initTranslations } from './modules/translations';
+import { initTranslations } from 'lib/translations';
 
 const languagecode = localStorage.getItem('language') || 'en_GB';
 variables.language = initTranslations(languagecode);
@@ -24,4 +26,10 @@ Sentry.init({
   autoSessionTracking: false,
 });
 
-render(<App />, document.getElementById('root'));
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(
+  <ErrorBoundary>
+    <App />
+  </ErrorBoundary>,
+);

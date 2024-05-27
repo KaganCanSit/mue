@@ -12,6 +12,7 @@ Mue is a fast, open and free-to-use browser extension that gives a new, fresh an
 <br>
 
 ## Table of contents
+
 - [Table of contents](#table-of-contents)
 - [Screenshots](#screenshots)
 - [Features](#features)
@@ -48,7 +49,7 @@ Mue is a fast, open and free-to-use browser extension that gives a new, fresh an
 
 ### Planned Features
 
-Please see our [roadmap](https://trello.com/b/w7zhS7Hi/mue-50).
+Please see our [roadmap](https://trello.com/b/w7zhS7Hi/mue-50). We are currently working on a rewrite over on the "phoenix" branch.
 
 ## Installation
 
@@ -107,6 +108,7 @@ Please see the [documentation](https://docs.muetab.com/development#mue-tab).
 [Aksal](https://github.com/aksalsf) - Indonesian <br/>
 [Kağan Can Şit](https://github.com/KaganCanSit) - Turkish <br/>
 efeaydal - Turkish <br/>
+
 ### Contributors
 
 Many thanks to the photographers [here](https://api.muetab.com/images/photographers) for letting us use their wonderful photographs.
@@ -117,10 +119,3 @@ And finally, a big thank you to all the other [contributors](https://github.com/
 
 [Pexels](https://pexels.com), [Unsplash](https://unsplash.com) - Stock photos used for offline mode <br/>
 [Undraw](https://undraw.co) - Welcome modal images
-
-<p>This project is supported by:</p>
-<p>
-  <a href="https://www.digitalocean.com/">
-    <img src="https://opensource.nyc3.cdn.digitaloceanspaces.com/attribution/assets/SVG/DO_Logo_horizontal_blue.svg" width="201px">
-  </a>
-</p>

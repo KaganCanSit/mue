@@ -1,13 +1,7 @@
-// tl;dr this function merges the translation file with the english file in order to add untranslated strings
 const fs = require('fs');
+const path = require('path');
 const merge = require('@eartharoid/deep-merge');
 
-/**
- * It recursively compares the keys of two JSON objects and removes the keys from the first object that
- * are not present in the second object
- * @param json1 - The JSON object that you want to remove keys from.
- * @param json2 - The JSON object that you want to compare against.
- */
 const compareAndRemoveKeys = (json1, json2) => {
   for (let key in json1) {
     if (json2.hasOwnProperty(key)) {
@@ -20,20 +14,72 @@ const compareAndRemoveKeys = (json1, json2) => {
   }
 };
 
-fs.readdirSync('../src/translations').forEach((file) => {
+const localesDir = path.join(__dirname, '../src/i18n/locales');
+const achievementsDir = path.join(localesDir, 'achievements');
+
+// Check if the locales directory exists, if not, create it
+if (!fs.existsSync(localesDir)) {
+  fs.mkdirSync(localesDir, { recursive: true });
+}
+
+// Check if the achievements directory exists, if not, create it
+if (!fs.existsSync(achievementsDir)) {
+  fs.mkdirSync(achievementsDir, { recursive: true });
+}
+
+fs.readdirSync(localesDir).forEach((file) => {
   if (file === 'en_GB.json') {
     return;
   }
 
-  const en = require('../src/translations/en_GB.json');
-  const newdata = merge(en, require('../src/translations/' + file));
+  if (fs.lstatSync(path.join(localesDir, file)).isDirectory()) {
+    return;
+  }
 
-  // remove strings not in english file
+  const en = require(path.join(localesDir, 'en_GB.json'));
+  const newdata = merge(en, require(path.join(localesDir, file)));
+
   compareAndRemoveKeys(newdata, en);
 
-  // write new file
-  fs.writeFileSync('../src/translations/' + file, JSON.stringify(newdata, null, 2));
+  fs.writeFileSync(path.join(localesDir, file), JSON.stringify(newdata, null, 2));
 
-  // add new line
-  fs.appendFileSync('../src/translations/' + file, '\n');
+  fs.appendFileSync(path.join(localesDir, file), '\n');
+});
+
+fs.readdirSync(achievementsDir).forEach((file) => {
+  if (file === 'en_GB.json') {
+    return;
+  }
+
+  if (fs.lstatSync(path.join(achievementsDir, file)).isDirectory()) {
+    return;
+  }
+
+  const enGBFilePath = path.join(achievementsDir, 'en_GB.json');
+  if (!fs.existsSync(enGBFilePath)) {
+    console.error(`File 'en_GB.json' does not exist in the directory '${achievementsDir}'`);
+    return;
+  }
+
+  const en = require(enGBFilePath);
+  const newdata = merge(en, require(path.join(achievementsDir, file)));
+
+  compareAndRemoveKeys(newdata, en);
+
+  fs.writeFileSync(path.join(achievementsDir, file), JSON.stringify(newdata, null, 2));
+
+  fs.appendFileSync(path.join(achievementsDir, file), '\n');
+
+  const locales = fs.readdirSync(localesDir);
+  locales.forEach((locale) => {
+    if (!fs.existsSync(path.join(achievementsDir, locale))) {
+      // ignore directories
+      if (fs.lstatSync(path.join(localesDir, locale)).isDirectory()) {
+        return;
+      }
+
+      fs.writeFileSync(path.join(achievementsDir, locale), JSON.stringify(en, null, 2));
+      fs.appendFileSync(path.join(achievementsDir, locale), '\n');
+    }
+  });
 });
