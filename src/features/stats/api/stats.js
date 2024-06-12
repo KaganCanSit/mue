@@ -8,11 +8,11 @@ export default class Stats {
     newAchievement.forEach((achievement) => {
       if (achievement) {
         const { name } = getLocalisedAchievementData(achievement.id);
-        //toast.success(`{varia}: ${name}`);
-        toast.success(
+        toast.info(
           `🏆 ${variables.getMessage('modals.main.settings.sections.stats.achievement_unlocked', { name: name })}`,
           {
             icon: false,
+            closeButton: false,
           },
         );
       }
@@ -29,7 +29,7 @@ export default class Stats {
   static async postEvent(type, name) {
     const value = name.toLowerCase().replaceAll(' ', '-');
 
-    const data = JSON.parse(localStorage.getItem('statsData'));
+    const data = JSON.parse(localStorage.getItem('statsData')) || {};
     // tl;dr this creates the objects if they don't exist
     // this really needs a cleanup at some point
     if (!data[type] || !data[type][value]) {
@@ -51,12 +51,9 @@ export default class Stats {
    * It increments the value of the key 'tabs-opened' in the object stored in localStorage by 1.
    */
   static async tabLoad() {
-    const data = JSON.parse(localStorage.getItem('statsData'));
+    const data = JSON.parse(localStorage.getItem('statsData')) || {};
     data['tabs-opened'] = data['tabs-opened'] + 1 || 1;
     localStorage.setItem('statsData', JSON.stringify(data));
     this.achievementTrigger(data);
-    /*toast.success(`Achievement Unlocked: Test`, {
-      icon: '🚀',
-    });*/
   }
 }

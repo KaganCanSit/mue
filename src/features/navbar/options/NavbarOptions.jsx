@@ -2,13 +2,7 @@ import variables from 'config/variables';
 
 import { useState, memo } from 'react';
 
-import {
-  MdAssignment,
-  MdCropFree,
-  MdRefresh,
-  MdChecklist,
-  MdOutlineApps,
-} from 'react-icons/md';
+import { MdAssignment, MdCropFree, MdRefresh, MdChecklist, MdOutlineApps } from 'react-icons/md';
 
 import { Checkbox, Dropdown } from 'components/Form';
 import EventBus from 'utils/eventbus';
@@ -22,7 +16,7 @@ function NavbarOptions() {
   const [showRefreshOptions, setShowRefreshOptions] = useState(
     localStorage.getItem('refresh') === 'true',
   );
-  const [appsEnabled, setAppsEnabled] = useState(localStorage.getItem('appsEnabled') === 'true');
+  const [appsEnabled, setAppsEnabled] = useState(localStorage.getItem('appsEnabled') === 'true' || false);
 
   const NAVBAR_SECTION = 'modals.main.settings.sections.appearance.navbar';
 

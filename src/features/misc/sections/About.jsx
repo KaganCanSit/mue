@@ -132,7 +132,7 @@ class About extends PureComponent {
 
   render() {
     return (
-      <>
+      <div className="modalInfoPage">
         <div className="settingsRow" style={{ justifyContent: 'center' }}>
           <div style={{ display: 'flex', flexFlow: 'column', gap: '5px' }}>
             <img
@@ -377,11 +377,13 @@ class About extends PureComponent {
           {!!this.state.loading ? <p>{this.state.loading}</p> : <></>}
           <ul>
             {this.state.curators.map((name) => (
-              <li key={name}>{name}</li>
+              <li key={name} className="subtitle-photographers">
+                {name}
+              </li>
             ))}
           </ul>
         </div>
-      </>
+      </div>
     );
   }
 }

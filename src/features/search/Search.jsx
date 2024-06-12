@@ -41,7 +41,7 @@ function Search() {
     return () => {
       EventBus.off('refresh');
     };
-  });
+  }, []);
 
   let micIcon = createRef();
 

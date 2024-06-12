@@ -151,6 +151,7 @@
       width: 100%;
       max-width: 650px !important;
       word-wrap: break-word !important;
+      font-size: 16px;
     }
   }
 
@@ -172,7 +173,6 @@
       width: 100%;
       box-sizing: border-box !important;
       border-radius: 12px 12px 0 0;
-      backdrop-filter: blur(40px) saturate(150%) brightness(75%);
       backdrop-filter: blur(40px) saturate(150%) brightness(75%);
 
       @include themed {
@@ -252,7 +252,6 @@
   flex-flow: column;
   text-align: center;
   align-items: center;
-  user-select: none;
   user-select: none;
 
   img {
@@ -366,7 +365,6 @@ p.author {
   .nice-tag {
     border-radius: 150px;
     padding: 1px 12px;
-    backdrop-filter: blur(16px) saturate(180%);
     backdrop-filter: blur(16px) saturate(180%);
     background-color: rgb(255 255 255 / 10%);
     border: 1px solid rgb(209 213 219 / 30%);
