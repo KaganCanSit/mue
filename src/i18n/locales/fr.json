@@ -276,7 +276,7 @@
           "search": {
             "title": "Barre de Recherche",
             "additional": "Additional options for search widget display and functionality",
-            "search_engine": "Moteur de Recherche",
+            "search_engine": "Moteur de recherche",
             "search_engine_subtitle": "Choose search engine to use in the search bar",
             "custom": "URL de recherche personnalisée",
             "autocomplete": "Autocomplete",
@@ -326,7 +326,7 @@
             "tooltip": "Info-bulle",
             "text_only": "Show text only",
             "add_link": "Add Link",
-            "no_quicklinks": "No quick links",
+            "no_quicklinks": "No quicklinks",
             "edit": "Edit",
             "style": "Style",
             "options": {
@@ -334,7 +334,7 @@
               "text_only": "Text Only",
               "metro": "Metro"
             },
-            "styling": "Styling",
+            "styling": "Quick Links Styling",
             "styling_description": "Customise Quick Links appearance"
           },
           "message": {
@@ -365,7 +365,7 @@
               "title": "Navbar",
               "widgets": "Navbar Widgets",
               "notes": "Notes",
-              "refresh": "Refresh",
+              "refresh": "Refresh button",
               "refresh_subtitle": "Choose what is refreshed when you click the refresh button",
               "hover": "Only display on hover",
               "additional": "Modify navbar style and which buttons you want to display",
@@ -400,7 +400,7 @@
             },
             "accessibility": {
               "title": "Accessibilité",
-              "description": "Make Mue comfortable and accessible",
+              "description": "Accessibility settings for Mue",
               "animations": "Animations",
               "text_shadow": {
                 "title": "Widget text shadow",

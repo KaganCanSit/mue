@@ -276,7 +276,7 @@
           "search": {
             "title": "Búsqueda",
             "additional": "Additional options for search widget display and functionality",
-            "search_engine": "Motor de Búsqueda",
+            "search_engine": "Motor de búsqueda",
             "search_engine_subtitle": "Choose search engine to use in the search bar",
             "custom": "URL de búsqueda personalizada",
             "autocomplete": "Autocompletado",
@@ -326,7 +326,7 @@
             "tooltip": "Descripción emergente",
             "text_only": "Mostrar solo texto",
             "add_link": "Add Link",
-            "no_quicklinks": "No quick links",
+            "no_quicklinks": "No quicklinks",
             "edit": "Edit",
             "style": "Style",
             "options": {
@@ -334,7 +334,7 @@
               "text_only": "Text Only",
               "metro": "Metro"
             },
-            "styling": "Styling",
+            "styling": "Quick Links Styling",
             "styling_description": "Customise Quick Links appearance"
           },
           "message": {
@@ -400,7 +400,7 @@
             },
             "accessibility": {
               "title": "Accesibilidad",
-              "description": "Make Mue comfortable and accessible",
+              "description": "Accessibility settings for Mue",
               "animations": "Animaciones",
               "text_shadow": {
                 "title": "Widget text shadow",

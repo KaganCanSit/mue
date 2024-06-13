@@ -44,15 +44,15 @@
     "weather": {
       "not_found": "Nicht gefunden",
       "meters": "{amount} Meter",
-      "extra_information": "Extra Information",
+      "extra_information": "Zusätzliche informationen",
       "feels_like": "Bei gefühlten {amount}"
     },
     "quote": {
-      "link_tooltip": "Open on Wikipedia",
+      "link_tooltip": "Auf Wikipedia öffnen",
       "share": "Teilen",
       "copy": "Kopieren",
       "favourite": "Favorit",
-      "unfavourite": "Unfavourite"
+      "unfavourite": "Unfavorit"
     },
     "navbar": {
       "tooltips": {
@@ -63,14 +63,14 @@
         "placeholder": "Hier eingeben"
       },
       "todo": {
-        "title": "Todo",
+        "title": "Machen",
         "pin": "Pinn",
         "add": "Hinzufügen",
         "no_todos": "Keine Todos"
       },
       "apps": {
         "title": "Apps",
-        "no_apps": "No app links found"
+        "no_apps": "Keine App Links gefunden"
       }
     }
   },
@@ -81,7 +81,7 @@
       "file_upload_error": "Datei ist größer als 2MB",
       "navbar": {
         "settings": "Einstellungen",
-        "addons": "Meine Addons",
+        "addons": "Add-Ons",
         "marketplace": "Marktplatz"
       },
       "error_boundary": {
@@ -166,8 +166,8 @@
             "custom": "Benutzerdefiniertes Zitat",
             "custom_subtitle": "Legen Sie Ihre eigenen Zitate fest",
             "no_quotes": "Keine Zitate",
-            "author": "Author",
-            "custom_buttons": "Buttons",
+            "author": "Autor",
+            "custom_buttons": "Schaltflächen",
             "custom_author": "Benutzerdefinierter Autor",
             "author_img": "Bild des Autors anzeigen",
             "add": "Zitat hinzufügen",
@@ -290,7 +290,7 @@
             "title": "Wetter",
             "location": "Standort",
             "auto": "Auto",
-            "widget_type": "Widget Type",
+            "widget_type": "Widget-Typ",
             "temp_format": {
               "title": "Temperatur Format",
               "celsius": "Celsius",
@@ -330,7 +330,7 @@
             "edit": "Bearbeiten",
             "style": "Stil",
             "options": {
-              "icon": "Icon",
+              "icon": "Symbol",
               "text_only": "Nur Text",
               "metro": "Metro"
             },
@@ -373,11 +373,11 @@
                 "none": "Keine",
                 "page": "Seite"
               },
-              "apps_subtitle": "Create a shortcut of your other commonly used websites."
+              "apps_subtitle": "Erstellen Sie eine Verknüpfung Ihrer anderen häufig verwendeten Websites."
             },
             "font": {
               "title": "Schriftart",
-              "description": "Change the font used in Mue",
+              "description": "Ändern Sie die in Mue verwendete Schriftart",
               "custom": "Eigene Schriftart",
               "google": "Importieren von Google Fonts",
               "weight": {
@@ -643,7 +643,7 @@
         "style": {
           "title": "Wählen Sie einen Stil aus",
           "description": "Mue bietet derzeit die Wahl zwischen dem alten Design und dem neuen, modernen Design.",
-          "legacy": "Legacy",
+          "legacy": "Vermächtnis",
           "modern": "Modern"
         },
         "settings": {
@@ -674,7 +674,7 @@
         "preview": "Vorschau",
         "previous": "Zurück",
         "close": "Schließen",
-        "finish": "Finish"
+        "finish": "Fertig"
       },
       "preview": {
         "description": "Sie befinden sich derzeit im Vorschaumodus. Die Einstellungen werden beim Schließen dieser Registerkarte zurückgesetzt.",

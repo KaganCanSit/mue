@@ -69,8 +69,8 @@
         "no_todos": "Sin tareas"
       },
       "apps": {
-        "title": "Apps",
-        "no_apps": "No app links found"
+        "title": "Aplicaciones",
+        "no_apps": "No hay enlaces de aplicaciones encontrados"
       }
     }
   },
@@ -138,7 +138,7 @@
             }
           },
           "date": {
-            "title": "Fecha",
+            "title": "Apariencia",
             "week_number": "Número de la semana",
             "day_of_week": "Día de la semana",
             "datenth": "Fecha nth",
@@ -147,16 +147,16 @@
               "long": "Largo",
               "subtitle": "Visualización de la fecha en formato largo o corto"
             },
-            "type_settings": "Ajustes de visualización y formato para el tipo de fecha seleccionado",
-            "short_date": "Fecha corta",
-            "short_format": "Formato corto",
-            "long_format": "Formato largo",
+            "type_settings": "Display settings and format for the selected date type",
+            "short_date": "Short date",
+            "short_format": "Short format",
+            "long_format": "Long format",
             "short_separator": {
-              "title": "Separador corto",
-              "dots": "Puntos",
-              "dash": "Guiones",
-              "gaps": "Guiones con espacios",
-              "slashes": "Barras"
+              "title": "Short separator",
+              "dots": "Dots",
+              "dash": "Dash",
+              "gaps": "Gaps",
+              "slashes": "Slashes"
             }
           },
           "quote": {

@@ -30,7 +30,7 @@
     "search": "Поиск",
     "quicklinks": {
       "new": "Новая ссылка",
-      "edit": "Edit Link",
+      "edit": "Изменить ссылку",
       "name": "Name",
       "url": "URL",
       "icon": "Значок (необязательно)",
@@ -69,8 +69,8 @@
         "no_todos": "Нет задач"
       },
       "apps": {
-        "title": "Apps",
-        "no_apps": "No app links found"
+        "title": "Приложения",
+        "no_apps": "Не найдено ссылок приложений"
       }
     }
   },
@@ -251,7 +251,7 @@
               "add_colour": "Добавить цвет",
               "add_background": "Добавить фон",
               "drop_to_upload": "Перетащите, чтобы загрузить",
-              "formats": "Доступные форматы: {список}",
+              "formats": "Доступные форматы: {list}",
               "select": "Или выберите",
               "add_url": "Add URL",
               "disabled": "Выключен",
@@ -373,7 +373,7 @@
                 "none": "None",
                 "page": "Page"
               },
-              "apps_subtitle": "Create a shortcut of your other commonly used websites."
+              "apps_subtitle": "Создайте ярлык других широко используемых веб-сайтов."
             },
             "font": {
               "title": "Font",
@@ -408,7 +408,7 @@
                 "old": "Old",
                 "none": "None"
               },
-              "widget_zoom": "Widget Zoom",
+              "widget_zoom": "Widget zoom",
               "toast_duration": "Продолжительность подсказки",
               "milliseconds": "миллисекунды"
             }
@@ -484,7 +484,7 @@
             "title": "О программе",
             "version": {
               "title": "Version",
-              "checking_update": "Проверка обновлений",
+              "checking_update": "Проверяю обновления",
               "update_available": "Обновление доступно",
               "no_update": "Нет доступных обновлений",
               "offline_mode": "Невозможно проверить наличие обновления в автономном режиме",
@@ -587,21 +587,21 @@
             "no_author": "Автор не указан",
             "no_type": "Тип не указан",
             "invalid_photos": "Недопустимый объект фотографии",
-            "invalid_quotes": "Invalid quotes object"
+            "invalid_quotes": "Неправильный объект цитаты"
           }
         },
         "sort": {
           "title": "Сортировка",
-          "newest": "Installed (Newest)",
-          "oldest": "Installed (Oldest)",
-          "a_z": "Alphabetical (A-Z)",
-          "z_a": "Alphabetical (Z-A)"
+          "newest": "Установлено (Новое)",
+          "oldest": "Установлено (Старое)",
+          "a_z": "Алфавитный (A-Z)",
+          "z_a": "Алфавитный (Z-A)"
         },
         "create": {
           "title": "Создать",
           "moved_title": "Создание аддонов переместилось!",
           "moved_description": "После обновления 7.1, создание дополнений теперь переместилось в веб-UI",
-          "moved_button": "Get Started"
+          "moved_button": "Начните"
         }
       }
     },
@@ -613,15 +613,15 @@
       },
       "error": {
         "title": "Ошибка",
-        "description": "Could not connect to the server"
+        "description": "Невозможно подключиться к серверу"
       }
     },
     "welcome": {
-      "tip": "Quick Tip",
+      "tip": "Быстрый совет",
       "sections": {
         "intro": {
           "title": "Добро пожаловать в Mue Tab",
-          "description": "Thank you for installing Mue, we hope you enjoy your time with our extension.",
+          "description": "Спасибо за установку Mue, мы надеемся, что вам понравится ваше время с нашим расширением.",
           "notices": {
             "discord_title": "Присоединяйтесь к нашему дискорду",
             "discord_description": "Поговорите с сообществом Mue и разработчиками",
@@ -633,12 +633,12 @@
         },
         "language": {
           "title": "Выберите свой язык",
-          "description": "Mue can be displayed the languages listed below. You can also add new translations on our"
+          "description": "Mue может отображаться на языках, перечисленных ниже. Вы также можете добавить новые переводы на свой"
         },
         "theme": {
           "title": "Выберите тему",
-          "description": "Mue is available in both light and dark theme, or this can be automatically set depending on your system theme.",
-          "tip": "Using the Auto settings will use the theme on your computer. This setting will impact the modals and some of the widgets displayed on the screen, such as weather and notes."
+          "description": "Mue доступен как в светлой, так и в темной теме, или это может быть автоматически установлено в зависимости от темы вашей системы.",
+          "tip": "С помощью настроек авто будет использоваться тема на вашем компьютере. Эта настройка повлияет на модалы и некоторые виджеты, отображаемые на экране, такие как погода и заметки."
         },
         "style": {
           "title": "Выберите стиль",
@@ -648,7 +648,7 @@
         },
         "settings": {
           "title": "Импортировать настройки",
-          "description": "Installing Mue on a new device? Feel free to import your old settings!",
+          "description": "Установили Мue на новом устройстве? Не стесняйтесь импортировать свои старые настройки!",
           "tip": "You can export your old settings by navigating to the Advanced tab in your old Mue setup. Then you need to click the export button which will download the JSON file. You can upload this file here to carry across your settings and preferences from your previous Mue installation."
         },
         "privacy": {
@@ -674,7 +674,7 @@
         "preview": "Preview",
         "previous": "Previous",
         "close": "Закрыть",
-        "finish": "Finish"
+        "finish": "Завершить"
       },
       "preview": {
         "description": "You are currently in preview mode. Settings will be reset on closing this tab.",

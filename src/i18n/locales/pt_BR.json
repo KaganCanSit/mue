@@ -43,9 +43,9 @@
     },
     "weather": {
       "not_found": "Não encontrado",
-      "meters": "{amount} metros",
+      "meters": "{quantidade} metros",
       "extra_information": "Informação extra",
-      "feels_like": "Parece {amount}"
+      "feels_like": "Parece {quantia}"
     },
     "quote": {
       "link_tooltip": "Abrir na Wikipédia",
@@ -69,8 +69,8 @@
         "no_todos": "Sem afazeres"
       },
       "apps": {
-        "title": "Apps",
-        "no_apps": "No app links found"
+        "title": "Aplicações",
+        "no_apps": "Nenhum link encontrado"
       }
     }
   },
@@ -373,7 +373,7 @@
                 "none": "Nenhum",
                 "page": "Página"
               },
-              "apps_subtitle": "Create a shortcut of your other commonly used websites."
+              "apps_subtitle": "Crie um atalho de seus outros sites comumente usados."
             },
             "font": {
               "title": "Fonte",
@@ -599,9 +599,9 @@
         },
         "create": {
           "title": "Criar",
-          "moved_title": "Create add-on has moved!",
-          "moved_description": "Following the 7.1 update, the creation of addons has now moved to the web UI",
-          "moved_button": "Get Started"
+          "moved_title": "Criar add-on mudou-se!",
+          "moved_description": "Após a atualização 7.1, a criação de addons mudou-se para a interface web",
+          "moved_button": "Começar"
         }
       }
     },
@@ -674,7 +674,7 @@
         "preview": "Pré-visualizar",
         "previous": "Anterior",
         "close": "Fechar",
-        "finish": "Finish"
+        "finish": "Finalizar"
       },
       "preview": {
         "description": "Você está atualmente no modo de visualização. As configurações serão redefinidas ao fechar esta guia.",

@@ -326,7 +326,7 @@
             "tooltip": "光标停留时下方显示标题",
             "text_only": "仅显示标题",
             "add_link": "Add Link",
-            "no_quicklinks": "No quick links",
+            "no_quicklinks": "No quicklinks",
             "edit": "Edit",
             "style": "Style",
             "options": {
@@ -334,7 +334,7 @@
               "text_only": "Text Only",
               "metro": "Metro"
             },
-            "styling": "Styling",
+            "styling": "Quick Links Styling",
             "styling_description": "Customise Quick Links appearance"
           },
           "message": {
@@ -400,7 +400,7 @@
             },
             "accessibility": {
               "title": "无障碍设定",
-              "description": "Make Mue comfortable and accessible",
+              "description": "Accessibility settings for Mue",
               "animations": "动画效果",
               "text_shadow": {
                 "title": "Widget text shadow",

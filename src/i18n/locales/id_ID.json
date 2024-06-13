@@ -69,8 +69,8 @@
         "no_todos": "Tidak ada Tugas"
       },
       "apps": {
-        "title": "Apps",
-        "no_apps": "No app links found"
+        "title": "Aplikasi",
+        "no_apps": "Link aplikasi tidak ditemukan"
       }
     }
   },
@@ -278,7 +278,7 @@
             "additional": "Additional options for search widget display and functionality",
             "search_engine": "Mesin pencari",
             "search_engine_subtitle": "Choose search engine to use in the search bar",
-            "custom": "URL Kustom",
+            "custom": "URL kustom",
             "autocomplete": "Autocomplete",
             "autocomplete_provider": "Provider Autocomplete",
             "autocomplete_provider_subtitle": "Search engine to use for autocomplete dropdown results",
@@ -326,7 +326,7 @@
             "tooltip": "Tooltip",
             "text_only": "Hanya teks",
             "add_link": "Add Link",
-            "no_quicklinks": "No quick links",
+            "no_quicklinks": "No quicklinks",
             "edit": "Edit",
             "style": "Style",
             "options": {
@@ -334,7 +334,7 @@
               "text_only": "Text Only",
               "metro": "Metro"
             },
-            "styling": "Styling",
+            "styling": "Quick Links Styling",
             "styling_description": "Customise Quick Links appearance"
           },
           "message": {
@@ -373,7 +373,7 @@
                 "none": "Nonaktif",
                 "page": "Halaman"
               },
-              "apps_subtitle": "Create a shortcut of your other commonly used websites."
+              "apps_subtitle": "Buat sebuah pintasan untuk situs yang umum kamu gunakan lainnya."
             },
             "font": {
               "title": "Font",
@@ -400,7 +400,7 @@
             },
             "accessibility": {
               "title": "Aksesibilitas",
-              "description": "Make Mue comfortable and accessible",
+              "description": "Accessibility settings for Mue",
               "animations": "Animasi",
               "text_shadow": {
                 "title": "Widget text shadow",
@@ -408,7 +408,7 @@
                 "old": "Old",
                 "none": "None"
               },
-              "widget_zoom": "Widget Zoom",
+              "widget_zoom": "Widget zoom",
               "toast_duration": "Durasi toast",
               "milliseconds": "milliseconds"
             }

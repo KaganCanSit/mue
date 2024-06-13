@@ -276,13 +276,13 @@
           "search": {
             "title": "Search",
             "additional": "Additional options for search widget display and functionality",
-            "search_engine": "Search Engine",
+            "search_engine": "Search engine",
             "search_engine_subtitle": "Choose search engine to use in the search bar",
-            "custom": "Custom Search URL",
+            "custom": "Custom search URL",
             "autocomplete": "Autocomplete",
             "autocomplete_provider": "Autocomplete Provider",
             "autocomplete_provider_subtitle": "Search engine to use for autocomplete dropdown results",
-            "voice_search": "Voice Search",
+            "voice_search": "Voice search",
             "dropdown": "Search dropdown",
             "focus": "Focus on tab open"
           },
@@ -365,7 +365,7 @@
               "title": "Navbar",
               "widgets": "Navbar Widgets",
               "notes": "Notes",
-              "refresh": "Refresh",
+              "refresh": "Refresh button",
               "refresh_subtitle": "Choose what is refreshed when you click the refresh button",
               "hover": "Only display on hover",
               "additional": "Modify navbar style and which buttons you want to display",
@@ -400,7 +400,7 @@
             },
             "accessibility": {
               "title": "Accessibility",
-              "description": "Make Mue comfortable and accessible",
+              "description": "Accessibility settings for Mue",
               "animations": "Animations",
               "text_shadow": {
                 "title": "Widget text shadow",
@@ -408,8 +408,8 @@
                 "old": "Old",
                 "none": "None"
               },
-              "widget_zoom": "Widget Zoom",
-              "toast_duration": "Toast Duration",
+              "widget_zoom": "Widget zoom",
+              "toast_duration": "Toast duration",
               "milliseconds": "milliseconds"
             }
           },
