@@ -53,7 +53,7 @@
         "collection": "Coleção",
         "collections": "Coleções",
         "explore_collection": "Explorar coleção",
-        "installing": "Installing",
+        "installing": "Instalando",
         "knowledgebase_one": "Visite a",
         "knowledgebase_three": "para criar o seu próprio.",
         "knowledgebase_two": "base de conhecimento",
@@ -69,21 +69,21 @@
           "buttons": {
             "addtomue": "Adicionar ao Mue",
             "back": "Voltar",
-            "not_available_preview": "Unavailable on Preview",
+            "not_available_preview": "Indisponível na Pré-visualização",
             "remove": "Remover",
             "report": "Reportar",
             "update_addon": "Atualizar complemento"
           },
-          "created_by": "Created by",
+          "created_by": "Criado por",
           "description": "Descrição",
           "details": "Details",
           "explore": "Explorar",
           "information": "Informações",
           "last_updated": "Ultima atualização",
-          "more_from_curator": "More like this from {name}",
+          "more_from_curator": "Mais como este de {name}",
           "no_images": "Sem imagens",
           "no_quotes": "Sem citações",
-          "not_in_language": "This add-on is not in your language",
+          "not_in_language": "Este complemento não está em seu idioma",
           "overview": "Visão geral",
           "part_of": "Parte de",
           "setting": "Configuração",
@@ -92,8 +92,8 @@
           "show_more": "Mostrar mais",
           "showing": "Mostrando",
           "sideload_warning": "This add-on has been sideloaded.",
-          "third_party_api": "This add-on uses a third-party API",
-          "updated_at": "Updated on",
+          "third_party_api": "Esse complemento usa uma API de terceiros",
+          "updated_at": "Atualizado em",
           "value": "Valor",
           "version": "Versão"
         },
@@ -121,7 +121,7 @@
           "about": {
             "contact_us": "Contate-nos",
             "contributors": "Contribuintes",
-            "curators": "Add-on creators",
+            "curators": "Criadores de complemento",
             "form_button": "Formulário",
             "no_supporters": "Atualmente não há apoiadores do Mue",
             "photographers": "Fotógrafos",
@@ -152,14 +152,14 @@
             "custom_js": "JS personalizado",
             "customisation": "Customização",
             "data": "Dados",
-            "data_description": "Choose whether to export your Mue settings to your computer, import an existing settings file, or reset your settings to their default values",
-            "data_subtitle": "Escolha se deseja exportar suas configurações de Mue para o seu computador, importar um arquivo de configurações existente ou redefinir suas configurações para seus valores padrão",
+            "data_description": "Escolha se deseja exportar suas configurações do Mue para o computador, importar um arquivo de configurações existente ou redefinir suas configurações para os valores padrão",
+            "data_subtitle": "Gerencie seus dados no Mue.",
             "experimental_warning": "Observe que a equipe Mue não pode fornecer suporte se você tiver o modo experimental ativado. Desative-o primeiro e veja se o problema continua antes de entrar em contato com o suporte.",
             "offline_mode": "Modo offline",
             "offline_subtitle": "Quando ativado, todos os pedidos de serviços online serão desativados.",
             "preview_data_disabled": {
-              "description": "Data settings are disabled in preview mode. Please exit preview mode to use this feature.",
-              "title": "Data Settings Disabled"
+              "description": "As configurações de dados estão desativadas no modo de visualização. Saia do modo de visualização para usar essa função.",
+              "title": "Configurações de Dados Desativadas"
             },
             "reset_modal": {
               "cancel": "Cancelar",
@@ -226,7 +226,7 @@
               },
               "refresh_subtitle": "Escolha o que é atualizado quando você clica no botão de atualização",
               "title": "Barra de navegação",
-              "widgets": "Navbar Widgets"
+              "widgets": "Widgets da barra de navegação"
             },
             "style": {
               "description": "Escolha entre os dois estilos, legado (ativado para usuários pré 7.0) e nosso estilo moderno e elegante.",
@@ -283,7 +283,7 @@
               "custom_title": "Imagens personalizadas",
               "disabled": "Desativado",
               "drop_to_upload": "Solte para carregar",
-              "formats": "Formatos disponíveis: {lista}",
+              "formats": "Formatos disponíveis: {list}",
               "loop_video": "Vídeo em loop",
               "mute_video": "mutar vídeo",
               "quality": {
@@ -310,10 +310,10 @@
               "title": "Tipo"
             },
             "unsplash": {
-              "id": "Collection ID(s)",
-              "id_subtitle": "Enter a comma separated list of Unsplash IDs",
-              "subtitle": "Select the collection(s) you want to use for your background",
-              "title": "Unsplash Collection(s)"
+              "id": "ID(s) da coleção",
+              "id_subtitle": "Insira uma lista de IDs Unsplash separada por vírgula",
+              "subtitle": "Selecione as coleções que deseja usar como plano de fundo",
+              "title": "Coleções Unsplash"
             }
           },
           "changelog": {
@@ -354,17 +354,17 @@
             "birthday_age": "idade de aniversário",
             "birthday_date": "Data de nascimento",
             "birthday_subtitle": "Mostrar uma mensagem de feliz aniversário quando for seu aniversário",
-            "custom": "Custom events",
+            "custom": "Eventos customizados",
             "day": "Day",
             "default": "Mensagem de saudação padrão",
-            "enable_events": "Show messages on special days",
+            "enable_events": "Mostrar mensagens em dias especiais",
             "event_name": "Event Name",
             "events": "Eventos",
-            "events_description": "Control events on Mue such as birthdays.",
-            "month": "Month",
+            "events_description": "Controle eventos no Mue como aniversários.",
+            "month": "Mês",
             "name": "Nome para saudação",
             "no_events": "No Events",
-            "no_events_description": "Add Some Events",
+            "no_events_description": "Adicionar Alguns Eventos",
             "title": "Saudações"
           },
           "header": {
@@ -411,6 +411,7 @@
             "add": "Adicionar citação",
             "additional": "Outras configurações para personalizar o estilo do widget de citações",
             "author": "Autor",
+            "author_details": "Detalhes do autor",
             "author_img": "Mostrar imagem do autor",
             "author_link": "link do autor",
             "buttons": {
@@ -442,13 +443,13 @@
             "voice_search": "Pesquisa por voz"
           },
           "stats": {
-            "achievement_unlocked": "Achievement Unlocked: {name}",
+            "achievement_unlocked": "Conquista Desbloqueada: {name}",
             "achievements": "Conquistas",
             "clear_modal": {
-              "information": "This will clear all achievements and usage statistics.",
-              "question": "Do you want to clear your stats?"
+              "information": "Isso limpará todas as conquistas e estatísticas em uso.",
+              "question": "Deseja limpar suas estatísticas?"
             },
-            "locked": "Locked",
+            "locked": "Bloqueado",
             "sections": {
               "addons_installed": "Complementos instalados",
               "backgrounds_downloaded": "Planos de fundo baixados",
@@ -489,7 +490,7 @@
             "vertical_clock": {
               "change_hour_colour": "Alterar a cor das horas",
               "change_minute_colour": "Alterar a cor dos minutos",
-              "change_second_colour": "Change second text colour",
+              "change_second_colour": "Mudar a cor do segundo texto",
               "title": "Relógio Vertical"
             }
           },
@@ -611,7 +612,7 @@
       "tip": "Dica rápida"
     }
   },
-  "tabname": "Nova Guia",
+  "tabname": "Nova guia",
   "toasts": {
     "error": "Algo deu errado",
     "imported": "Importado com sucesso",
@@ -676,7 +677,7 @@
     },
     "quicklinks": {
       "add": "Adicionar",
-      "edit": "Edit Link",
+      "edit": "Editar Link",
       "icon": "Ícone (opcional)",
       "name": "Nome",
       "name_error": "Deve fornecer o nome",
@@ -694,8 +695,8 @@
     "search": "Pesquisar",
     "weather": {
       "extra_information": "Informação extra",
-      "feels_like": "Parece {quantia}",
-      "meters": "{quantidade} metros",
+      "feels_like": "Parece {amount}",
+      "meters": "{amount} metros",
       "not_found": "Não encontrado"
     }
   }

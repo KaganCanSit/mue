@@ -2,22 +2,22 @@
   "tabname": "New Tab",
   "widgets": {
     "greeting": {
-      "morning": "Good Morning",
-      "afternoon": "Good Afternoon",
-      "evening": "Good Evening",
-      "christmas": "Merry Christmas",
-      "newyear": "Happy New Year",
-      "halloween": "Happy Halloween",
-      "birthday": "Happy Birthday"
+      "morning": "صبح بخیر",
+      "afternoon": "ظهر بخیر",
+      "evening": "عصر بخیر",
+      "christmas": "سال نو مبارک",
+      "newyear": "سال جدید مبارک",
+      "halloween": "هالوین مبارک",
+      "birthday": "تولدت مبارک"
     },
     "background": {
-      "credit": "Photo by",
-      "unsplash": "on Unsplash",
-      "information": "Information",
-      "download": "Download",
-      "downloads": "Downloads",
-      "views": "Views",
-      "likes": "Likes",
+      "credit": "عکس متوسط",
+      "unsplash": "در Unsplash",
+      "information": "اطلاعات",
+      "download": "دانلود",
+      "downloads": "دانلودها",
+      "views": "بازدید ها",
+      "likes": "لایک ها",
       "location": "Location",
       "camera": "Camera",
       "resolution": "Resolution",
@@ -43,7 +43,7 @@
     },
     "weather": {
       "not_found": "Not Found",
-      "meters": "{amount} meters",
+      "meters": "{amount} metres",
       "extra_information": "Extra Information",
       "feels_like": "Feels like {amount}"
     },
@@ -51,8 +51,8 @@
       "link_tooltip": "Open on Wikipedia",
       "share": "Share",
       "copy": "Copy",
-      "favourite": "Favorite",
-      "unfavourite": "Unfavorite"
+      "favourite": "Favourite",
+      "unfavourite": "Unfavourite"
     },
     "navbar": {
       "tooltips": {
@@ -81,7 +81,7 @@
       "file_upload_error": "File is over 2MB",
       "navbar": {
         "settings": "Settings",
-        "addons": "My Add-ons",
+        "addons": "Add-ons",
         "marketplace": "Marketplace"
       },
       "error_boundary": {
@@ -120,7 +120,7 @@
               "zero": "Zero-padded"
             },
             "analogue": {
-              "title": "Analog",
+              "title": "Analogue",
               "subtitle": "Change how the analogue clock looks",
               "second_hand": "Seconds hand",
               "minute_hand": "Minutes hand",
@@ -132,8 +132,8 @@
             "percentage_complete": "Percentage complete",
             "vertical_clock": {
               "title": "Vertical Clock",
-              "change_hour_colour": "Change hour text color",
-              "change_minute_colour": "Change minute text color",
+              "change_hour_colour": "Change hour text colour",
+              "change_minute_colour": "Change minute text colour",
               "change_second_colour": "Change second text colour"
             }
           },
@@ -178,7 +178,7 @@
               "subtitle": "Choose which buttons to show on the quote",
               "copy": "Copy",
               "tweet": "Tweet",
-              "favourite": "Favorite"
+              "favourite": "Favourite"
             }
           },
           "greeting": {
@@ -209,7 +209,7 @@
             "categories": "Categories",
             "buttons": {
               "title": "Buttons",
-              "view": "Maximize",
+              "view": "Maximise",
               "favourite": "Favourite",
               "download": "Download"
             },
@@ -232,7 +232,7 @@
               "title": "Type",
               "api": "API",
               "custom_image": "Custom image",
-              "custom_colour": "Custom color/gradient",
+              "custom_colour": "Custom colour/gradient",
               "random_colour": "Random colour",
               "random_gradient": "Random gradient"
             },
@@ -247,9 +247,9 @@
               "subtitle": "Select where to get background images from",
               "api": "Background API",
               "custom_background": "Custom background",
-              "custom_colour": "Custom background color",
+              "custom_colour": "Custom background colour",
               "upload": "Upload",
-              "add_colour": "Add color",
+              "add_colour": "Add colour",
               "add_background": "Add background",
               "drop_to_upload": "Drop to upload",
               "formats": "Available formats: {list}",
@@ -277,14 +277,14 @@
           "search": {
             "title": "Search",
             "additional": "Additional options for search widget display and functionality",
-            "search_engine": "Search engine",
+            "search_engine": "Search Engine",
             "search_engine_subtitle": "Choose search engine to use in the search bar",
-            "custom": "Custom search URL",
+            "custom": "Custom Search URL",
             "autocomplete": "Autocomplete",
             "autocomplete_provider": "Autocomplete Provider",
             "autocomplete_provider_subtitle": "Search engine to use for autocomplete dropdown results",
             "voice_search": "Voice search",
-            "dropdown": "Search dropdown",
+            "dropdown": "Search Dropdown",
             "focus": "Focus on tab open"
           },
           "weather": {
@@ -327,7 +327,7 @@
             "tooltip": "Tooltip",
             "text_only": "Show text only",
             "add_link": "Add Link",
-            "no_quicklinks": "No quicklinks",
+            "no_quicklinks": "No quick links",
             "edit": "Edit",
             "style": "Style",
             "options": {
@@ -335,7 +335,7 @@
               "text_only": "Text Only",
               "metro": "Metro"
             },
-            "styling": "Quick Links Styling",
+            "styling": "Styling",
             "styling_description": "Customise Quick Links appearance"
           },
           "message": {
@@ -366,7 +366,7 @@
               "title": "Navbar",
               "widgets": "Navbar Widgets",
               "notes": "Notes",
-              "refresh": "Refresh button",
+              "refresh": "Refresh",
               "refresh_subtitle": "Choose what is refreshed when you click the refresh button",
               "hover": "Only display on hover",
               "additional": "Modify navbar style and which buttons you want to display",
@@ -401,7 +401,7 @@
             },
             "accessibility": {
               "title": "Accessibility",
-              "description": "Accessibility settings for Mue",
+              "description": "Make Mue comfortable and accessible",
               "animations": "Animations",
               "text_shadow": {
                 "title": "Widget text shadow",
@@ -409,8 +409,8 @@
                 "old": "Old",
                 "none": "None"
               },
-              "widget_zoom": "Widget zoom",
-              "toast_duration": "Toast duration",
+              "widget_zoom": "Widget Zoom",
+              "toast_duration": "Toast Duration",
               "milliseconds": "milliseconds"
             }
           },
@@ -423,14 +423,14 @@
             "offline_subtitle": "When enabled, all requests to online services will be disabled.",
             "data": "Data",
             "data_description": "Choose whether to export your Mue settings to your computer, import an existing settings file, or reset your settings to their default values",
-            "data_subtitle": "Choose whether to export your Mue settings to your computer, import an existing settings file, or reset your settings to their default values",
+            "data_subtitle": "Manage your data on Mue.",
             "reset_modal": {
               "title": "WARNING",
               "question": "Do you want to reset Mue?",
               "information": "This will delete all data. If you wish to keep your data and preferences, please export them first.",
               "cancel": "Cancel"
             },
-            "customisation": "Customization",
+            "customisation": "Customisation",
             "custom_css": "Custom CSS",
             "custom_css_subtitle": "Make Mue's styling customised to you with Cascading Style Sheets (CSS).",
             "custom_js": "Custom JS",
@@ -602,7 +602,7 @@
           "title": "Create",
           "moved_title": "Create add-on has moved!",
           "moved_description": "Following the 7.1 update, the creation of addons has now moved to the web UI",
-          "moved_button": "Get Started"
+          "moved_button": "Coming Soon...."
         }
       }
     },
@@ -698,6 +698,6 @@
     "imported": "Successfully imported",
     "no_storage": "Not enough storage",
     "link_copied": "Link copied",
-    "stats_reset": "Stats reset"
+    "stats_reset": "ریست امار"
   }
 }

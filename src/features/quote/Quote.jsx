@@ -82,6 +82,7 @@ class Quote extends PureComponent {
     this.quote = createRef();
     this.quotediv = createRef();
     this.quoteauthor = createRef();
+    this.authorDetails = (localStorage.getItem('authorDetails') === 'true' || true) ? true : false;
   }
 
   useFavourite() {
@@ -355,8 +356,12 @@ class Quote extends PureComponent {
 
   setZoom() {
     const zoomQuote = Number((localStorage.getItem('zoomQuote') || 100) / 100);
-    this.quote.current.style.fontSize = `${0.8 * zoomQuote}em`;
-    this.quoteauthor.current.style.fontSize = `${0.9 * zoomQuote}em`;
+    if (this.quote.current) {
+      this.quote.current.style.fontSize = `${0.8 * zoomQuote}em`;
+    }
+    if (this.quoteauthor.current) {
+      this.quoteauthor.current.style.fontSize = `${0.9 * zoomQuote}em`;
+    }
   }
 
   componentDidMount() {
@@ -429,6 +434,8 @@ class Quote extends PureComponent {
 
         {localStorage.getItem('widgetStyle') === 'legacy' ? (
           <>
+            { this.authorDetails && (
+              <>
             <div>
               <h1 className="quoteauthor" ref={this.quoteauthor}>
                 <a
@@ -445,8 +452,13 @@ class Quote extends PureComponent {
             <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
               {this.state.copy} {this.state.share} {this.state.favourited}
             </div>
+            </>
+            )}  
           </>
         ) : (
+          <>
+          { this.authorDetails && (
+            <>
           <div className="author-holder">
             <div className="author">
               {localStorage.getItem('authorImg') !== 'false' ? (
@@ -499,6 +511,9 @@ class Quote extends PureComponent {
               ) : null}
             </div>
           </div>
+          </>
+          )}
+          </>
         )}
       </div>
     );
