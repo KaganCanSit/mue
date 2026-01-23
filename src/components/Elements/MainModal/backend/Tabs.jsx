@@ -72,7 +72,7 @@ const Tabs = ({
           <ReminderInfo isVisible={showReminder} onHide={handleHideReminder} />
         </div>
       ) : null}
-      <div className="modalTabContent" style={{ marginLeft: showSidebar ? '1rem' : '0' }}>
+      <div className="modalTabContent">
         {children.map((tab, index) => {
           if (tab.props.label !== currentTab) {
             return null;
