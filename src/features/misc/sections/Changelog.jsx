@@ -4,7 +4,7 @@ import { MdOutlineWifiOff } from 'react-icons/md';
 
 const Changelog = () => {
   const [isLoading, setIsLoading] = useState(true);
-  
+
   const offlineMode = localStorage.getItem('offlineMode') === 'true';
   const isOffline = navigator.onLine === false || offlineMode;
 
@@ -30,19 +30,22 @@ const Changelog = () => {
   return (
     <div style={{ position: 'relative', width: '100%', minHeight: '100vh' }}>
       {isLoading && (
-        <div className="loaderHolder" style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          zIndex: 10
-        }}>
+        <div
+          className="loaderHolder"
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: 10,
+          }}
+        >
           <div id="loader"></div>
           <span className="subtitle">{variables.getMessage('modals.main.loading')}</span>
         </div>
       )}
       <iframe
-        src="http://localhost:3000/blog/changelog?embed=true"
+        src="http://muetab.com/blog/changelog?embed=true"
         onLoad={handleLoad}
         scrolling="no"
         style={{
