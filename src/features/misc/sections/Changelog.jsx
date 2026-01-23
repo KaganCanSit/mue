@@ -45,7 +45,7 @@ const Changelog = () => {
         </div>
       )}
       <iframe
-        src="http://muetab.com/blog/changelog?embed=true"
+        src={variables.constants.CHANGELOG_URL + '?embed=true'}
         onLoad={handleLoad}
         scrolling="no"
         style={{
