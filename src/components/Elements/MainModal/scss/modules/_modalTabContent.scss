@@ -8,10 +8,12 @@
   } */
 
   @include themed {
-    padding: 1rem 3rem 3rem;
+    padding: 1rem 3rem 4rem;
     display: flex;
     flex-direction: column;
     width: 100%;
+    height: 100%;
+    overflow-y: auto;
     background: t($modal-background);
 
     margin: 0 1rem;

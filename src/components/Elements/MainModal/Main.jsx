@@ -181,20 +181,22 @@ function MainModal({ modalClose, deepLinkData }) {
         canGoBack={canGoBack}
         canGoForward={canGoForward}
       />
-      <Suspense fallback={<ModalLoader />}>
-        <TabComponent
-          key={currentTab}
-          changeTab={handleChangeTab}
-          deepLinkData={deepLinkData}
-          currentTab={currentTab}
-          onSectionChange={handleSectionChange}
-          onProductView={handleProductView}
-          onBreadcrumbsChange={setIframeBreadcrumbs}
-          resetToAll={resetDiscoverToAll}
-          onResetToAll={handleResetDiscoverToAll}
-          navigationTrigger={navigationTrigger}
-        />
-      </Suspense>
+      <div style={{ flex: 1, display: 'flex', overflow: 'hidden', minHeight: 0 }}>
+        <Suspense fallback={<ModalLoader />}>
+          <TabComponent
+            key={currentTab}
+            changeTab={handleChangeTab}
+            deepLinkData={deepLinkData}
+            currentTab={currentTab}
+            onSectionChange={handleSectionChange}
+            onProductView={handleProductView}
+            onBreadcrumbsChange={setIframeBreadcrumbs}
+            resetToAll={resetDiscoverToAll}
+            onResetToAll={handleResetDiscoverToAll}
+            navigationTrigger={navigationTrigger}
+          />
+        </Suspense>
+      </div>
     </div>
   );
 }

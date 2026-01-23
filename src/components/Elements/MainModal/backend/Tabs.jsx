@@ -5,7 +5,13 @@ import ReminderInfo from '../components/ReminderInfo';
 import ErrorBoundary from '../../../../features/misc/modals/ErrorBoundary';
 import { TAB_TYPES } from '../constants/tabConfig';
 
-const Tabs = ({ children, navbar = false, currentTab: activeTab, onSectionChange, resetToFirst }) => {
+const Tabs = ({
+  children,
+  navbar = false,
+  currentTab: activeTab,
+  onSectionChange,
+  resetToFirst,
+}) => {
   const [currentTab, setCurrentTab] = useState(children[0]?.props.label);
   const [currentName, setCurrentName] = useState(children[0]?.props.name);
   const [showReminder, setShowReminder] = useState(localStorage.getItem('showReminder') === 'true');
@@ -51,7 +57,7 @@ const Tabs = ({ children, navbar = false, currentTab: activeTab, onSectionChange
   const showSidebar = activeTab === TAB_TYPES.SETTINGS || activeTab === TAB_TYPES.DISCOVER;
 
   return (
-    <div style={{ display: 'flex', width: '100%', minHeight: '100%' }}>
+    <div style={{ display: 'flex', width: '100%', height: '100%', overflow: 'hidden' }}>
       {showSidebar ? (
         <div className="modalSidebar">
           {children.map((tab, index) => (

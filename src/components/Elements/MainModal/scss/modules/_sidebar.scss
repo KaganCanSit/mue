@@ -2,16 +2,16 @@
 
 .modalSidebar {
   @include themed {
-    top: 0;
-    left: 0;
-    position: sticky;
+    position: relative;
     margin: 0;
-    padding: 0 5px;
+    padding: 0.5rem 5px 2rem 5px;
     // background: t($modal-sidebar);
     border-radius: 12px 0 0 12px;
-    overflow: hidden auto;
-    height: 80vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%;
     min-width: 250px;
+    flex-shrink: 0;
 
     svg {
       margin-left: 20px;
