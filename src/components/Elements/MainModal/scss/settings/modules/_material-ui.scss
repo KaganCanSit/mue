@@ -47,6 +47,10 @@ legend {
   margin-top: 10px !important;
 }
 
+.settingsRow .action .MuiFormControlLabel-root {
+  margin-top: 10px !important;
+}
+
 .checkbox svg {
   @include themed {
     fill: t($color) !important;

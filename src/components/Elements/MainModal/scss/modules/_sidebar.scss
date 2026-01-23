@@ -4,7 +4,7 @@
   @include themed {
     position: relative;
     margin: 0;
-    padding: 0.5rem 5px 2rem 5px;
+    padding: 0.5rem 5px 3rem 5px;
     // background: t($modal-sidebar);
     border-radius: 12px 0 0 12px;
     overflow-y: auto;
@@ -43,6 +43,10 @@
       background: none;
       min-width: calc(100% - 1.2em);
       text-align: left;
+
+      &:last-child {
+        margin-bottom: 1rem;
+      }
 
       &:hover {
         background: t($modal-sidebarActive);
