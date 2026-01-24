@@ -7,7 +7,7 @@ import Navbar from '../../navbar/Navbar';
 import Preview from '../../helpers/preview/Preview';
 
 import EventBus from 'utils/eventbus';
-import { parseDeepLink, shouldAutoOpenModal } from 'utils/deepLinking';
+import { parseDeepLink, shouldAutoOpenModal, updateHash } from 'utils/deepLinking';
 
 import Welcome from 'features/welcome/Welcome';
 
@@ -88,6 +88,10 @@ const Modals = () => {
 
     if (action !== false) {
       variables.stats.postEvent('modal', `Opened ${type.replace('Modal', '')}`);
+      // Set initial hash when opening main modal
+      if (type === 'mainModal') {
+        updateHash('#settings');
+      }
     }
   };
 

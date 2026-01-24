@@ -11,9 +11,30 @@ const Tabs = ({
   currentTab: activeTab,
   onSectionChange,
   resetToFirst,
+  deepLinkData,
+  navigationTrigger,
+  sections,
 }) => {
-  const [currentTab, setCurrentTab] = useState(children[0]?.props.label);
-  const [currentName, setCurrentName] = useState(children[0]?.props.name);
+  // Find initial section from deep link if available
+  const getInitialSection = () => {
+    if (deepLinkData?.section && sections) {
+      const section = sections.find((s) => s.name === deepLinkData.section);
+      if (section) {
+        return {
+          label: variables.getMessage(section.label),
+          name: section.name,
+        };
+      }
+    }
+    return {
+      label: children[0]?.props.label,
+      name: children[0]?.props.name,
+    };
+  };
+
+  const initial = getInitialSection();
+  const [currentTab, setCurrentTab] = useState(initial.label);
+  const [currentName, setCurrentName] = useState(initial.name);
   const [showReminder, setShowReminder] = useState(localStorage.getItem('showReminder') === 'true');
 
   const handleTabClick = (tab, name) => {
@@ -24,18 +45,30 @@ const Tabs = ({
     setCurrentTab(tab);
     setCurrentName(name);
 
-    // Notify parent of section change
+    // Notify parent of section change with both label and name
     if (onSectionChange) {
-      onSectionChange(tab);
+      onSectionChange(tab, name);
     }
   };
 
   // Notify parent of initial section on mount
   useEffect(() => {
     if (onSectionChange && currentTab) {
-      onSectionChange(currentTab);
+      onSectionChange(currentTab, currentName);
     }
   }, []);
+
+  // Handle navigation trigger for settings sections (popstate)
+  useEffect(() => {
+    if (navigationTrigger?.type === 'settings-section' && sections) {
+      const section = sections.find((s) => s.name === navigationTrigger.data);
+      if (section) {
+        const label = variables.getMessage(section.label);
+        setCurrentTab(label);
+        setCurrentName(section.name);
+      }
+    }
+  }, [navigationTrigger, sections]);
 
   // Reset to first tab when requested
   useEffect(() => {
@@ -43,7 +76,7 @@ const Tabs = ({
       setCurrentTab(children[0]?.props.label);
       setCurrentName(children[0]?.props.name);
       if (onSectionChange) {
-        onSectionChange(children[0]?.props.label);
+        onSectionChange(children[0]?.props.label, children[0]?.props.name);
       }
     }
   }, [resetToFirst]);

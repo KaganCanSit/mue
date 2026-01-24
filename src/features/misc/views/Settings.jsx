@@ -95,6 +95,9 @@ function Settings(props) {
       current="settings"
       currentTab={props.currentTab}
       onSectionChange={props.onSectionChange}
+      deepLinkData={props.deepLinkData}
+      navigationTrigger={props.navigationTrigger}
+      sections={sections}
     >
       {sections.map(({ label, name, component: Component }) => (
         <div key={name} label={variables.getMessage(label)} name={name}>

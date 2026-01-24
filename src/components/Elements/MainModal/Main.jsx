@@ -54,6 +54,16 @@ function MainModal({ modalClose, deepLinkData }) {
           setCurrentTab(linkData.tab);
         }
 
+        // Handle settings section navigation
+        if (linkData.tab === TAB_TYPES.SETTINGS && linkData.section) {
+          setNavigationTrigger({
+            type: 'settings-section',
+            data: linkData.section,
+            timestamp: Date.now(),
+          });
+          return;
+        }
+
         // Handle product and collection navigation
         if (linkData.itemId && linkData.collection && linkData.fromCollection) {
           // Product viewed from within a collection
@@ -119,7 +129,7 @@ function MainModal({ modalClose, deepLinkData }) {
     }
   };
 
-  const handleSectionChange = (section) => {
+  const handleSectionChange = (section, sectionName) => {
     setCurrentSection(section);
     // Update URL hash when section changes
     if (currentTab === TAB_TYPES.DISCOVER) {
@@ -135,10 +145,10 @@ function MainModal({ modalClose, deepLinkData }) {
       if (sectionKey) {
         updateHash(`#${currentTab}/${sectionKey}`);
       }
+    } else if (currentTab === TAB_TYPES.SETTINGS && sectionName) {
+      // For Settings tab, update with the section name
+      updateHash(`#${currentTab}/${sectionName}`, false);
     }
-
-    // Don't add section changes to history - they're automatic
-    // Only track user-initiated navigation (tab switches and product views)
   };
 
   const handleProductView = (product) => {
