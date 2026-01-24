@@ -9,11 +9,7 @@ const convertTemperature = (temp, format) => {
   return Math.round(temp);
 };
 
-export const getWeather = async (location, done) => {
-  if (done === true) {
-    return;
-  }
-
+export const getWeather = async (location) => {
   let cached = localStorage.getItem('currentWeather');
   if (cached) {
     cached = JSON.parse(cached);
@@ -24,15 +20,15 @@ export const getWeather = async (location, done) => {
   }
 
   try {
-    const response = await fetch(
-      variables.constants.API_URL + `/weather?city=${location}&language=${variables.languagecode}`,
-    );
+    const response = await fetch(variables.constants.API_URL + `/weather?city=${location}`);
 
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      console.error('Weather API response not ok:', response.status, response.statusText);
+      throw new Error(`Network response was not ok: ${response.status}`);
     }
 
     const data = await response.json();
+    console.log('Weather API response:', data);
 
     if (data.status === 404) {
       return {
@@ -75,5 +71,9 @@ export const getWeather = async (location, done) => {
     return cacheable;
   } catch (error) {
     console.error('Fetch Error: ', error);
+    return {
+      location: variables.getMessage('widgets.weather.fetch_error'),
+      done: true,
+    };
   }
 };
