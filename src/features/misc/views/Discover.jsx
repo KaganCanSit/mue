@@ -17,7 +17,7 @@ function DiscoverContent({ category, onBreadcrumbsChange }) {
   // Check for offline mode
   const offlineMode = localStorage.getItem('offlineMode') === 'true';
   // Check for preview mode
-  const isPreviewMode = localStorage.getItem('welcomePreview') === 'true';
+  const isPreviewMode = localStorage.getItem('showWelcome') === 'true';
   const previewParam = isPreviewMode ? '&preview=true' : '';
   const isOffline = navigator.onLine === false || offlineMode;
 
