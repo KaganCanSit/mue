@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useT } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import Tab from './Tab';
@@ -39,6 +39,7 @@ const Tabs = ({
   const [currentTab, setCurrentTab] = useState(initial.label);
   const [currentName, setCurrentName] = useState(initial.name);
   const [showReminder, setShowReminder] = useState(localStorage.getItem('showReminder') === 'true');
+  const contentRef = useRef(null);
 
   const handleTabClick = (tab, name) => {
     if (name !== currentName) {
@@ -47,6 +48,11 @@ const Tabs = ({
 
     setCurrentTab(tab);
     setCurrentName(name);
+
+    // Scroll content to top when changing tabs
+    if (contentRef.current) {
+      contentRef.current.scrollTop = 0;
+    }
 
     // Notify parent of section change with both label and name
     if (onSectionChange) {
@@ -80,6 +86,10 @@ const Tabs = ({
         const label = t(section.label);
         setCurrentTab(label);
         setCurrentName(section.name);
+        // Scroll content to top when navigating via browser history
+        if (contentRef.current) {
+          contentRef.current.scrollTop = 0;
+        }
       }
     }
   }, [navigationTrigger, sections, t]);
@@ -89,6 +99,10 @@ const Tabs = ({
     if (resetToFirst) {
       setCurrentTab(children[0]?.props.label);
       setCurrentName(children[0]?.props.name);
+      // Scroll content to top when resetting to first tab
+      if (contentRef.current) {
+        contentRef.current.scrollTop = 0;
+      }
       if (onSectionChange) {
         onSectionChange(children[0]?.props.label, children[0]?.props.name);
       }
@@ -119,7 +133,7 @@ const Tabs = ({
           <ReminderInfo isVisible={showReminder} onHide={handleHideReminder} />
         </div>
       ) : null}
-      <div className="modalTabContent">
+      <div className="modalTabContent" ref={contentRef}>
         {children.map((tab, index) => {
           if (tab.props.label !== currentTab) {
             return null;
