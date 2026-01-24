@@ -8,7 +8,7 @@
   } */
 
   @include themed {
-    padding: 1rem 2rem 4rem;
+    padding: 1rem 2rem 5rem;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -40,6 +40,10 @@
 
       &.settingsNoBorder {
         border-bottom: none;
+      }
+
+      &:last-child {
+        margin-bottom: 2rem;
       }
 
       .content {
