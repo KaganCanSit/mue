@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { useT } from 'contexts/TranslationContext';
+import { useState, useEffect, useRef, useMemo } from 'react';
+import { useT, useTranslation } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 
 import { MdOutlineOpenInNew } from 'react-icons/md';
@@ -10,10 +10,55 @@ import languages from '@/i18n/languages.json';
 
 const LanguageOptions = () => {
   const t = useT();
+  const { language: currentLanguage } = useTranslation();
   const loadingText = t('modals.main.loading');
   const offlineText = t('modals.main.marketplace.offline.description');
   const languageTitle = t('modals.main.settings.sections.language.title');
   const quoteTitle = t('modals.main.settings.sections.language.quote');
+
+  // Create language options with both translated and native names
+  const languageOptions = useMemo(() => {
+    // Convert currentLanguage to ISO format (e.g., "de_DE" -> "de-DE")
+    const currentLanguageISO = currentLanguage.replace('_', '-');
+
+    // Use Intl.DisplayNames to get language names in the current language
+    const displayNames = new Intl.DisplayNames([currentLanguageISO], { type: 'language' });
+
+    return languages.map((lang) => {
+      const nativeName = lang.name;
+
+      // Convert language code to ISO format for Intl.DisplayNames
+      // e.g., "en_GB" -> "en-GB", "zh_CN" -> "zh-CN"
+      const isoCode = lang.value.replace('_', '-');
+
+      let translatedName;
+      try {
+        translatedName = displayNames.of(isoCode);
+        // Simplify by removing country suffixes: "German (Germany)" → "German"
+        if (translatedName) {
+          translatedName = translatedName.split(' (')[0];
+        }
+      } catch (e) {
+        // Fallback if the code isn't recognized
+        translatedName = nativeName;
+      }
+
+      // Show native name first, then translated name in brackets (greyed and smaller)
+      const displayName = !translatedName || translatedName === nativeName
+        ? nativeName
+        : (
+            <>
+              {nativeName}{' '}
+              <span style={{ color: '#999', fontSize: '0.85em' }}>({translatedName})</span>
+            </>
+          );
+
+      return {
+        name: displayName,
+        value: lang.value,
+      };
+    });
+  }, [currentLanguage]);
 
   const [quoteLanguages, setQuoteLanguages] = useState([
     {
@@ -92,7 +137,7 @@ const LanguageOptions = () => {
         </div>
       </div>
       <div className="languageSettings">
-        <Radio name="language" options={languages} element=".other" />
+        <Radio name="language" options={languageOptions} element=".other" />
       </div>
       <span className="mainTitle">
         {quoteTitle}

@@ -75,7 +75,7 @@ const Radio = memo((props) => {
             value={option.value}
             control={<RadioUI />}
             label={option.name}
-            key={option.name}
+            key={option.value}
           />
         ))}
       </RadioGroup>
