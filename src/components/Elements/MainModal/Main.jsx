@@ -35,6 +35,29 @@ function MainModal({ modalClose, deepLinkData }) {
     setProductView(null);
   }, [currentTab]);
 
+  // Handle deep link updates (when modal opens via EventBus with new deep link)
+  useEffect(() => {
+    if (deepLinkData) {
+      // Update tab if different
+      if (deepLinkData.tab && deepLinkData.tab !== currentTab) {
+        setCurrentTab(deepLinkData.tab);
+      }
+
+      // Handle settings section navigation with subsection
+      if (deepLinkData.tab === TAB_TYPES.SETTINGS && deepLinkData.section) {
+        setNavigationTrigger({
+          type: 'settings-section',
+          data: deepLinkData.section,
+          timestamp: Date.now(),
+        });
+        // Set sub-section if present
+        if (deepLinkData.subSection) {
+          setCurrentSubSection(deepLinkData.subSection);
+        }
+      }
+    }
+  }, [deepLinkData]);
+
   // Clear hash when modal closes
   useEffect(() => {
     return () => {

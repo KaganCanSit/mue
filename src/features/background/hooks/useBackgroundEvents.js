@@ -38,7 +38,7 @@ export function useBackgroundEvents(backgroundData, refreshBackground) {
       const needsRefresh =
         (type !== backgroundData.type && !(backgroundData.photoInfo?.offline && type === backgroundData.type)) ||
         (backgroundData.type === 'api' && localStorage.getItem('backgroundAPI') !== backgroundData.currentAPI) ||
-        (backgroundData.type === 'custom' && localStorage.getItem('customBackground') !== backgroundData.url) ||
+        (type === 'custom' && backgroundData.type !== 'custom') ||
         (backgroundData.photoInfo?.pun && JSON.parse(localStorage.getItem('backgroundExclude') || '[]').includes(backgroundData.photoInfo.pun));
 
       if (needsRefresh) refreshBackground();

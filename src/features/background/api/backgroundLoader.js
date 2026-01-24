@@ -3,10 +3,16 @@ import { supportsAVIF } from './avifSupport';
 import { getOfflineImage } from './offlineImage';
 import { randomColourStyleBuilder } from './randomColour';
 import videoCheck from './videoCheck';
+import { getAllBackgrounds } from 'utils/customBackgroundDB';
 
 const parseJSON = (key, fallback = null) => {
+  const item = localStorage.getItem(key);
+  if (item === null || item === 'null') {
+    return fallback;
+  }
   try {
-    return JSON.parse(localStorage.getItem(key)) || fallback;
+    const parsed = JSON.parse(item);
+    return parsed !== null ? parsed : fallback;
   } catch {
     return fallback;
   }
@@ -94,7 +100,7 @@ export async function getBackgroundData() {
       return randomColourStyleBuilder(type);
 
     case 'custom':
-      return getCustomBackground(isOffline);
+      return await getCustomBackground(isOffline);
 
     case 'photo_pack':
       return getPhotoPackBackground(isOffline);
@@ -165,12 +171,21 @@ async function getAPIBackground(isOffline) {
 /**
  * Gets custom background
  */
-function getCustomBackground(isOffline) {
-  const backgrounds = parseJSON('customBackground');
+async function getCustomBackground(isOffline) {
+  // Try to get from IndexedDB first
+  let backgrounds = await getAllBackgrounds();
 
-  if (backgrounds.length === 0) return null;
+  // Fallback to localStorage if IndexedDB is empty
+  if (!backgrounds || backgrounds.length === 0) {
+    backgrounds = parseJSON('customBackground', []);
+  }
+
+  if (!backgrounds || backgrounds.length === 0) return null;
 
   const selected = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+
+  // Check if selected is valid before using it
+  if (!selected) return null;
 
   if (isOffline && !selected.startsWith('data:')) return getOfflineImage('custom');
 
@@ -181,7 +196,19 @@ function getCustomBackground(isOffline) {
     photoInfo: { hidden: true },
   };
 
-  localStorage.setItem('currentBackground', JSON.stringify(data));
+  // Don't store full image data in localStorage to avoid quota errors
+  // Just store metadata
+  try {
+    localStorage.setItem('currentBackground', JSON.stringify({
+      type: 'custom',
+      video: data.video,
+      photoInfo: data.photoInfo,
+    }));
+  } catch (e) {
+    // Ignore quota errors for currentBackground
+    console.warn('Could not save currentBackground to localStorage:', e);
+  }
+
   return data;
 }
 

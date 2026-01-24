@@ -10,16 +10,17 @@ const FileUpload = memo(({ id, type, accept, loadFunction }) => {
     if (!fileInput) return;
 
     const handleChange = (e) => {
-      const reader = new FileReader();
-      const file = e.target.files[0];
+      const files = Array.from(e.target.files);
 
       if (type === 'settings') {
+        const reader = new FileReader();
+        const file = files[0];
         reader.readAsText(file, 'UTF-8');
         reader.onload = (e) => {
           return loadFunction(e.target.result);
         };
       } else {
-        // background upload
+        // background upload - handle multiple files
         const settings = {};
 
         Object.keys(localStorage).forEach((key) => {
@@ -27,26 +28,30 @@ const FileUpload = memo(({ id, type, accept, loadFunction }) => {
         });
 
         const settingsSize = new TextEncoder().encode(JSON.stringify(settings)).length;
-        if (videoCheck(file.type) === true) {
-          if (settingsSize + file.size > 4850000) {
-            return toast(variables.getMessage('toasts.no_storage'));
+
+        // Process each file
+        files.forEach((file, index) => {
+          if (videoCheck(file.type) === true) {
+            if (settingsSize + file.size > 4850000) {
+              return toast(variables.getMessage('toasts.no_storage'));
+            }
+
+            return loadFunction(file, index);
           }
 
-          return loadFunction(file);
-        }
+          compressAccurately(file, {
+            size: 450,
+            accuracy: 0.9,
+          }).then(async (res) => {
+            if (settingsSize + res.size > 4850000) {
+              return toast(variables.getMessage('toasts.no_storage'));
+            }
 
-        compressAccurately(file, {
-          size: 450,
-          accuracy: 0.9,
-        }).then(async (res) => {
-          if (settingsSize + res.size > 4850000) {
-            return toast(variables.getMessage('toasts.no_storage'));
-          }
-
-          loadFunction({
-            target: {
-              result: await filetoDataURL(res),
-            },
+            loadFunction({
+              target: {
+                result: await filetoDataURL(res),
+              },
+            }, index);
           });
         });
       }
@@ -67,6 +72,7 @@ const FileUpload = memo(({ id, type, accept, loadFunction }) => {
       type="file"
       style={{ display: 'none' }}
       accept={accept}
+      multiple={type !== 'settings'}
     />
   );
 });

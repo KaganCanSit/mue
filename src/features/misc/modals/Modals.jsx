@@ -54,8 +54,26 @@ const Modals = () => {
       }
     }
 
-    // hide refresh reminder once the user has refreshed the page
-    localStorage.setItem('showReminder', false);
+    // Only hide refresh reminder if user navigated naturally (not via deep link or forced intro skip)
+    // This ensures the reminder shows after user refreshes when they've made changes
+    if (!shouldAutoOpenModal() && window.location.search !== '?nointro=true') {
+      localStorage.setItem('showReminder', false);
+    }
+
+    // Listen for EventBus modal open requests
+    const handleModalOpen = (data) => {
+      if (data === 'openMainModal') {
+        const linkData = parseDeepLink();
+        setDeepLinkData(linkData);
+        setMainModal(true);
+      }
+    };
+
+    EventBus.on('modal', handleModalOpen);
+
+    return () => {
+      EventBus.off('modal', handleModalOpen);
+    };
   }, []);
 
   const closeWelcome = () => {

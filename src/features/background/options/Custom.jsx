@@ -12,6 +12,14 @@ import {
 import EventBus from 'utils/eventbus';
 import { compressAccurately, filetoDataURL } from 'image-conversion';
 import videoCheck from '../api/videoCheck';
+import {
+  getAllBackgrounds,
+  addBackground,
+  updateBackground,
+  deleteBackground,
+  clearAllBackgrounds,
+  migrateFromLocalStorage,
+} from 'utils/customBackgroundDB';
 
 import { Checkbox, FileUpload } from 'components/Form/Settings';
 import { Tooltip, Button } from 'components/Elements';
@@ -19,56 +27,118 @@ import Modal from 'react-modal';
 
 import CustomURLModal from './CustomURLModal';
 
-const getCustom = () => {
-  let data;
-  try {
-    data = JSON.parse(localStorage.getItem('customBackground'));
-  } catch (e) {
-    data = [localStorage.getItem('customBackground')];
-  }
-  return data;
-};
-
 const CustomSettings = memo(() => {
-  const [customBackground, setCustomBackground] = useState(getCustom());
+  const [customBackground, setCustomBackground] = useState([]);
   const [customURLModal, setCustomURLModal] = useState(false);
   const [urlError, setUrlError] = useState('');
   const [currentBackgroundIndex, setCurrentBackgroundIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const customDnd = useRef(null);
 
-  const resetCustom = useCallback(() => {
-    localStorage.setItem('customBackground', '[]');
-    setCustomBackground([]);
-    toast(variables.getMessage('toasts.reset'));
-    EventBus.emit('refresh', 'background');
-  }, []);
+  // Load backgrounds from IndexedDB on mount
+  useEffect(() => {
+    const loadBackgrounds = async () => {
+      try {
+        // Try migration first
+        await migrateFromLocalStorage();
 
-  const handleCustomBackground = useCallback((e, index) => {
-    const result = e.target.result;
-
-    setCustomBackground((prev) => {
-      const updated = [...prev];
-      updated[index || updated.length] = result;
-      localStorage.setItem('customBackground', JSON.stringify(updated));
-      document.querySelector('.reminder-info').style.display = 'flex';
-      localStorage.setItem('showReminder', true);
-      return updated;
-    });
-  }, []);
-
-  const modifyCustomBackground = useCallback((type, index) => {
-    setCustomBackground((prev) => {
-      const updated = [...prev];
-      if (type === 'add') {
-        updated.push('');
-      } else {
-        updated.splice(index, 1);
+        // Load from IndexedDB
+        const backgrounds = await getAllBackgrounds();
+        setCustomBackground(backgrounds);
+      } catch (error) {
+        console.error('Error loading backgrounds:', error);
+        toast(variables.getMessage('toasts.error'));
+      } finally {
+        setIsLoading(false);
       }
-      localStorage.setItem('customBackground', JSON.stringify(updated));
-      document.querySelector('.reminder-info').style.display = 'flex';
+    };
+
+    loadBackgrounds();
+  }, []);
+
+  const resetCustom = useCallback(async () => {
+    try {
+      await clearAllBackgrounds();
+      setCustomBackground([]);
+      // Keep localStorage in sync
+      localStorage.setItem('customBackground', '[]');
+      toast(variables.getMessage('toasts.reset'));
+      EventBus.emit('refresh', 'background');
+    } catch (error) {
+      console.error('Error resetting backgrounds:', error);
+      toast(variables.getMessage('toasts.error'));
+    }
+  }, []);
+
+  const handleCustomBackground = useCallback(
+    async (e, index) => {
+      const result = e.target.result;
+
+      try {
+        // Update or add to IndexedDB
+        if (index < customBackground.length) {
+          await updateBackground(index, result);
+        } else {
+          await addBackground(result);
+        }
+
+        // Reload from IndexedDB to get the latest state
+        const backgrounds = await getAllBackgrounds();
+        setCustomBackground(backgrounds);
+
+        // Store count in localStorage for backward compatibility
+        try {
+          localStorage.setItem('customBackground', JSON.stringify(backgrounds));
+        } catch (quotaError) {
+          // If quota exceeded, just store the count
+          console.warn('localStorage quota exceeded, storing count only');
+          localStorage.setItem('customBackgroundCount', backgrounds.length.toString());
+        }
+
+        const reminderInfo = document.querySelector('.reminder-info');
+        if (reminderInfo) {
+          reminderInfo.style.display = 'flex';
+        }
+        localStorage.setItem('showReminder', true);
+        EventBus.emit('refresh', 'background');
+      } catch (error) {
+        console.error('Error saving background:', error);
+        toast(variables.getMessage('toasts.error'));
+      }
+    },
+    [customBackground.length],
+  );
+
+  const modifyCustomBackground = useCallback(async (type, index) => {
+    try {
+      if (type === 'add') {
+        await addBackground('');
+      } else {
+        await deleteBackground(index);
+      }
+
+      // Reload from IndexedDB to get the latest state
+      const backgrounds = await getAllBackgrounds();
+      setCustomBackground(backgrounds);
+
+      // Store in localStorage with quota handling
+      try {
+        localStorage.setItem('customBackground', JSON.stringify(backgrounds));
+      } catch (quotaError) {
+        console.warn('localStorage quota exceeded, storing count only');
+        localStorage.setItem('customBackgroundCount', backgrounds.length.toString());
+      }
+
+      const reminderInfo = document.querySelector('.reminder-info');
+      if (reminderInfo) {
+        reminderInfo.style.display = 'flex';
+      }
       localStorage.setItem('showReminder', true);
-      return updated;
-    });
+      EventBus.emit('refresh', 'background');
+    } catch (error) {
+      console.error('Error modifying background:', error);
+      toast(variables.getMessage('toasts.error'));
+    }
   }, []);
 
   const uploadCustomBackground = useCallback(() => {
@@ -78,7 +148,7 @@ const CustomSettings = memo(() => {
     setCurrentBackgroundIndex(newIndex);
   }, [customBackground.length]);
 
-  const addCustomURL = useCallback((e) => {
+  const addCustomURL = useCallback(async (e) => {
     // regex: https://ihateregex.io/expr/url/
     const urlRegex =
       /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,63}\b([-a-zA-Z0-9()!@:%_.~#?&=]*)/;
@@ -89,7 +159,7 @@ const CustomSettings = memo(() => {
     const newIndex = customBackground.length;
     setCustomURLModal(false);
     setCurrentBackgroundIndex(newIndex);
-    handleCustomBackground({ target: { result: e } }, newIndex);
+    await handleCustomBackground({ target: { result: e } }, newIndex);
   }, [customBackground.length, handleCustomBackground]);
 
   useEffect(() => {
@@ -102,7 +172,7 @@ const CustomSettings = memo(() => {
 
     const handleDrop = (e) => {
       e.preventDefault();
-      const file = e.dataTransfer.files[0];
+      const files = Array.from(e.dataTransfer.files);
       const settings = {};
 
       Object.keys(localStorage).forEach((key) => {
@@ -110,36 +180,41 @@ const CustomSettings = memo(() => {
       });
 
       const settingsSize = new TextEncoder().encode(JSON.stringify(settings)).length;
-      
-      if (videoCheck(file.type) === true) {
-        if (settingsSize + file.size > 4850000) {
-          return toast(variables.getMessage('toasts.no_storage'));
+
+      // Process each dropped file
+      files.forEach((file, index) => {
+        const fileIndex = customBackground.length + index;
+
+        if (videoCheck(file.type) === true) {
+          if (settingsSize + file.size > 4850000) {
+            return toast(variables.getMessage('toasts.no_storage'));
+          }
+
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            handleCustomBackground({ target: { result: reader.result } }, fileIndex);
+          };
+          reader.readAsDataURL(file);
+          return;
         }
 
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          handleCustomBackground({ target: { result: reader.result } }, currentBackgroundIndex);
-        };
-        reader.readAsDataURL(file);
-        return;
-      }
+        compressAccurately(file, {
+          size: 450,
+          accuracy: 0.9,
+        }).then(async (res) => {
+          if (settingsSize + res.size > 4850000) {
+            return toast(variables.getMessage('toasts.no_storage'));
+          }
 
-      compressAccurately(file, {
-        size: 450,
-        accuracy: 0.9,
-      }).then(async (res) => {
-        if (settingsSize + res.size > 4850000) {
-          return toast(variables.getMessage('toasts.no_storage'));
-        }
-
-        handleCustomBackground(
-          {
-            target: {
-              result: await filetoDataURL(res),
+          handleCustomBackground(
+            {
+              target: {
+                result: await filetoDataURL(res),
+              },
             },
-          },
-          currentBackgroundIndex,
-        );
+            fileIndex,
+          );
+        });
       });
     };
 
@@ -156,7 +231,15 @@ const CustomSettings = memo(() => {
     };
   }, [currentBackgroundIndex, handleCustomBackground]);
 
-  const hasVideo = customBackground.filter((bg) => videoCheck(bg)).length > 0;
+  const hasVideo = customBackground.filter((bg) => bg && videoCheck(bg)).length > 0;
+
+  if (isLoading) {
+    return (
+      <div style={{ padding: '20px', textAlign: 'center' }}>
+        <span>{variables.getMessage('modals.main.loading')}</span>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -201,11 +284,14 @@ const CustomSettings = memo(() => {
             <div className="images-row">
               {customBackground.map((url, index) => (
                 <div key={index}>
-                  <img
-                    alt={'Custom background ' + (index || 0)}
-                    src={`${!videoCheck(url) ? customBackground[index] : ''}`}
-                  />
-                  {videoCheck(url) && <MdPersonalVideo className="customvideoicon" />}
+                  {url && !videoCheck(url) ? (
+                    <img
+                      alt={'Custom background ' + (index || 0)}
+                      src={customBackground[index]}
+                    />
+                  ) : url && videoCheck(url) ? (
+                    <MdPersonalVideo className="customvideoicon" />
+                  ) : null}
                   {customBackground.length > 0 && (
                     <Tooltip
                       title={variables.getMessage(
@@ -255,7 +341,10 @@ const CustomSettings = memo(() => {
       <FileUpload
         id="bg-input"
         accept="image/jpeg, image/png, image/webp, image/webm, image/gif, video/mp4, video/webm, video/ogg"
-        loadFunction={(e) => handleCustomBackground(e, currentBackgroundIndex)}
+        loadFunction={(e, fileIndex) => {
+          const index = currentBackgroundIndex + fileIndex;
+          handleCustomBackground(e, index);
+        }}
       />
       {hasVideo && (
         <>

@@ -1,6 +1,7 @@
 import variables from 'config/variables';
 import { memo, useState, useEffect, useCallback, useRef } from 'react';
 import { MdSource, MdOutlineAutoAwesome } from 'react-icons/md';
+import EventBus from 'utils/eventbus';
 
 import { Header } from 'components/Layout/Settings';
 import { Dropdown } from 'components/Form/Settings';
@@ -191,6 +192,10 @@ const BackgroundOptions = memo(({ currentSubSection, onSubSectionChange, section
                   // Clear prefetch queue when changing background type
                   localStorage.removeItem('imageQueue');
                   setBackgroundType(value);
+                  // Automatically refresh background when switching to custom images
+                  if (value === 'custom') {
+                    EventBus.emit('refresh', 'background');
+                  }
                 }}
                 category="background"
                 items={getBackgroundOptionItems(marketplaceEnabled)}
