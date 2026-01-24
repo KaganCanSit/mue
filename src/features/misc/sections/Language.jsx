@@ -2,7 +2,8 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import { useT, useTranslation } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 
-import { MdOutlineOpenInNew } from 'react-icons/md';
+import { MdOutlineOpenInNew, MdSearch } from 'react-icons/md';
+import { TextField, InputAdornment } from '@mui/material';
 
 import { Radio } from 'components/Form/Settings';
 
@@ -10,11 +11,13 @@ import languages from '@/i18n/languages.json';
 
 const LanguageOptions = () => {
   const t = useT();
-  const { language: currentLanguage } = useTranslation();
+  const { language: currentLanguage, changeLanguage } = useTranslation();
   const loadingText = t('modals.main.loading');
   const offlineText = t('modals.main.marketplace.offline.description');
   const languageTitle = t('modals.main.settings.sections.language.title');
   const quoteTitle = t('modals.main.settings.sections.language.quote');
+
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Create language options with both translated and native names
   const languageOptions = useMemo(() => {
@@ -24,7 +27,7 @@ const LanguageOptions = () => {
     // Use Intl.DisplayNames to get language names in the current language
     const displayNames = new Intl.DisplayNames([currentLanguageISO], { type: 'language' });
 
-    return languages.map((lang) => {
+    const mappedLanguages = languages.map((lang) => {
       const nativeName = lang.name;
 
       // Convert language code to ISO format for Intl.DisplayNames
@@ -56,9 +59,32 @@ const LanguageOptions = () => {
       return {
         name: displayName,
         value: lang.value,
+        nativeName,
+        searchText: `${nativeName} ${translatedName || ''}`.toLowerCase(),
       };
     });
+
+    // Sort alphabetically by native name
+    return mappedLanguages.sort((a, b) => a.nativeName.localeCompare(b.nativeName));
   }, [currentLanguage]);
+
+  // Filter languages based on search query
+  const filteredLanguages = useMemo(() => {
+    if (!searchQuery.trim()) return languageOptions;
+    const query = searchQuery.toLowerCase();
+    return languageOptions.filter(lang => lang.searchText.includes(query));
+  }, [languageOptions, searchQuery]);
+
+  // Detect system language
+  const systemLanguage = useMemo(() => {
+    const browserLang = navigator.language.replace('-', '_');
+    // Check exact match first, then base language
+    return languages.find(l => l.value === browserLang) ||
+           languages.find(l => l.value.startsWith(browserLang.split('_')[0]));
+  }, []);
+
+  // Find current language option for display
+  const currentLangOption = languageOptions.find(l => l.value === currentLanguage);
 
   const [quoteLanguages, setQuoteLanguages] = useState([
     {
@@ -136,8 +162,54 @@ const LanguageOptions = () => {
           </a>
         </div>
       </div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+        <TextField
+          placeholder={t('modals.main.settings.sections.language.search')}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          variant="outlined"
+          size="small"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <MdSearch style={{ color: '#888' }} />
+              </InputAdornment>
+            ),
+          }}
+          sx={{
+            width: '250px',
+            '& .MuiOutlinedInput-root': {
+              borderRadius: '24px',
+              backgroundColor: 'rgba(255, 255, 255, 0.08)',
+              '& fieldset': {
+                border: 'none',
+              },
+              '&:hover fieldset': {
+                border: 'none',
+              },
+              '&.Mui-focused fieldset': {
+                border: 'none',
+              },
+            },
+          }}
+        />
+        {currentLangOption && (
+          <div style={{ color: '#888', whiteSpace: 'nowrap' }}>
+            {t('modals.main.settings.sections.language.current')}: <strong style={{ color: 'var(--fg)' }}>{currentLangOption.nativeName}</strong>
+          </div>
+        )}
+      </div>
+      {systemLanguage && systemLanguage.value !== currentLanguage && (
+        <button
+          className="uploadbg"
+          onClick={() => changeLanguage(systemLanguage.value)}
+          style={{ marginBottom: 12 }}
+        >
+          {t('modals.main.settings.sections.language.use_system')} ({systemLanguage.name})
+        </button>
+      )}
       <div className="languageSettings">
-        <Radio name="language" options={languageOptions} element=".other" />
+        <Radio name="language" options={filteredLanguages} element=".other" />
       </div>
       <span className="mainTitle">
         {quoteTitle}

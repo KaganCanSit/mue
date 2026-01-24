@@ -476,7 +476,10 @@
           },
           "language": {
             "title": "Idioma",
-            "quote": "Idioma de las citas"
+            "quote": "Idioma de las citas",
+            "search": "Search languages...",
+            "current": "Current",
+            "use_system": "Use system language"
           },
           "changelog": {
             "title": "Registro de cambios",

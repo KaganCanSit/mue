@@ -476,7 +476,10 @@
           },
           "language": {
             "title": "Kalba",
-            "quote": "Citatų kalba"
+            "quote": "Citatų kalba",
+            "search": "Search languages...",
+            "current": "Current",
+            "use_system": "Use system language"
           },
           "changelog": {
             "title": "Pakeitimų žurnalas",

@@ -476,7 +476,10 @@
           },
           "language": {
             "title": "语言",
-            "quote": "名言语言"
+            "quote": "名言语言",
+            "search": "Search languages...",
+            "current": "Current",
+            "use_system": "Use system language"
           },
           "changelog": {
             "title": "更新日志",

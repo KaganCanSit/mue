@@ -476,7 +476,10 @@
           },
           "language": {
             "title": "اللغة",
-            "quote": "لغة الاقتباس"
+            "quote": "لغة الاقتباس",
+            "search": "Search languages...",
+            "current": "Current",
+            "use_system": "Use system language"
           },
           "changelog": {
             "title": "سجل التغييرات",

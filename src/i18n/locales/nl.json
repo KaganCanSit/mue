@@ -476,7 +476,10 @@
           },
           "language": {
             "title": "Taal",
-            "quote": "Quote language"
+            "quote": "Quote language",
+            "search": "Search languages...",
+            "current": "Current",
+            "use_system": "Use system language"
           },
           "changelog": {
             "title": "Change Log",

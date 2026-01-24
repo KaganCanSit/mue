@@ -476,7 +476,10 @@
           },
           "language": {
             "title": "Langue",
-            "quote": "Langue des citations"
+            "quote": "Langue des citations",
+            "search": "Search languages...",
+            "current": "Current",
+            "use_system": "Use system language"
           },
           "changelog": {
             "title": "Journal des modifications",

@@ -476,7 +476,10 @@
           },
           "language": {
             "title": "Valoda",
-            "quote": "Citātu valoda"
+            "quote": "Citātu valoda",
+            "search": "Search languages...",
+            "current": "Current",
+            "use_system": "Use system language"
           },
           "changelog": {
             "title": "Izmaiņu žurnāls",

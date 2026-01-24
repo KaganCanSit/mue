@@ -476,7 +476,10 @@
           },
           "language": {
             "title": "Jezik",
-            "quote": "Jezik citata"
+            "quote": "Jezik citata",
+            "search": "Search languages...",
+            "current": "Current",
+            "use_system": "Use system language"
           },
           "changelog": {
             "title": "Dnevnik sprememb",
