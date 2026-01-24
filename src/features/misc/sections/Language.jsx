@@ -1,8 +1,7 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useT, useTranslation } from 'contexts/TranslationContext';
-import variables from 'config/variables';
 
-import { MdOutlineOpenInNew, MdSearch } from 'react-icons/md';
+import { MdOutlineOpenInNew, MdSearch, MdComputer } from 'react-icons/md';
 import { TextField, InputAdornment } from '@mui/material';
 
 import { Radio } from 'components/Form/Settings';
@@ -12,10 +11,7 @@ import languages from '@/i18n/languages.json';
 const LanguageOptions = () => {
   const t = useT();
   const { language: currentLanguage, changeLanguage } = useTranslation();
-  const loadingText = t('modals.main.loading');
-  const offlineText = t('modals.main.marketplace.offline.description');
   const languageTitle = t('modals.main.settings.sections.language.title');
-  const quoteTitle = t('modals.main.settings.sections.language.quote');
 
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -86,64 +82,6 @@ const LanguageOptions = () => {
   // Find current language option for display
   const currentLangOption = languageOptions.find(l => l.value === currentLanguage);
 
-  const [quoteLanguages, setQuoteLanguages] = useState([
-    {
-      name: loadingText,
-      value: 'loading',
-    },
-  ]);
-
-  const controllerRef = useRef(new AbortController());
-
-  const getquoteLanguages = async () => {
-    try {
-      const data = await (
-        await fetch(variables.constants.API_URL + '/quotes/languages', {
-          signal: controllerRef.current.signal,
-        })
-      ).json();
-
-      if (controllerRef.current.signal.aborted === true) {
-        return;
-      }
-
-      const fetchedQuoteLanguages = data.map((language) => {
-        return {
-          name: languages.find((l) => l.value === language.name)
-            ? languages.find((l) => l.value === language.name).name
-            : 'English',
-          value: language,
-        };
-      });
-
-      setQuoteLanguages(fetchedQuoteLanguages);
-    } catch (error) {
-      if (error.name !== 'AbortError') {
-        console.error('Failed to fetch quote languages:', error);
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (navigator.onLine === false || localStorage.getItem('offlineMode') === 'true') {
-      setQuoteLanguages([
-        {
-          name: offlineText,
-          value: 'loading',
-        },
-      ]);
-      return;
-    }
-
-    getquoteLanguages();
-
-    const controller = controllerRef.current;
-    return () => {
-      // stop making requests
-      controller.abort();
-    };
-  }, [offlineText]);
-
   return (
     <>
       <div className="modalHeader">
@@ -201,28 +139,37 @@ const LanguageOptions = () => {
       </div>
       {systemLanguage && systemLanguage.value !== currentLanguage && (
         <button
-          className="uploadbg"
           onClick={() => changeLanguage(systemLanguage.value)}
-          style={{ marginBottom: 12 }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '10px 16px',
+            marginBottom: 16,
+            background: 'rgba(255, 255, 255, 0.08)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            borderRadius: '8px',
+            color: 'var(--fg)',
+            cursor: 'pointer',
+            fontSize: '14px',
+            transition: 'all 0.2s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.12)';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+          }}
         >
-          {t('modals.main.settings.sections.language.use_system')} ({systemLanguage.name})
+          <MdComputer style={{ fontSize: '18px', opacity: 0.8 }} />
+          {t('modals.main.settings.sections.language.use_system')}
+          <span style={{ opacity: 0.6 }}>({systemLanguage.name})</span>
         </button>
       )}
       <div className="languageSettings">
         <Radio name="language" options={filteredLanguages} element=".other" />
-      </div>
-      <span className="mainTitle">
-        {quoteTitle}
-      </span>
-      <div className="languageSettings">
-        <Radio
-          name="quoteLanguage"
-          options={quoteLanguages.map((language) => {
-            return { name: language.name, value: language.value.name };
-          })}
-          defaultValue={quoteLanguages[0].name}
-          category="quote"
-        />
       </div>
     </>
   );

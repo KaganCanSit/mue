@@ -156,9 +156,8 @@ export function useQuoteLoader(updateQuote) {
         if (offline) return doOffline();
 
         const fetchAPIQuote = async () => {
-          const quoteLanguage = localStorage.getItem('quoteLanguage');
           const response = await fetch(
-            `${variables.constants.API_URL}/quotes/random?language=${quoteLanguage}`
+            `${variables.constants.API_URL}/quotes/random`
           ).then(res => res.json());
 
           if (response.statusCode === 429) return null;
@@ -169,7 +168,6 @@ export function useQuoteLoader(updateQuote) {
             author: response.author,
             authorlink: getAuthorLink(response.author),
             ...authorimgdata,
-            quoteLanguage,
             authorOccupation: response.author_occupation,
           };
         };

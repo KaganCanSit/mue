@@ -11,7 +11,6 @@ export function useQuoteState() {
     authorlink: null,
     authorimg: null,
     authorimglicense: null,
-    quoteLanguage: '',
     noQuote: false,
   });
 
