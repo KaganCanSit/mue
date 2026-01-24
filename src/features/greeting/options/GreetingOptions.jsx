@@ -323,7 +323,7 @@ const GreetingOptions = ({ currentSubSection, onSubSectionChange, sectionName })
         >
           <AdditionalOptions />
           <Section
-            title={variables.getMessage(`${GREETING_SECTION}.events.title`)}
+            title={variables.getMessage(`${GREETING_SECTION}.events`)}
             subtitle={variables.getMessage(`${GREETING_SECTION}.events_description`)}
             onClick={() => onSubSectionChange('events', sectionName)}
             icon={<MdEventNote />}

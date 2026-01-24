@@ -184,6 +184,12 @@
           "greeting": {
             "title": "Greeting",
             "events": {
+              "0": "E",
+              "1": "v",
+              "2": "e",
+              "3": "n",
+              "4": "t",
+              "5": "s",
               "title": "Events"
             },
             "events_description": "Control events on Mue such as birthdays.",
