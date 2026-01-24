@@ -28,7 +28,7 @@ const Changelog = () => {
   }
 
   return (
-    <div style={{ position: 'relative', width: '100%', minHeight: '100vh' }}>
+    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
       {isLoading && (
         <div
           className="loaderHolder"
@@ -47,11 +47,9 @@ const Changelog = () => {
       <iframe
         src={variables.constants.CHANGELOG_URL + '?embed=true'}
         onLoad={handleLoad}
-        scrolling="no"
         style={{
           width: '100%',
-          height: '2000px',
-          minHeight: '100vh',
+          height: '100%',
           border: 'none',
           opacity: isLoading ? 0 : 1,
           transition: 'opacity 0.2s ease-in-out',
