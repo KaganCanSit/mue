@@ -33,7 +33,9 @@ const CustomSettings = memo(() => {
   const [urlError, setUrlError] = useState('');
   const [currentBackgroundIndex, setCurrentBackgroundIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDragging, setIsDragging] = useState(false);
   const customDnd = useRef(null);
+  const dragCounter = useRef(0);
 
   // Load backgrounds from IndexedDB on mount
   useEffect(() => {
@@ -157,10 +159,35 @@ const CustomSettings = memo(() => {
 
     const handleDragOver = (e) => {
       e.preventDefault();
+      e.stopPropagation();
+    };
+
+    const handleDragEnter = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dragCounter.current++;
+      console.log('Drag enter, counter:', dragCounter.current);
+      if (e.dataTransfer.items && e.dataTransfer.items.length > 0) {
+        setIsDragging(true);
+        console.log('Setting isDragging to true');
+      }
+    };
+
+    const handleDragLeave = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dragCounter.current--;
+      if (dragCounter.current === 0) {
+        setIsDragging(false);
+      }
     };
 
     const handleDrop = (e) => {
       e.preventDefault();
+      e.stopPropagation();
+      setIsDragging(false);
+      dragCounter.current = 0;
+
       const files = Array.from(e.dataTransfer.files);
       const settings = {};
 
@@ -213,13 +240,15 @@ const CustomSettings = memo(() => {
     };
 
     dnd.ondragover = handleDragOver;
-    dnd.ondragenter = handleDragOver;
+    dnd.ondragenter = handleDragEnter;
+    dnd.ondragleave = handleDragLeave;
     dnd.ondrop = handleDrop;
 
     return () => {
       if (dnd) {
         dnd.ondragover = null;
         dnd.ondragenter = null;
+        dnd.ondragleave = null;
         dnd.ondrop = null;
       }
     };
@@ -237,7 +266,20 @@ const CustomSettings = memo(() => {
 
   return (
     <>
-      <div className="dropzone" ref={customDnd}>
+      <div
+        className={`dropzone ${isDragging ? 'dragging' : ''}`}
+        ref={customDnd}
+        style={
+          isDragging
+            ? {
+                outline: '2px dashed #ff5c25',
+                outlineOffset: '-2px',
+                backgroundColor: 'rgba(255, 92, 37, 0.1)',
+                transition: 'all 0.2s ease',
+              }
+            : {}
+        }
+      >
         <div className="imagesTopBar">
           <div>
             <MdAddPhotoAlternate />
