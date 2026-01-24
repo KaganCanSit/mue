@@ -1,5 +1,6 @@
 import variables from 'config/variables';
 import { memo, useState, useEffect } from 'react';
+import { useT } from 'contexts';
 
 import { MdContentCopy, MdAssignment, MdPushPin, MdDownload } from 'react-icons/md';
 import { useFloating, shift } from '@floating-ui/react-dom';
@@ -11,6 +12,7 @@ import { saveFile } from 'utils/saveFile';
 import EventBus from 'utils/eventbus';
 
 const Notes = ({ notesRef, floatRef, position, xPosition, yPosition }) => {
+  const t = useT();
   const [notes, setNotes] = useState(localStorage.getItem('notes') || '');
   const [showNotes, setShowNotes] = useState(localStorage.getItem('notesPinned') === 'true');
   const [zoomFontSize, setZoomFontSize] = useState('1.2rem');
@@ -53,7 +55,7 @@ const Notes = ({ notesRef, floatRef, position, xPosition, yPosition }) => {
   const handleCopy = () => {
     variables.stats.postEvent('feature', 'Notes copied');
     navigator.clipboard.writeText(notes);
-    toast(variables.getMessage('toasts.notes'));
+    toast(t('toasts.notes'));
   };
 
   const handleDownload = () => {
@@ -74,7 +76,7 @@ const Notes = ({ notesRef, floatRef, position, xPosition, yPosition }) => {
         onBlur={handleHideNotes}
         ref={notesRef}
         style={{ fontSize: zoomFontSize }}
-        aria-label={variables.getMessage('widgets.navbar.notes.title')}
+        aria-label={t('widgets.navbar.notes.title')}
       >
         <MdAssignment className="topicons" />
       </button>
@@ -91,27 +93,27 @@ const Notes = ({ notesRef, floatRef, position, xPosition, yPosition }) => {
           <div className="flexNotes">
             <div className="topBarNotes" style={{ display: 'flex' }}>
               <MdAssignment />
-              <span>{variables.getMessage('widgets.navbar.notes.title')}</span>
+              <span>{t('widgets.navbar.notes.title')}</span>
             </div>
             <div className="notes-buttons">
-              <Tooltip title={variables.getMessage('widgets.navbar.todo.pin')}>
+              <Tooltip title={t('widgets.navbar.todo.pin')}>
                 <button onClick={handlePin}>
                   <MdPushPin />
                 </button>
               </Tooltip>
-              <Tooltip title={variables.getMessage('widgets.quote.copy')}>
+              <Tooltip title={t('widgets.quote.copy')}>
                 <button onClick={handleCopy} disabled={notes === ''}>
                   <MdContentCopy />
                 </button>
               </Tooltip>
-              <Tooltip title={variables.getMessage('widgets.background.download')}>
+              <Tooltip title={t('widgets.background.download')}>
                 <button onClick={handleDownload} disabled={notes === ''}>
                   <MdDownload />
                 </button>
               </Tooltip>
             </div>
             <TextareaAutosize
-              placeholder={variables.getMessage('widgets.navbar.notes.placeholder')}
+              placeholder={t('widgets.navbar.notes.placeholder')}
               value={notes}
               onChange={handleSetNotes}
               minRows={5}

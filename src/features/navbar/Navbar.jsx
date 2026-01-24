@@ -1,5 +1,6 @@
 import variables from 'config/variables';
 import { useState, useEffect, useRef } from 'react';
+import { useT } from 'contexts';
 
 import { MdSettings } from 'react-icons/md';
 
@@ -10,34 +11,36 @@ import EventBus from 'utils/eventbus';
 
 import './scss/index.scss';
 
-const getRefreshText = () => {
-  switch (localStorage.getItem('refreshOption')) {
-    case 'background':
-      return variables.getMessage('modals.main.settings.sections.background.title');
-    case 'quote':
-      return variables.getMessage('modals.main.settings.sections.quote.title');
-    case 'quotebackground':
-      return (
-        variables.getMessage('modals.main.settings.sections.quote.title') +
-        ' ' +
-        variables.getMessage('modals.main.settings.sections.background.title')
-      );
-    default:
-      return variables.getMessage(
-        'modals.main.settings.sections.appearance.navbar.refresh_options.page',
-      );
-  }
-};
-
-const getZoomFontSize = () => {
-  return Number(((localStorage.getItem('zoomNavbar') || 100) / 100) * 1.2) + 'rem';
-};
-
 const Navbar = ({ openModal }) => {
+  const t = useT();
   const navbarContainer = useRef();
   const [classList] = useState(
     localStorage.getItem('widgetStyle') === 'legacy' ? 'navbar old' : 'navbar new',
   );
+
+  const getRefreshText = () => {
+    switch (localStorage.getItem('refreshOption')) {
+      case 'background':
+        return t('modals.main.settings.sections.background.title');
+      case 'quote':
+        return t('modals.main.settings.sections.quote.title');
+      case 'quotebackground':
+        return (
+          t('modals.main.settings.sections.quote.title') +
+          ' ' +
+          t('modals.main.settings.sections.background.title')
+        );
+      default:
+        return t(
+          'modals.main.settings.sections.appearance.navbar.refresh_options.page',
+        );
+    }
+  };
+
+  const getZoomFontSize = () => {
+    return Number(((localStorage.getItem('zoomNavbar') || 100) / 100) * 1.2) + 'rem';
+  };
+
   const [refreshText, setRefreshText] = useState(getRefreshText());
   const [refreshEnabled, setRefreshEnabled] = useState(localStorage.getItem('refresh'));
   const [refreshOption, setRefreshOption] = useState(localStorage.getItem('refreshOption') || '');
@@ -99,16 +102,16 @@ const Navbar = ({ openModal }) => {
         {refreshEnabled !== 'false' && <Refresh fontSize={zoomFontSize} />}
 
         <Tooltip
-          title={variables.getMessage('modals.main.navbar.settings', {
-            type: variables.getMessage('modals.main.navbar.tooltips.refresh_' + refreshOption),
+          title={t('modals.main.navbar.settings', {
+            type: t('modals.main.navbar.tooltips.refresh_' + refreshOption),
           })}
         >
           <button
             className="navbarButton"
             onClick={() => openModal('mainModal')}
             style={{ fontSize: zoomFontSize }}
-            aria-label={variables.getMessage('modals.main.navbar.settings', {
-              type: variables.getMessage('modals.main.navbar.tooltips.refresh_' + refreshOption),
+            aria-label={t('modals.main.navbar.settings', {
+              type: t('modals.main.navbar.tooltips.refresh_' + refreshOption),
             })}
           >
             <MdSettings className="settings-icon topicons" />

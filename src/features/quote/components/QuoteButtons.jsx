@@ -1,16 +1,18 @@
 import { MdContentCopy, MdStarBorder, MdStar, MdIosShare } from 'react-icons/md';
 import { Tooltip } from 'components/Elements';
+import { useT } from 'contexts';
 import variables from 'config/variables';
 
 /**
  * Quote action buttons component
  */
-export default function QuoteButtons({ 
-  onCopy, 
-  onFavourite, 
-  onShare, 
+export default function QuoteButtons({
+  onCopy,
+  onFavourite,
+  onShare,
   isFavourited,
 }) {
+  const t = useT();
   const showCopy = localStorage.getItem('copyButton') !== 'false';
   const showShare = localStorage.getItem('quoteShareButton') !== 'false';
   const showFavourite = localStorage.getItem('favouriteQuoteEnabled') === 'true';
@@ -18,39 +20,39 @@ export default function QuoteButtons({
   return (
     <>
       {showCopy && (
-        <Tooltip title={variables.getMessage('widgets.quote.copy')}>
+        <Tooltip title={t('widgets.quote.copy')}>
           <button
             onClick={onCopy}
-            aria-label={variables.getMessage('widgets.quote.copy')}
+            aria-label={t('widgets.quote.copy')}
           >
             <MdContentCopy className="copyButton" />
           </button>
         </Tooltip>
       )}
       {showShare && (
-        <Tooltip title={variables.getMessage('widgets.quote.share')}>
+        <Tooltip title={t('widgets.quote.share')}>
           <button
             onClick={onShare}
-            aria-label={variables.getMessage('widgets.quote.share')}
+            aria-label={t('widgets.quote.share')}
           >
             <MdIosShare className="copyButton" />
           </button>
         </Tooltip>
       )}
       {showFavourite && (
-        <Tooltip 
+        <Tooltip
           title={
             isFavourited
-              ? variables.getMessage('widgets.quote.unfavourite')
-              : variables.getMessage('widgets.quote.favourite')
+              ? t('widgets.quote.unfavourite')
+              : t('widgets.quote.favourite')
           }
         >
           <button
             onClick={onFavourite}
             aria-label={
               isFavourited
-                ? variables.getMessage('widgets.quote.unfavourite')
-                : variables.getMessage('widgets.quote.favourite')
+                ? t('widgets.quote.unfavourite')
+                : t('widgets.quote.favourite')
             }
           >
             {isFavourited ? (

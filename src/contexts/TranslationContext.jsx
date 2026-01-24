@@ -7,15 +7,17 @@ const TranslationContext = createContext();
 
 export function TranslationProvider({ children, initialLanguage }) {
   const [currentLanguage, setCurrentLanguage] = useState(initialLanguage);
-  const i18nInstance = useRef(null);
+  const i18nInstance = useRef(initTranslations(initialLanguage));
 
-  // Initialize i18n instance once
+  // Update i18n instance when language changes
   useEffect(() => {
-    i18nInstance.current = initTranslations(currentLanguage);
+    if (currentLanguage !== initialLanguage) {
+      i18nInstance.current = initTranslations(currentLanguage);
+    }
     variables.language = i18nInstance.current;
     variables.languagecode = currentLanguage;
     document.documentElement.lang = currentLanguage.replace('_', '-');
-  }, [currentLanguage]);
+  }, [currentLanguage, initialLanguage]);
 
   // Change language function
   const changeLanguage = useCallback((newLanguage) => {

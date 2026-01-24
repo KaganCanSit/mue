@@ -1,6 +1,7 @@
 import variables from 'config/variables';
 
 import { useState, memo } from 'react';
+import { useT } from 'contexts';
 
 import { MdAssignment, MdCropFree, MdRefresh, MdChecklist, MdOutlineApps } from 'react-icons/md';
 
@@ -13,6 +14,7 @@ import { Header } from 'components/Layout/Settings';
 import AppsOptions from './AppsOptions';
 
 function NavbarOptions() {
+  const t = useT();
   const [showRefreshOptions, setShowRefreshOptions] = useState(
     localStorage.getItem('refresh') === 'true',
   );
@@ -26,15 +28,15 @@ function NavbarOptions() {
     return (
       <Row final={false}>
         <Content
-          title={variables.getMessage('modals.main.settings.additional_settings')}
-          subtitle={variables.getMessage(
+          title={t('modals.main.settings.additional_settings')}
+          subtitle={t(
             'modals.main.settings.sections.appearance.navbar.additional',
           )}
         />
         <Action>
           <Checkbox
             name="navbarHover"
-            text={variables.getMessage(`${NAVBAR_SECTION}.hover`)}
+            text={t(`${NAVBAR_SECTION}.hover`)}
             category="navbar"
           />
         </Action>
@@ -70,7 +72,7 @@ function NavbarOptions() {
           className={`navbarButtonOption ${isDisabled === true ? 'disabled' : ''}`}
         >
           {icon}
-          <span className="subtitle">{variables.getMessage(messageKey)}</span>
+          <span className="subtitle">{t(messageKey)}</span>
         </button>
       );
     };
@@ -106,7 +108,7 @@ function NavbarOptions() {
     return (
       <Row>
         <Content
-          title={variables.getMessage('modals.main.settings.sections.appearance.navbar.widgets')}
+          title={t('modals.main.settings.sections.appearance.navbar.widgets')}
         />
         <Action>
           <div className="navbarButtonOptions">
@@ -123,8 +125,8 @@ function NavbarOptions() {
     return (
       <Row final={false} inactive={!showRefreshOptions}>
         <Content
-          title={variables.getMessage(`${NAVBAR_SECTION}.refresh`)}
-          subtitle={variables.getMessage(
+          title={t(`${NAVBAR_SECTION}.refresh`)}
+          subtitle={t(
             'modals.main.settings.sections.appearance.navbar.refresh_subtitle',
           )}
         />
@@ -135,24 +137,24 @@ function NavbarOptions() {
             items={[
               {
                 value: 'page',
-                text: variables.getMessage(
+                text: t(
                   'modals.main.settings.sections.appearance.navbar.refresh_options.page',
                 ),
               },
               {
                 value: 'background',
-                text: variables.getMessage('modals.main.settings.sections.background.title'),
+                text: t('modals.main.settings.sections.background.title'),
               },
               {
                 value: 'quote',
-                text: variables.getMessage('modals.main.settings.sections.quote.title'),
+                text: t('modals.main.settings.sections.quote.title'),
               },
               {
                 value: 'quotebackground',
                 text:
-                  variables.getMessage('modals.main.settings.sections.quote.title') +
+                  t('modals.main.settings.sections.quote.title') +
                   ' + ' +
-                  variables.getMessage('modals.main.settings.sections.background.title'),
+                  t('modals.main.settings.sections.background.title'),
               },
             ]}
           />
@@ -164,7 +166,7 @@ function NavbarOptions() {
   return (
     <>
       <Header
-        title={variables.getMessage(`${NAVBAR_SECTION}.title`)}
+        title={t(`${NAVBAR_SECTION}.title`)}
         setting="navbar"
         category="widgets"
         zoomSetting="zoomNavbar"

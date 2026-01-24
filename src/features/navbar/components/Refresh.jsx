@@ -70,11 +70,11 @@ function Refresh() {
   }
 
   return (
-    <Tooltip title={variables.getMessage('widgets.navbar.tooltips.refresh')} subtitle={refreshText}>
+    <Tooltip title={t('widgets.navbar.tooltips.refresh')} subtitle={refreshText}>
       <button
         className="navbarButton"
         onClick={refresh}
-        aria-label={variables.getMessage('widgets.navbar.tooltips.refresh')}
+        aria-label={t('widgets.navbar.tooltips.refresh')}
       >
         <MdRefresh className="refreshicon topicons" />
       </button>

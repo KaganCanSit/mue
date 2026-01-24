@@ -1,6 +1,6 @@
 import { MdPerson, MdOpenInNew } from 'react-icons/md';
 import { Tooltip } from 'components/Elements';
-import variables from 'config/variables';
+import { useT } from 'contexts';
 import QuoteButtons from './QuoteButtons';
 
 /**
@@ -17,9 +17,10 @@ export default function AuthorInfo({
   onShare,
   isFavourited,
 }) {
+  const t = useT();
   const showAuthorImg = localStorage.getItem('authorImg') !== 'false';
   const hasLink = authorOccupation !== 'Unknown' && authorlink !== null;
-  const trimmedLicense = authorimglicense?.substring(0, 40) + 
+  const trimmedLicense = authorimglicense?.substring(0, 40) +
                         (authorimglicense?.length > 40 ? '…' : '');
 
   return (
@@ -30,7 +31,7 @@ export default function AuthorInfo({
             {!authorimg && authorimg !== undefined && <MdPerson />}
           </div>
         )}
-        
+
         {author ? (
           <div className="author-content">
             <span className="title">{author}</span>
@@ -49,10 +50,10 @@ export default function AuthorInfo({
             <span className="subtitle pulse">loading</span>
           </div>
         )}
-        
+
         <div className="quote-buttons">
           {hasLink && (
-            <Tooltip title={variables.getMessage('widgets.quote.link_tooltip')}>
+            <Tooltip title={t('widgets.quote.link_tooltip')}>
               <a
                 href={authorlink}
                 className="quoteAuthorLink"

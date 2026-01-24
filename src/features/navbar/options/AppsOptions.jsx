@@ -1,6 +1,7 @@
 import variables from 'config/variables';
 
 import { useState } from 'react';
+import { useT } from 'contexts';
 
 import Modal from 'react-modal';
 import EventBus from 'utils/eventbus';
@@ -15,6 +16,7 @@ import { getTitleFromUrl, isValidUrl } from 'utils/links';
 import { QuickLink } from 'features/quicklinks/options/QuickLink';
 
 function AppsOptions({ appsEnabled }) {
+  const t = useT();
   const [appsModalInfo, setAppsModalInfo] = useState({
     newLink: false,
     edit: false,
@@ -34,14 +36,14 @@ function AppsOptions({ appsEnabled }) {
     if (url.length <= 0 || isValidUrl(url) === false) {
       return setAppsModalInfo((oldState) => ({
         ...oldState,
-        urlError: variables.getMessage('widgets.quicklinks.url_error'),
+        urlError: t('widgets.quicklinks.url_error'),
       }));
     }
 
     if (icon.length > 0 && isValidUrl(icon) === false) {
       return setAppsModalInfo((oldState) => ({
         ...oldState,
-        iconError: variables.getMessage('widgets.quicklinks.icon_error'),
+        iconError: t('widgets.quicklinks.icon_error'),
       }));
     }
 
@@ -114,8 +116,8 @@ function AppsOptions({ appsEnabled }) {
     <>
       <Row final={true} inactive={!appsEnabled}>
         <Content
-          title={variables.getMessage('widgets.navbar.apps.title')}
-          subtitle={variables.getMessage(
+          title={t('widgets.navbar.apps.title')}
+          subtitle={t(
             'modals.main.settings.sections.appearance.navbar.apps_subtitle',
           )}
         />
@@ -124,7 +126,7 @@ function AppsOptions({ appsEnabled }) {
             type="settings"
             onClick={() => setAppsModalInfo((oldState) => ({ ...oldState, newLink: true }))}
             icon={<MdAddLink />}
-            label={variables.getMessage('modals.main.settings.sections.quicklinks.add_link')}
+            label={t('modals.main.settings.sections.quicklinks.add_link')}
           />
         </Action>
       </Row>
