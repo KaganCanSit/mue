@@ -28,7 +28,7 @@ const isProd = process.env.NODE_ENV === 'production';
 
 const prepareBuilds = () => ({
   name: 'prepareBuilds',
-  buildEnd() {
+  closeBundle() {
     if (isProd) {
       console.log('📦 Building extension packages...');
 
