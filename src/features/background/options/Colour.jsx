@@ -10,31 +10,22 @@ import '../scss/_colourpicker.scss';
 
 const ColourOptions = () => {
   const [colour, setColour] = useState(
-    localStorage.getItem('customBackgroundColour') || 'rgba(0, 0, 0, 0)',
+    localStorage.getItem('customBackgroundColour') || 'rgba(0, 0, 0, 100)',
   );
 
   const changeColour = (output) => {
     setColour(output);
     localStorage.setItem('customBackgroundColour', output);
     EventBus.emit('refresh', 'background');
-    showReminder();
   };
 
   const resetColour = () => {
     setColour('rgba(0, 0, 0, 0)');
-    localStorage.setItem('customBackgroundColour', 'rgba(0, 0, 0, 0)');
+    localStorage.setItem('customBackgroundColour', 'rgba(0, 0, 0, 100)');
     toast(variables.getMessage('toasts.reset'));
     EventBus.emit('refresh', 'background');
-    showReminder();
   };
 
-  const showReminder = () => {
-    const reminderInfo = document.querySelector('.reminder-info');
-    if (reminderInfo.style.display !== 'block') {
-      reminderInfo.style.display = 'block';
-      localStorage.setItem('showReminder', true);
-    }
-  };
 
   return (
     <Row final={true}>
