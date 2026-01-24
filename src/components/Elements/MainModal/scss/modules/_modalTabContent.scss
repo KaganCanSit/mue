@@ -171,6 +171,12 @@ table {
   gap: 25px;
   padding: 25px;
   justify-content: space-between;
+  cursor: default !important;
+  user-select: auto;
+
+  &:active {
+    cursor: default !important;
+  }
 
   @include themed {
     background: t($modal-sidebar);
