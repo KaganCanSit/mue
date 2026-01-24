@@ -23,6 +23,8 @@ function MainModal({ modalClose, deepLinkData }) {
   const initialTab = deepLinkData?.tab || TAB_TYPES.SETTINGS;
   const [currentTab, setCurrentTab] = useState(initialTab);
   const [currentSection, setCurrentSection] = useState('');
+  const [currentSectionName, setCurrentSectionName] = useState('');
+  const [currentSubSection, setCurrentSubSection] = useState(null);
   const [productView, setProductView] = useState(null);
   const [resetDiscoverToAll, setResetDiscoverToAll] = useState(false);
   const [navigationTrigger, setNavigationTrigger] = useState(null);
@@ -61,6 +63,8 @@ function MainModal({ modalClose, deepLinkData }) {
             data: linkData.section,
             timestamp: Date.now(),
           });
+          // Set sub-section if present in hash
+          setCurrentSubSection(linkData.subSection || null);
           return;
         }
 
@@ -131,6 +135,9 @@ function MainModal({ modalClose, deepLinkData }) {
 
   const handleSectionChange = (section, sectionName) => {
     setCurrentSection(section);
+    setCurrentSectionName(sectionName);
+    // Clear sub-section when changing sections
+    setCurrentSubSection(null);
     // Update URL hash when section changes
     if (currentTab === TAB_TYPES.DISCOVER) {
       // For Discover tab, update with the section type
@@ -148,6 +155,19 @@ function MainModal({ modalClose, deepLinkData }) {
     } else if (currentTab === TAB_TYPES.SETTINGS && sectionName) {
       // For Settings tab, update with the section name
       updateHash(`#${currentTab}/${sectionName}`, false);
+    }
+  };
+
+  const handleSubSectionChange = (subSection, sectionName) => {
+    setCurrentSubSection(subSection);
+    // Update URL hash when sub-section changes
+    if (currentTab === TAB_TYPES.SETTINGS && sectionName) {
+      if (subSection) {
+        updateHash(`#${currentTab}/${sectionName}/${subSection}`);
+      } else {
+        // Going back to section, remove sub-section from hash
+        updateHash(`#${currentTab}/${sectionName}`);
+      }
     }
   };
 
@@ -182,9 +202,12 @@ function MainModal({ modalClose, deepLinkData }) {
       <ModalTopBar
         currentTab={currentTab}
         currentSection={currentSection}
+        currentSectionName={currentSectionName}
+        currentSubSection={currentSubSection}
         productView={productView}
         iframeBreadcrumbs={iframeBreadcrumbs}
         onTabChange={handleChangeTab}
+        onSubSectionChange={handleSubSectionChange}
         onClose={modalClose}
         onBack={handleBack}
         onForward={handleForward}
@@ -199,6 +222,8 @@ function MainModal({ modalClose, deepLinkData }) {
             deepLinkData={deepLinkData}
             currentTab={currentTab}
             onSectionChange={handleSectionChange}
+            onSubSectionChange={handleSubSectionChange}
+            currentSubSection={currentSubSection}
             onProductView={handleProductView}
             onBreadcrumbsChange={setIframeBreadcrumbs}
             resetToAll={resetDiscoverToAll}

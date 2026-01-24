@@ -16,6 +16,7 @@ import { TAB_TYPES } from '../components/Elements/MainModal/constants/tabConfig'
  * #discover/collection/featured/f41219846700 -> { tab: 'discover', collection: 'featured', itemId: 'f41219846700' }
  * #marketplace/74ef53ceed0b -> { tab: 'discover', itemId: '74ef53ceed0b' } (marketplace is aliased to discover)
  * #settings/appearance -> { tab: 'settings', section: 'appearance' }
+ * #settings/background/source -> { tab: 'settings', section: 'background', subSection: 'source' }
  * #addons -> { tab: 'addons' }
  *
  * Legacy format (still supported):
@@ -33,7 +34,8 @@ export const parseDeepLink = (hash = window.location.hash) => {
   const result = {
     tab: parts[0],
     section: parts[1],
-    itemId: parts[2],
+    subSection: parts[2],
+    itemId: parts[3],
   };
 
   // Handle marketplace as an alias for discover (for backward compatibility with external URLs)
@@ -47,14 +49,26 @@ export const parseDeepLink = (hash = window.location.hash) => {
     return null;
   }
 
+  // Handle settings-specific parsing for sub-sections
+  if (result.tab === 'settings') {
+    // If we have a third part, it's a sub-section
+    if (result.subSection && !result.itemId) {
+      // Keep subSection as is, clear itemId
+      result.itemId = null;
+    }
+    // Otherwise section only, no sub-section
+    else if (!result.subSection) {
+      result.subSection = null;
+    }
+  }
+
   // Handle discover-specific parsing (marketplace URLs are aliased to discover)
   if (result.tab === 'discover') {
     // Check if it's a collection
     if (result.section === 'collection') {
-      result.collection = result.itemId;
+      result.collection = result.subSection;
       // Check if there's a 4th part (item ID within collection)
-      if (parts[3]) {
-        result.itemId = parts[3];
+      if (result.itemId) {
         result.fromCollection = true;
       } else {
         result.itemId = null;
@@ -63,10 +77,14 @@ export const parseDeepLink = (hash = window.location.hash) => {
     // Check if section is a category (preset_settings, photo_packs, quote_packs)
     else if (['preset_settings', 'photo_packs', 'quote_packs', 'all'].includes(result.section)) {
       result.category = result.section;
-      // Third part is the item ID (already in result.itemId)
+      // Third part is the item ID (now in subSection due to earlier parsing)
+      if (result.subSection) {
+        result.itemId = result.subSection;
+        result.subSection = null;
+      }
     }
     // If only one part after tab, assume it's an item ID
-    else if (result.section && !result.itemId) {
+    else if (result.section && !result.subSection) {
       result.itemId = result.section;
       result.section = null;
     }
@@ -84,6 +102,7 @@ export const parseDeepLink = (hash = window.location.hash) => {
  * @param {string} options.collection - Collection name for discover/marketplace
  * @param {boolean} options.fromCollection - If item is being viewed from within a collection
  * @param {string} options.section - Section within the tab
+ * @param {string} options.subSection - Sub-section within a settings section
  * @returns {string} Hash string
  */
 export const createDeepLink = (tab, options = {}) => {
@@ -112,6 +131,10 @@ export const createDeepLink = (tab, options = {}) => {
     }
   } else if (options.section) {
     hash += `/${options.section}`;
+    // Add sub-section for settings tab
+    if (options.subSection) {
+      hash += `/${options.subSection}`;
+    }
   }
 
   return hash;

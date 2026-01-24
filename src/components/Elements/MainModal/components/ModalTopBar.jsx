@@ -19,9 +19,12 @@ const MARKETPLACE_TYPE_TO_KEY = {
 function ModalTopBar({
   currentTab,
   currentSection,
+  currentSectionName,
+  currentSubSection,
   productView,
   iframeBreadcrumbs,
   onTabChange,
+  onSubSectionChange,
   onClose,
   onBack,
   onForward,
@@ -34,8 +37,25 @@ function ModalTopBar({
     ? variables.getMessage(currentTabButton.messageKey)
     : '';
 
+  // Utility function to get translated sub-section label
+  const getSubSectionLabel = (subSection, sectionName) => {
+    if (!subSection || !sectionName) return subSection;
+
+    // Use the same translation pattern as the section components
+    const translationKey = `modals.main.settings.sections.${sectionName}.${subSection}.title`;
+    const translated = variables.getMessage(translationKey);
+
+    // If translation key is returned as-is or empty, it means translation doesn't exist
+    // Fall back to capitalized sub-section name
+    if (!translated || translated === translationKey) {
+      return subSection.charAt(0).toUpperCase() + subSection.slice(1);
+    }
+
+    return translated;
+  };
+
   // Determine breadcrumb path with click handlers
-  let breadcrumbPath = [];
+  const breadcrumbPath = [];
 
   if (currentTabLabel) {
     breadcrumbPath.push({
@@ -63,9 +83,6 @@ function ModalTopBar({
         onClick: null, // Current item - not clickable
       });
     } else if (productView) {
-      console.log('ModalTopBar productView:', productView);
-      console.log('fromCollection:', productView.fromCollection, 'isCollection:', productView.isCollection, 'collectionTitle:', productView.collectionTitle);
-
       // If viewing a collection page itself (not a product within it)
       if (productView.isCollection) {
         // Show: Discover > Collection Name
@@ -77,14 +94,12 @@ function ModalTopBar({
         // Viewing a product
         // Show: Discover > Collection/Category > Product
         if (productView.fromCollection && productView.collectionTitle) {
-          console.log('Showing collection breadcrumb:', productView.collectionTitle);
           // If from a collection, show collection name
           breadcrumbPath.push({
             label: productView.collectionTitle,
             onClick: productView.onBack || null,
           });
         } else {
-          console.log('Showing category breadcrumb');
           // Otherwise show category
           const categoryKey = MARKETPLACE_TYPE_TO_KEY[productView.type];
           if (categoryKey) {
@@ -101,11 +116,19 @@ function ModalTopBar({
         });
       }
     } else if (currentSection) {
-      // Show: Tab > Section
+      // Show: Tab > Section or Tab > Section > Sub-Section
       breadcrumbPath.push({
         label: currentSection,
-        onClick: null, // Current section - not clickable
+        onClick: currentSubSection ? () => onSubSectionChange(null) : null, // Clickable if sub-section is active
       });
+
+      // Add sub-section if present
+      if (currentSubSection) {
+        breadcrumbPath.push({
+          label: getSubSectionLabel(currentSubSection, currentSectionName),
+          onClick: null, // Current sub-section - not clickable
+        });
+      }
     }
   }
 

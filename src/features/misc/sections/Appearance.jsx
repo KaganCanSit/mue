@@ -9,8 +9,7 @@ import { MdAccessibility } from 'react-icons/md';
 
 import values from 'utils/data/slider_values.json';
 
-function AppearanceOptions() {
-  const [accessibility, setAccessibility] = useState(false);
+function AppearanceOptions({ currentSubSection, onSubSectionChange, sectionName }) {
 
   const ThemeSelection = () => {
     return (
@@ -239,15 +238,17 @@ function AppearanceOptions() {
     );
   };
 
+  const isAccessibilitySection = currentSubSection === 'accessibility';
+
   let header;
-  if (accessibility) {
+  if (isAccessibilitySection) {
     header = (
       <Header
         title={variables.getMessage('modals.main.settings.sections.appearance.title')}
         secondaryTitle={variables.getMessage(
           'modals.main.settings.sections.appearance.accessibility.title',
         )}
-        goBack={() => setAccessibility(false)}
+        goBack={() => onSubSectionChange(null, sectionName)}
         report={false}
       />
     );
@@ -262,7 +263,7 @@ function AppearanceOptions() {
   return (
     <>
       {header}
-      {accessibility ? (
+      {isAccessibilitySection ? (
         <AccessibilityOptions />
       ) : (
         <>
@@ -274,7 +275,7 @@ function AppearanceOptions() {
               'modals.main.settings.sections.appearance.accessibility.description',
             )}
             icon={<MdAccessibility />}
-            onClick={() => setAccessibility(true)}
+            onClick={() => onSubSectionChange('accessibility', sectionName)}
           />
           <ThemeSelection />
           <FontOptions />

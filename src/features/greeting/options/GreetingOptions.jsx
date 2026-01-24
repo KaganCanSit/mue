@@ -18,11 +18,10 @@ import defaultEvents from '../events.json';
 
 import { MdEventNote, MdAdd, MdCancel, MdRefresh } from 'react-icons/md';
 
-const GreetingOptions = () => {
+const GreetingOptions = ({ currentSubSection, onSubSectionChange, sectionName }) => {
   const [customEvents, setCustomEvents] = useState(
     JSON.parse(localStorage.getItem('customEvents')) || [],
   );
-  const [events, setEvents] = useState(false);
 
   const [birthday, setBirthday] = useState(() => {
     const stored = localStorage.getItem('birthday');
@@ -266,13 +265,15 @@ const GreetingOptions = () => {
     );
   };
 
+  const isEventsSection = currentSubSection === 'events';
+
   let header;
-  if (events) {
+  if (isEventsSection) {
     header = (
       <Header
         title={variables.getMessage(`${GREETING_SECTION}.title`)}
-        secondaryTitle="Events"
-        goBack={() => setEvents(false)}
+        secondaryTitle={variables.getMessage(`${GREETING_SECTION}.events.title`)}
+        goBack={() => onSubSectionChange(null, sectionName)}
         report={false}
       />
     );
@@ -292,7 +293,7 @@ const GreetingOptions = () => {
   return (
     <>
       {header}
-      {events ? (
+      {isEventsSection ? (
         <>
           <Row>
             <Content
@@ -324,7 +325,7 @@ const GreetingOptions = () => {
           <Section
             title={variables.getMessage(`${GREETING_SECTION}.events`)}
             subtitle={variables.getMessage(`${GREETING_SECTION}.events_description`)}
-            onClick={() => setEvents(true)}
+            onClick={() => onSubSectionChange('events', sectionName)}
             icon={<MdEventNote />}
           />
         </PreferencesWrapper>

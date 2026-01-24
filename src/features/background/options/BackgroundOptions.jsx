@@ -15,7 +15,7 @@ import NavigationCard from './sections/NavigationCard';
 
 import { getBackgroundOptionItems } from './optionTypes';
 
-const BackgroundOptions = memo(() => {
+const BackgroundOptions = memo(({ currentSubSection, onSubSectionChange, sectionName }) => {
   const [backgroundType, setBackgroundType] = useState(
     localStorage.getItem('backgroundType') || 'api',
   );
@@ -28,21 +28,18 @@ const BackgroundOptions = memo(() => {
   const [backgroundCategoriesOG, setBackgroundCategoriesOG] = useState([]);
   const [backgroundAPI, setBackgroundAPI] = useState(localStorage.getItem('backgroundAPI') || 'mue');
   const [marketplaceEnabled] = useState(localStorage.getItem('photo_packs'));
-  const [effects, setEffects] = useState(false);
 
   // Auto-show source section for types without effects/display settings
   const shouldShowSourceByDefault = ['colour', 'random_colour', 'random_gradient'].includes(backgroundType);
-  const [backgroundSettingsSection, setBackgroundSettingsSection] = useState(shouldShowSourceByDefault);
 
   const controllerRef = useRef(null);
 
   // Auto-navigate to source section when switching to colour/random types
   useEffect(() => {
-    if (shouldShowSourceByDefault) {
-      setBackgroundSettingsSection(true);
-      setEffects(false);
+    if (shouldShowSourceByDefault && currentSubSection !== 'source') {
+      onSubSectionChange('source', sectionName);
     }
-  }, [shouldShowSourceByDefault]);
+  }, [shouldShowSourceByDefault, currentSubSection, onSubSectionChange, sectionName]);
 
   const getBackgroundCategories = useCallback(async () => {
     const data = await (
@@ -139,26 +136,26 @@ const BackgroundOptions = memo(() => {
   const showEffects = backgroundType === 'api' || backgroundType === 'custom' || marketplaceEnabled;
 
   const getHeader = () => {
-    if (effects) {
+    if (currentSubSection === 'effects') {
       return (
         <Header
           title={variables.getMessage('modals.main.settings.sections.background.title')}
           secondaryTitle={variables.getMessage(
             'modals.main.settings.sections.background.effects.title',
           )}
-          goBack={() => setEffects(false)}
+          goBack={() => onSubSectionChange(null, sectionName)}
         />
       );
     }
 
-    if (backgroundSettingsSection) {
+    if (currentSubSection === 'source') {
       return (
         <Header
           title={variables.getMessage('modals.main.settings.sections.background.title')}
           secondaryTitle={variables.getMessage(
             'modals.main.settings.sections.background.source.title',
           )}
-          goBack={() => setBackgroundSettingsSection(false)}
+          goBack={() => onSubSectionChange(null, sectionName)}
         />
       );
     }
@@ -177,7 +174,7 @@ const BackgroundOptions = memo(() => {
     <>
       {getHeader()}
 
-      {!backgroundSettingsSection && !effects && (
+      {!currentSubSection && (
         <>
           <NavigationCard
             icon={MdSource}
@@ -185,7 +182,7 @@ const BackgroundOptions = memo(() => {
             subtitle={variables.getMessage(
               'modals.main.settings.sections.background.source.subtitle',
             )}
-            onClick={() => setBackgroundSettingsSection(true)}
+            onClick={() => onSubSectionChange('source', sectionName)}
             action={
               <Dropdown
                 label={variables.getMessage('modals.main.settings.sections.background.type.title')}
@@ -210,17 +207,17 @@ const BackgroundOptions = memo(() => {
               subtitle={variables.getMessage(
                 'modals.main.settings.sections.background.effects.subtitle',
               )}
-              onClick={() => setEffects(true)}
+              onClick={() => onSubSectionChange('effects', sectionName)}
             />
           )}
         </>
       )}
 
-      {!backgroundSettingsSection && !effects && showEffects && (
+      {!currentSubSection && showEffects && (
         <DisplaySettings usingImage={usingImage} />
       )}
 
-      {backgroundSettingsSection && (
+      {currentSubSection === 'source' && (
         <>
           <SourceSection
             backgroundType={backgroundType}
@@ -235,7 +232,7 @@ const BackgroundOptions = memo(() => {
         </>
       )}
 
-      {showEffects && effects && (
+      {showEffects && currentSubSection === 'effects' && (
         <EffectsSettings
           backgroundFilter={backgroundFilter}
           onFilterChange={(value) => setBackgroundFilter(value)}

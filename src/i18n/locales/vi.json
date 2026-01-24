@@ -183,7 +183,9 @@
           },
           "greeting": {
             "title": "Greeting",
-            "events": "Events",
+            "events": {
+              "title": "Events"
+            },
             "events_description": "Control events on Mue such as birthdays.",
             "enable_events": "Show messages on special days",
             "default": "Default greeting message",

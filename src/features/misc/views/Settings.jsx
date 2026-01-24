@@ -95,13 +95,19 @@ function Settings(props) {
       current="settings"
       currentTab={props.currentTab}
       onSectionChange={props.onSectionChange}
+      onSubSectionChange={props.onSubSectionChange}
+      currentSubSection={props.currentSubSection}
       deepLinkData={props.deepLinkData}
       navigationTrigger={props.navigationTrigger}
       sections={sections}
     >
       {sections.map(({ label, name, component: Component }) => (
         <div key={name} label={variables.getMessage(label)} name={name}>
-          <Component />
+          <Component
+            currentSubSection={props.currentSubSection}
+            onSubSectionChange={props.onSubSectionChange}
+            sectionName={name}
+          />
         </div>
       ))}
     </Tabs>

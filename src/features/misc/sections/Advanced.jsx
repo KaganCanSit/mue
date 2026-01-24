@@ -18,9 +18,8 @@ import { Header, Section, Row, Content, Action } from 'components/Layout/Setting
 
 import time_zones from 'features/time/timezones.json';
 
-function AdvancedOptions() {
+function AdvancedOptions({ currentSubSection, onSubSectionChange, sectionName }) {
   const [resetModal, setResetModal] = useState(false);
-  const [data, setData] = useState(false);
   const ADVANCED_SECTION = 'modals.main.settings.sections.advanced';
 
   const Data = () => {
@@ -76,13 +75,15 @@ function AdvancedOptions() {
     );
   };
 
+  const isDataSection = currentSubSection === 'data';
+
   let header;
-  if (data) {
+  if (isDataSection) {
     header = (
       <Header
         title={variables.getMessage(`${ADVANCED_SECTION}.title`)}
         secondaryTitle={variables.getMessage(`${ADVANCED_SECTION}.data`)}
-        goBack={() => setData(false)}
+        goBack={() => onSubSectionChange(null, sectionName)}
         report={false}
       />
     );
@@ -93,7 +94,7 @@ function AdvancedOptions() {
   return (
     <>
       {header}
-      {data ? (
+      {isDataSection ? (
         <>
           <Data />
           <Modal
@@ -112,7 +113,7 @@ function AdvancedOptions() {
           <Section
             title={variables.getMessage(`${ADVANCED_SECTION}.data`)}
             subtitle={variables.getMessage(`${ADVANCED_SECTION}.data_subtitle`)}
-            onClick={() => setData(true)}
+            onClick={() => onSubSectionChange('data', sectionName)}
             icon={<MdDataUsage />}
           />
           <Row>

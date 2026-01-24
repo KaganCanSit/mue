@@ -14,7 +14,7 @@ import {
 import { Checkbox, Dropdown } from 'components/Form/Settings';
 import { Button } from 'components/Elements';
 
-const QuoteOptions = () => {
+const QuoteOptions = ({ currentSubSection, onSubSectionChange, sectionName }) => {
   const getCustom = () => {
     let data = JSON.parse(localStorage.getItem('customQuote'));
     if (data === null) {
@@ -25,7 +25,6 @@ const QuoteOptions = () => {
 
   const [quoteType, setQuoteType] = useState(localStorage.getItem('quoteType') || 'api');
   const [customQuote, setCustomQuote] = useState(getCustom());
-  const [sourceSection, setSourceSection] = useState(false);
 
   const handleCustomQuote = (e, text, index, type) => {
     const result = text === true ? e.target.value : e.target.result;
@@ -134,8 +133,10 @@ const QuoteOptions = () => {
     );
   };
 
+  const isSourceSection = currentSubSection === 'source';
+
   let customSettings;
-  if (quoteType === 'custom' && sourceSection === true) {
+  if (quoteType === 'custom' && isSourceSection) {
     customSettings = (
       <>
         <Row final={true}>
@@ -221,13 +222,13 @@ const QuoteOptions = () => {
 
   return (
     <>
-      {sourceSection ? (
+      {isSourceSection ? (
         <Header
           title={variables.getMessage(`${QUOTE_SECTION}.title`)}
           secondaryTitle={variables.getMessage(
             'modals.main.settings.sections.background.source.title',
           )}
-          goBack={() => setSourceSection(false)}
+          goBack={() => onSubSectionChange(null, sectionName)}
           report={false}
         />
       ) : (
@@ -240,7 +241,7 @@ const QuoteOptions = () => {
           visibilityToggle={true}
         />
       )}
-      {sourceSection && (
+      {isSourceSection && (
         <Row final={true}>
           <Content
             title={variables.getMessage('modals.main.settings.sections.background.source.title')}
@@ -251,7 +252,7 @@ const QuoteOptions = () => {
           </Action>
         </Row>
       )}
-      {!sourceSection && (
+      {!isSourceSection && (
         <PreferencesWrapper
           setting="quote"
           zoomSetting="zoomQuote"
@@ -262,7 +263,7 @@ const QuoteOptions = () => {
             icon={<MdSource />}
             title={variables.getMessage('modals.main.settings.sections.background.source.title')}
             subtitle={variables.getMessage(`${QUOTE_SECTION}.source_subtitle`)}
-            onClick={() => setSourceSection(true)}
+            onClick={() => onSubSectionChange('source', sectionName)}
           >
             <SourceDropdown />
           </Section>
