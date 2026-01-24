@@ -56,20 +56,6 @@ const CustomSettings = memo(() => {
     loadBackgrounds();
   }, []);
 
-  const resetCustom = useCallback(async () => {
-    try {
-      await clearAllBackgrounds();
-      setCustomBackground([]);
-      // Keep localStorage in sync
-      localStorage.setItem('customBackground', '[]');
-      toast(variables.getMessage('toasts.reset'));
-      EventBus.emit('refresh', 'background');
-    } catch (error) {
-      console.error('Error resetting backgrounds:', error);
-      toast(variables.getMessage('toasts.error'));
-    }
-  }, []);
-
   const handleCustomBackground = useCallback(
     async (e, index) => {
       const result = e.target.result;
@@ -89,7 +75,7 @@ const CustomSettings = memo(() => {
         // Store count in localStorage for backward compatibility
         try {
           localStorage.setItem('customBackground', JSON.stringify(backgrounds));
-        } catch (quotaError) {
+        } catch (_quotaError) {
           // If quota exceeded, just store the count
           console.warn('localStorage quota exceeded, storing count only');
           localStorage.setItem('customBackgroundCount', backgrounds.length.toString());
@@ -124,7 +110,7 @@ const CustomSettings = memo(() => {
       // Store in localStorage with quota handling
       try {
         localStorage.setItem('customBackground', JSON.stringify(backgrounds));
-      } catch (quotaError) {
+      } catch (_quotaError) {
         console.warn('localStorage quota exceeded, storing count only');
         localStorage.setItem('customBackgroundCount', backgrounds.length.toString());
       }
