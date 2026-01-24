@@ -181,6 +181,13 @@ function DiscoverContent({ category, onBreadcrumbsChange }) {
         case 'marketplace:breadcrumbs':
           if (payload?.breadcrumbs && onBreadcrumbsChange) {
             onBreadcrumbsChange(payload.breadcrumbs);
+            // Scroll modal content to top when navigating to an item
+            if (payload.breadcrumbs.length > 0) {
+              const modalContent = document.querySelector('.modalTabContent');
+              if (modalContent) {
+                modalContent.scrollTop = 0;
+              }
+            }
           }
           break;
 
@@ -205,6 +212,11 @@ function DiscoverContent({ category, onBreadcrumbsChange }) {
 
   const handleLoad = () => {
     setIsLoading(false);
+
+    // Clear breadcrumbs when iframe loads - if on an item page, iframe will send new breadcrumbs
+    if (onBreadcrumbsChange) {
+      onBreadcrumbsChange([]);
+    }
 
     // Send theme to iframe after it loads
     if (iframeRef.current?.contentWindow) {

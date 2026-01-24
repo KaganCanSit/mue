@@ -206,6 +206,8 @@ function MainModal({ modalClose, deepLinkData }) {
   };
 
   const handleBack = () => {
+    // Clear iframe breadcrumbs when navigating back
+    setIframeBreadcrumbs([]);
     window.history.back();
   };
 
