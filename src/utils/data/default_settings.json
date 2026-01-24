@@ -236,6 +236,10 @@
     "value": "{}"
   },
   {
+    "name": "localeFormatting",
+    "value": false
+  },
+  {
     "name": "offlineMode",
     "value": false
   },
