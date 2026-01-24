@@ -164,26 +164,42 @@ function ModalTopBar({
           draggable={false}
         />
         {breadcrumbPath.length > 0 && (
-          <div className="breadcrumbs">
+          <nav className="breadcrumbs" aria-label="Breadcrumb navigation">
             {breadcrumbPath.map((item, index) => {
               const isLast = index === breadcrumbPath.length - 1;
               const isClickable = item.onClick !== null;
 
               return (
                 <span key={index} className="breadcrumb-segment">
-                  <span
-                    className={`breadcrumb-item ${isLast ? 'breadcrumb-current' : ''} ${
-                      isClickable ? 'breadcrumb-clickable' : ''
-                    }`}
-                    onClick={item.onClick}
-                  >
-                    {item.label}
-                  </span>
-                  {!isLast && <MdChevronRight className="breadcrumb-separator" />}
+                  {isClickable ? (
+                    <span
+                      className={`breadcrumb-item breadcrumb-clickable`}
+                      onClick={item.onClick}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          item.onClick();
+                        }
+                      }}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`Navigate to ${item.label}`}
+                    >
+                      {item.label}
+                    </span>
+                  ) : (
+                    <span
+                      className={`breadcrumb-item ${isLast ? 'breadcrumb-current' : ''}`}
+                      aria-current={isLast ? 'page' : undefined}
+                    >
+                      {item.label}
+                    </span>
+                  )}
+                  {!isLast && <MdChevronRight className="breadcrumb-separator" aria-hidden="true" />}
                 </span>
               );
             })}
-          </div>
+          </nav>
         )}
       </div>
       <div className="topBarRight">

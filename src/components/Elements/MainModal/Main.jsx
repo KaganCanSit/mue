@@ -24,7 +24,7 @@ function MainModal({ modalClose, deepLinkData }) {
   const [currentTab, setCurrentTab] = useState(initialTab);
   const [currentSection, setCurrentSection] = useState('');
   const [currentSectionName, setCurrentSectionName] = useState('');
-  const [currentSubSection, setCurrentSubSection] = useState(null);
+  const [currentSubSection, setCurrentSubSection] = useState(deepLinkData?.subSection || null);
   const [productView, setProductView] = useState(null);
   const [resetDiscoverToAll, setResetDiscoverToAll] = useState(false);
   const [navigationTrigger, setNavigationTrigger] = useState(null);
