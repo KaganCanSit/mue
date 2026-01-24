@@ -2,8 +2,9 @@ import { useEffect, useRef, useState, useMemo } from 'react';
 import Modal from 'react-modal';
 import { ShareModal } from 'components/Elements';
 
-import { useQuoteState, useQuoteLoader, useQuoteActions, useQuoteEvents } from './hooks';
+import { useQuoteState, useQuoteLoader, useQuoteActions } from './hooks';
 import { AuthorInfo, AuthorInfoLegacy } from './components';
+import EventBus from 'utils/eventbus';
 
 import './scss/index.scss';
 
@@ -17,49 +18,63 @@ export default function Quote() {
   const { copyQuote, toggleFavourite } = useQuoteActions(quoteData);
 
   const quoteRef = useRef(null);
-  const [isFavourited, setIsFavourited] = useState(false);
+  const [localIsFavourited, setLocalIsFavourited] = useState(false);
+  const [display, setDisplay] = useState('block');
+  const [fontSize, setFontSize] = useState(() => {
+    const zoomQuote = localStorage.getItem('zoomQuote');
+    return `${0.8 * Number((zoomQuote || 100) / 100)}em`;
+  });
+  const [authorDetails, setAuthorDetails] = useState(localStorage.getItem('authorDetails') === 'true');
+  const [isLegacyStyle, setIsLegacyStyle] = useState(localStorage.getItem('widgetStyle') === 'legacy');
 
-  const settings = useMemo(() => ({
-    authorDetails: localStorage.getItem('authorDetails') === 'true',
-    isLegacyStyle: localStorage.getItem('widgetStyle') === 'legacy',
-    isEnabled: localStorage.getItem('quote') !== 'false',
-    zoom: Number((localStorage.getItem('zoomQuote') || 100) / 100),
-  }), []);
-
-  const setZoom = () => {
-    if (quoteRef.current) {
-      quoteRef.current.style.fontSize = `${0.8 * settings.zoom}em`;
-    }
-  };
+  // Compute if current quote is favorited
+  const isFavourited = useMemo(() => {
+    const favQuote = localStorage.getItem('favouriteQuote');
+    return !!favQuote && favQuote === `${quoteData.quote} - ${quoteData.author}`;
+  }, [quoteData.quote, quoteData.author]);
 
   const handleFavourite = () => {
     toggleFavourite();
-    setIsFavourited(!isFavourited);
+    setLocalIsFavourited(!localIsFavourited);
   };
 
-  useQuoteEvents(getQuote, setZoom);
-
   useEffect(() => {
-    const shouldRefresh = localStorage.getItem('quotechange') === 'refresh' || 
+    const handleRefresh = (data) => {
+      if (data === 'quote') {
+        const quoteSetting = localStorage.getItem('quote');
+        const zoomQuote = localStorage.getItem('zoomQuote');
+        const authorDetailsSetting = localStorage.getItem('authorDetails');
+        const widgetStyle = localStorage.getItem('widgetStyle');
+
+        setDisplay(quoteSetting === 'false' ? 'none' : 'block');
+        setFontSize(`${0.8 * Number((zoomQuote || 100) / 100)}em`);
+        setAuthorDetails(authorDetailsSetting === 'true');
+        setIsLegacyStyle(widgetStyle === 'legacy');
+      } else if (data === 'marketplacequoteuninstall' || data === 'quoterefresh') {
+        getQuote();
+      }
+    };
+
+    const shouldRefresh = localStorage.getItem('quotechange') === 'refresh' ||
                          localStorage.getItem('quotechange') === null;
-    
+
     if (shouldRefresh) {
-      setZoom();
       getQuote();
       localStorage.setItem('quoteStartTime', Date.now());
     }
+
+    EventBus.on('refresh', handleRefresh);
+    return () => {
+      EventBus.off('refresh', handleRefresh);
+    };
   }, [getQuote]);
 
-  useEffect(() => {
-    setIsFavourited(!!localStorage.getItem('favouriteQuote'));
-  }, [quoteData.quote]);
-
-  if (quoteData.noQuote || !settings.isEnabled) {
+  if (quoteData.noQuote) {
     return null;
   }
 
   return (
-    <div className="quotediv">
+    <div className="quotediv" style={{ display, fontSize }}>
       <Modal
         closeTimeoutMS={300}
         isOpen={uiState.shareModal}
@@ -78,8 +93,8 @@ export default function Quote() {
         {quoteData.quote}
       </span>
 
-      {settings.authorDetails && (
-        settings.isLegacyStyle ? (
+      {authorDetails && (
+        isLegacyStyle ? (
           <AuthorInfoLegacy
             author={quoteData.author}
             authorlink={quoteData.authorlink}
