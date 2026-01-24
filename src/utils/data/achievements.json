@@ -1,6 +1,6 @@
 [
   {
-    "id": "10tabs",
+    "id": "tentabs",
     "condition": {
       "type": "tabsOpened",
       "amount": 3

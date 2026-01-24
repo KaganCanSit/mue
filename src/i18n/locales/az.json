@@ -518,6 +518,7 @@
         }
       },
       "marketplace": {
+        "title": "Marketplace",
         "by": "{author} tərəfindən",
         "all": "Hamısı",
         "learn_more": "Daha çox öyrən",

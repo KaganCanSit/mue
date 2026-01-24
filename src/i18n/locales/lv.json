@@ -518,6 +518,7 @@
         }
       },
       "marketplace": {
+        "title": "Marketplace",
         "by": "autors {author}",
         "all": "Visi",
         "learn_more": "Uzzināt vairāk",

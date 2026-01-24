@@ -15,15 +15,19 @@ export default function AuthorInfoLegacy({
     <>
       <div>
         <h1 className="quoteauthor">
-          <a
-            href={authorlink}
-            className="quoteAuthorLink"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Learn about the author of the quote."
-          >
-            {author}
-          </a>
+          {authorlink ? (
+            <a
+              href={authorlink}
+              className="quoteAuthorLink"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Learn about the author of the quote."
+            >
+              {author}
+            </a>
+          ) : (
+            <span>{author}</span>
+          )}
         </h1>
       </div>
       <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>

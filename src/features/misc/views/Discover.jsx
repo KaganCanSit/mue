@@ -269,7 +269,7 @@ function DiscoverContent({ category, onBreadcrumbsChange }) {
           opacity: isLoading ? 0 : 1,
           transition: 'opacity 0.2s ease-in-out',
         }}
-        title="Marketplace"
+        title={variables.getMessage('modals.main.marketplace.title')}
       />
     </div>
   );

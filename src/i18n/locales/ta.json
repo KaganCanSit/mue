@@ -518,6 +518,7 @@
         }
       },
       "marketplace": {
+        "title": "Marketplace",
         "by": "எழுதியவர் {author}",
         "all": "அனைத்தும்",
         "learn_more": "மேலும் அறிக",

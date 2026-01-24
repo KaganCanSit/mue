@@ -518,6 +518,7 @@
         }
       },
       "marketplace": {
+        "title": "Marketplace",
         "by": "від {author}",
         "all": "Усе",
         "learn_more": "Дізнатися більше",

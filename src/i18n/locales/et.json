@@ -518,6 +518,7 @@
         }
       },
       "marketplace": {
+        "title": "Marketplace",
         "by": "autor: {author}",
         "all": "Kõik",
         "learn_more": "Loe lähemalt",

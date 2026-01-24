@@ -14,9 +14,6 @@ import {
 import { Checkbox, Dropdown } from 'components/Form/Settings';
 import { Button } from 'components/Elements';
 
-import { toast } from 'react-toastify';
-import EventBus from 'utils/eventbus';
-
 const QuoteOptions = () => {
   const getCustom = () => {
     let data = JSON.parse(localStorage.getItem('customQuote'));
@@ -29,13 +26,6 @@ const QuoteOptions = () => {
   const [quoteType, setQuoteType] = useState(localStorage.getItem('quoteType') || 'api');
   const [customQuote, setCustomQuote] = useState(getCustom());
   const [sourceSection, setSourceSection] = useState(false);
-
-  const resetCustom = () => {
-    localStorage.setItem('customQuote', '[{"quote": "", "author": ""}]');
-    setCustomQuote([{ quote: '', author: '' }]);
-    toast(variables.getMessage('toasts.reset'));
-    EventBus.emit('refresh', 'background');
-  };
 
   const handleCustomQuote = (e, text, index, type) => {
     const result = text === true ? e.target.value : e.target.result;
@@ -102,7 +92,7 @@ const QuoteOptions = () => {
         items={[
           localStorage.getItem('quote_packs') && {
             value: 'quote_pack',
-            text: variables.getMessage('modals.main.navbar.marketplace'),
+            text: variables.getMessage('modals.main.marketplace.title'),
           },
           {
             value: 'api',

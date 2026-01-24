@@ -518,6 +518,7 @@
         }
       },
       "marketplace": {
+        "title": "Marketplace",
         "by": "avtor {author}",
         "all": "Vse",
         "learn_more": "Več informacij",

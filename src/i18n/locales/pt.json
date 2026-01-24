@@ -518,6 +518,7 @@
         }
       },
       "marketplace": {
+        "title": "Marketplace",
         "by": "Por {author}",
         "all": "Todos",
         "learn_more": "Saber mais",

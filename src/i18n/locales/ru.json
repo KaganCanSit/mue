@@ -518,6 +518,7 @@
         }
       },
       "marketplace": {
+        "title": "Marketplace",
         "by": "от {author}",
         "all": "Все",
         "learn_more": "Узнать больше",

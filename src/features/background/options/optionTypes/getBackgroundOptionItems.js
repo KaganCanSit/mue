@@ -4,7 +4,7 @@ export function getBackgroundOptionItems(marketplaceEnabled) {
   return [
     marketplaceEnabled && {
       value: 'photo_pack',
-      text: variables.getMessage('modals.main.navbar.marketplace'),
+      text: variables.getMessage('modals.main.marketplace.title'),
     },
     {
       value: 'api',

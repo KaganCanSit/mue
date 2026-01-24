@@ -518,6 +518,7 @@
         }
       },
       "marketplace": {
+        "title": "Marketplace",
         "by": "{author}",
         "all": "Tümü",
         "learn_more": "Daha Fazla Bilgi Edin",

@@ -137,15 +137,17 @@ export function useQuoteLoader(updateQuote) {
           .flatMap(item => item.quotes.map(quote => ({
             ...quote,
             fallbackauthorimg: item.icon_url,
+            packName: item.display_name || item.name,
           })));
 
         if (quotePack.length === 0) return doOffline();
 
         const data = quotePack[Math.floor(Math.random() * quotePack.length)];
+        const hasAuthor = data.author && data.author.trim() !== '';
         return updateQuote({
           quote: `"${data.quote}"`,
-          author: data.author,
-          authorlink: getAuthorLink(data.author),
+          author: hasAuthor ? data.author : data.packName,
+          authorlink: hasAuthor ? getAuthorLink(data.author) : null,
           authorimg: data.fallbackauthorimg,
         });
       }

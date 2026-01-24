@@ -518,6 +518,7 @@
         }
       },
       "marketplace": {
+        "title": "Marketplace",
         "by": "بواسطة {author}",
         "all": "الكل",
         "learn_more": "معرفة المزيد",

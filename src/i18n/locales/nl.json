@@ -518,6 +518,7 @@
         }
       },
       "marketplace": {
+        "title": "Marketplace",
         "by": "Door {author}",
         "all": "Alles",
         "learn_more": "Meer Informatie",
