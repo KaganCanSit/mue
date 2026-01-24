@@ -6,6 +6,7 @@ import Modals from 'features/misc/modals/Modals';
 import { loadSettings, moveSettings } from 'utils/settings';
 import EventBus from 'utils/eventbus';
 import variables from 'config/variables';
+import { TranslationProvider } from 'contexts/TranslationContext';
 
 const useAppSetup = () => {
   useEffect(() => {
@@ -54,8 +55,10 @@ const App = () => {
 
   useAppSetup();
 
+  const languagecode = localStorage.getItem('language') || 'en_GB';
+
   return (
-    <>
+    <TranslationProvider initialLanguage={languagecode}>
       {showBackground && <Background />}
       <ToastContainer
         position="top-center"
@@ -68,7 +71,7 @@ const App = () => {
         <Widgets />
         <Modals />
       </div>
-    </>
+    </TranslationProvider>
   );
 };
 

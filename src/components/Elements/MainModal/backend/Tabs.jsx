@@ -1,5 +1,6 @@
 import variables from 'config/variables';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'contexts/TranslationContext';
 import Tab from './Tab';
 import ReminderInfo from '../components/ReminderInfo';
 import ErrorBoundary from '../../../../features/misc/modals/ErrorBoundary';
@@ -15,6 +16,8 @@ const Tabs = ({
   navigationTrigger,
   sections,
 }) => {
+  const { languagecode } = useTranslation();
+
   // Find initial section from deep link if available
   const getInitialSection = () => {
     if (deepLinkData?.section && sections) {
@@ -57,6 +60,17 @@ const Tabs = ({
       onSectionChange(currentTab, currentName);
     }
   }, []);
+
+  // Update labels when language changes
+  useEffect(() => {
+    if (sections && currentName) {
+      const section = sections.find((s) => s.name === currentName);
+      if (section) {
+        const newLabel = variables.getMessage(section.label);
+        setCurrentTab(newLabel);
+      }
+    }
+  }, [languagecode]);
 
   // Handle navigation trigger for settings sections (popstate)
   useEffect(() => {

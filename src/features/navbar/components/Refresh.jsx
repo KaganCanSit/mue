@@ -3,21 +3,23 @@ import variables from 'config/variables';
 import { MdRefresh } from 'react-icons/md';
 import { Tooltip } from 'components/Elements';
 import EventBus from 'utils/eventbus';
+import { useTranslation } from 'contexts/TranslationContext';
 
 function Refresh() {
+  const { languagecode } = useTranslation();
   const [refreshText, setRefreshText] = useState('');
   const [refreshOption, setRefreshOption] = useState(localStorage.getItem('refreshOption') || '');
 
   useEffect(() => {
     EventBus.on('refresh', (data) => {
-      if (data === 'navbar' || data === 'background') {
+      if (data === 'navbar' || data === 'background' || data === 'language') {
         setRefreshOption(localStorage.getItem('refreshOption'));
         updateRefreshText();
       }
     });
 
     updateRefreshText();
-  }, []);
+  }, [languagecode]);
 
   function updateRefreshText() {
     let text;

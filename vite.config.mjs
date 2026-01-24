@@ -168,6 +168,7 @@ export default defineConfig(({ command, mode }) => {
         '@': path.resolve(__dirname, './src'),
         i18n: path.resolve(__dirname, './src/i18n'),
         components: path.resolve(__dirname, './src/components'),
+        contexts: path.resolve(__dirname, './src/contexts'),
         assets: path.resolve(__dirname, './src/assets'),
         config: path.resolve(__dirname, './src/config'),
         features: path.resolve(__dirname, './src/features'),

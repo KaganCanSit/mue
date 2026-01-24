@@ -1,5 +1,6 @@
 import variables from 'config/variables';
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
+import { useTranslation } from 'contexts/TranslationContext';
 
 import Tabs from 'components/Elements/MainModal/backend/Tabs';
 
@@ -89,6 +90,17 @@ const sections = [
 ];
 
 function Settings(props) {
+  const { languagecode } = useTranslation();
+
+  // Recalculate section labels when language changes
+  const translatedSections = useMemo(() =>
+    sections.map(section => ({
+      ...section,
+      translatedLabel: variables.getMessage(section.label)
+    })),
+    [languagecode]
+  );
+
   return (
     <Tabs
       changeTab={(type) => props.changeTab(type)}
@@ -101,8 +113,8 @@ function Settings(props) {
       navigationTrigger={props.navigationTrigger}
       sections={sections}
     >
-      {sections.map(({ label, name, component: Component }) => (
-        <div key={name} label={variables.getMessage(label)} name={name}>
+      {translatedSections.map(({ label, name, component: Component, translatedLabel }) => (
+        <div key={name} label={translatedLabel} name={name}>
           <Component
             currentSubSection={props.currentSubSection}
             onSubSectionChange={props.onSubSectionChange}

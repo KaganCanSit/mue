@@ -1,4 +1,5 @@
 import variables from 'config/variables';
+import { useTranslation } from 'contexts/TranslationContext';
 import { MdClose, MdChevronRight, MdArrowBack, MdArrowForward } from 'react-icons/md';
 import { Tooltip, Button } from 'components/Elements';
 import { NAVBAR_BUTTONS } from '../constants/tabConfig';
@@ -31,9 +32,11 @@ function ModalTopBar({
   canGoBack,
   canGoForward,
 }) {
-  // Get the current tab label
+  const { languagecode } = useTranslation();
+
+  // Get the current tab label (uses languagecode to re-evaluate on language change)
   const currentTabButton = NAVBAR_BUTTONS.find(({ tab }) => tab === currentTab);
-  const currentTabLabel = currentTabButton
+  const currentTabLabel = languagecode && currentTabButton
     ? variables.getMessage(currentTabButton.messageKey)
     : '';
 

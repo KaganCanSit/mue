@@ -26,6 +26,20 @@ const Radio = memo((props) => {
       if (localStorage.getItem('tabName') === variables.getMessage('tabname')) {
         localStorage.setItem('tabName', translations[newValue.replace('-', '_')].tabname);
       }
+
+      // Emit language change event for instant update
+      localStorage.setItem(props.name, newValue);
+      EventBus.emit('languageChange', { language: newValue });
+      setValue(newValue);
+
+      variables.stats.postEvent('setting', `${props.name} from ${value} to ${newValue}`);
+
+      if (props.onChange) {
+        props.onChange(newValue);
+      }
+
+      EventBus.emit('refresh', props.category);
+      return;
     }
 
     localStorage.setItem(props.name, newValue);

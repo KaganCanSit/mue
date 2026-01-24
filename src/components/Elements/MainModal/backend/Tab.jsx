@@ -1,8 +1,10 @@
 import variables from 'config/variables';
 import { memo, useState, useEffect } from 'react';
+import { useTranslation } from 'contexts/TranslationContext';
 import { getIconComponent, DIVIDER_LABELS } from '../constants/tabConfig';
 
 function Tab({ label, currentTab, onClick, navbarTab }) {
+  const { languagecode } = useTranslation();
   const [isExperimental, setIsExperimental] = useState(true);
 
   useEffect(() => {

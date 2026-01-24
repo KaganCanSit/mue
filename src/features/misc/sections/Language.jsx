@@ -1,5 +1,6 @@
 import variables from 'config/variables';
 import { useState, useEffect, useRef } from 'react';
+import { useMessage } from 'contexts/TranslationContext';
 
 import { MdOutlineOpenInNew } from 'react-icons/md';
 
@@ -8,9 +9,14 @@ import { Radio } from 'components/Form/Settings';
 import languages from '@/i18n/languages.json';
 
 const LanguageOptions = () => {
+  const loadingText = useMessage('modals.main.loading');
+  const offlineText = useMessage('modals.main.marketplace.offline.description');
+  const languageTitle = useMessage('modals.main.settings.sections.language.title');
+  const quoteTitle = useMessage('modals.main.settings.sections.language.quote');
+
   const [quoteLanguages, setQuoteLanguages] = useState([
     {
-      name: variables.getMessage('modals.main.loading'),
+      name: loadingText,
       value: 'loading',
     },
   ]);
@@ -18,33 +24,39 @@ const LanguageOptions = () => {
   const controllerRef = useRef(new AbortController());
 
   const getquoteLanguages = async () => {
-    const data = await (
-      await fetch(variables.constants.API_URL + '/quotes/languages', {
-        signal: controllerRef.current.signal,
-      })
-    ).json();
+    try {
+      const data = await (
+        await fetch(variables.constants.API_URL + '/quotes/languages', {
+          signal: controllerRef.current.signal,
+        })
+      ).json();
 
-    if (controllerRef.current.signal.aborted === true) {
-      return;
+      if (controllerRef.current.signal.aborted === true) {
+        return;
+      }
+
+      const fetchedQuoteLanguages = data.map((language) => {
+        return {
+          name: languages.find((l) => l.value === language.name)
+            ? languages.find((l) => l.value === language.name).name
+            : 'English',
+          value: language,
+        };
+      });
+
+      setQuoteLanguages(fetchedQuoteLanguages);
+    } catch (error) {
+      if (error.name !== 'AbortError') {
+        console.error('Failed to fetch quote languages:', error);
+      }
     }
-
-    const fetchedQuoteLanguages = data.map((language) => {
-      return {
-        name: languages.find((l) => l.value === language.name)
-          ? languages.find((l) => l.value === language.name).name
-          : 'English',
-        value: language,
-      };
-    });
-
-    setQuoteLanguages(fetchedQuoteLanguages);
   };
 
   useEffect(() => {
     if (navigator.onLine === false || localStorage.getItem('offlineMode') === 'true') {
       setQuoteLanguages([
         {
-          name: variables.getMessage('modals.main.marketplace.offline.description'),
+          name: offlineText,
           value: 'loading',
         },
       ]);
@@ -53,17 +65,18 @@ const LanguageOptions = () => {
 
     getquoteLanguages();
 
+    const controller = controllerRef.current;
     return () => {
       // stop making requests
-      controllerRef.current.abort();
+      controller.abort();
     };
-  }, []);
+  }, [offlineText]);
 
   return (
     <>
       <div className="modalHeader">
         <span className="mainTitle">
-          {variables.getMessage('modals.main.settings.sections.language.title')}
+          {languageTitle}
         </span>
         <div className="headerActions">
           <a
@@ -81,7 +94,7 @@ const LanguageOptions = () => {
         <Radio name="language" options={languages} element=".other" />
       </div>
       <span className="mainTitle">
-        {variables.getMessage('modals.main.settings.sections.language.quote')}
+        {quoteTitle}
       </span>
       <div className="languageSettings">
         <Radio
