@@ -30,6 +30,17 @@ function DiscoverContent({ category, onBreadcrumbsChange }) {
     };
   }, [onBreadcrumbsChange]);
 
+  // Helper function to resolve auto theme
+  const getResolvedTheme = () => {
+    const theme = localStorage.getItem('theme') || 'auto';
+    if (theme === 'auto') {
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
+    }
+    return theme;
+  };
+
   useEffect(() => {
     // Show loader when category changes
     setIsLoading(true);
@@ -39,7 +50,7 @@ function DiscoverContent({ category, onBreadcrumbsChange }) {
     }
 
     // Get current theme
-    const theme = localStorage.getItem('theme') || 'auto';
+    const theme = getResolvedTheme();
     const themeParam = `&theme=${theme}`;
 
     // Update iframe src with category
@@ -64,7 +75,7 @@ function DiscoverContent({ category, onBreadcrumbsChange }) {
         setIsLoading(true);
 
         // Get current theme
-        const theme = localStorage.getItem('theme') || 'auto';
+        const theme = getResolvedTheme();
         const themeParam = `&theme=${theme}`;
 
         // Get item from localStorage to determine type
@@ -197,7 +208,7 @@ function DiscoverContent({ category, onBreadcrumbsChange }) {
 
     // Send theme to iframe after it loads
     if (iframeRef.current?.contentWindow) {
-      const theme = localStorage.getItem('theme') || 'auto';
+      const theme = getResolvedTheme();
       iframeRef.current.contentWindow.postMessage(
         {
           type: 'marketplace:theme',
@@ -253,7 +264,7 @@ function DiscoverContent({ category, onBreadcrumbsChange }) {
       <iframe
         ref={iframeRef}
         src={(() => {
-          const theme = localStorage.getItem('theme') || 'auto';
+          const theme = getResolvedTheme();
           const themeParam = `&theme=${theme}`;
           return category === 'collections'
             ? `${MARKETPLACE_URL}/collections?embed=true${previewParam}${themeParam}`

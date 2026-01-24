@@ -9,12 +9,23 @@ const Changelog = () => {
   const offlineMode = localStorage.getItem('offlineMode') === 'true';
   const isOffline = navigator.onLine === false || offlineMode;
 
+  // Helper function to resolve auto theme
+  const getResolvedTheme = () => {
+    const theme = localStorage.getItem('theme') || 'auto';
+    if (theme === 'auto') {
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
+    }
+    return theme;
+  };
+
   const handleLoad = () => {
     setIsLoading(false);
 
     // Send theme to iframe after it loads
     if (iframeRef.current?.contentWindow) {
-      const theme = localStorage.getItem('theme') || 'auto';
+      const theme = getResolvedTheme();
       const blogOrigin = new URL(variables.constants.CHANGELOG_URL).origin;
       iframeRef.current.contentWindow.postMessage(
         {
@@ -61,7 +72,7 @@ const Changelog = () => {
       <iframe
         ref={iframeRef}
         src={(() => {
-          const theme = localStorage.getItem('theme') || 'auto';
+          const theme = getResolvedTheme();
           return `${variables.constants.CHANGELOG_URL}?embed=true&theme=${theme}`;
         })()}
         onLoad={handleLoad}
