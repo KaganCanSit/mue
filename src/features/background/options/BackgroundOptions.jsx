@@ -29,9 +29,20 @@ const BackgroundOptions = memo(() => {
   const [backgroundAPI, setBackgroundAPI] = useState(localStorage.getItem('backgroundAPI') || 'mue');
   const [marketplaceEnabled] = useState(localStorage.getItem('photo_packs'));
   const [effects, setEffects] = useState(false);
-  const [backgroundSettingsSection, setBackgroundSettingsSection] = useState(false);
-  
+
+  // Auto-show source section for types without effects/display settings
+  const shouldShowSourceByDefault = ['colour', 'random_colour', 'random_gradient'].includes(backgroundType);
+  const [backgroundSettingsSection, setBackgroundSettingsSection] = useState(shouldShowSourceByDefault);
+
   const controllerRef = useRef(null);
+
+  // Auto-navigate to source section when switching to colour/random types
+  useEffect(() => {
+    if (shouldShowSourceByDefault) {
+      setBackgroundSettingsSection(true);
+      setEffects(false);
+    }
+  }, [shouldShowSourceByDefault]);
 
   const getBackgroundCategories = useCallback(async () => {
     const data = await (
@@ -139,7 +150,7 @@ const BackgroundOptions = memo(() => {
         />
       );
     }
-    
+
     if (backgroundSettingsSection) {
       return (
         <Header
@@ -151,7 +162,7 @@ const BackgroundOptions = memo(() => {
         />
       );
     }
-    
+
     return (
       <Header
         title={variables.getMessage('modals.main.settings.sections.background.title')}
@@ -165,7 +176,7 @@ const BackgroundOptions = memo(() => {
   return (
     <>
       {getHeader()}
-      
+
       {!backgroundSettingsSection && !effects && (
         <>
           <NavigationCard
@@ -189,7 +200,7 @@ const BackgroundOptions = memo(() => {
               />
             }
           />
-          
+
           {showEffects && (
             <NavigationCard
               icon={MdOutlineAutoAwesome}

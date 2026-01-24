@@ -4,6 +4,7 @@ import ColorPicker from 'react-best-gradient-color-picker';
 import { toast } from 'react-toastify';
 import { Row, Content, Action } from 'components/Layout/Settings/Item';
 import { MdRefresh } from 'react-icons/md';
+import EventBus from 'utils/eventbus';
 
 import '../scss/_colourpicker.scss';
 
@@ -15,6 +16,7 @@ const ColourOptions = () => {
   const changeColour = (output) => {
     setColour(output);
     localStorage.setItem('customBackgroundColour', output);
+    EventBus.emit('refresh', 'background');
     showReminder();
   };
 
@@ -22,6 +24,7 @@ const ColourOptions = () => {
     setColour('rgba(0, 0, 0, 0)');
     localStorage.setItem('customBackgroundColour', 'rgba(0, 0, 0, 0)');
     toast(variables.getMessage('toasts.reset'));
+    EventBus.emit('refresh', 'background');
     showReminder();
   };
 
@@ -47,6 +50,9 @@ const ColourOptions = () => {
           hideEyeDrop={true}
           hideColorGuide={true}
           hidePresets={true}
+          hideAdvancedSliders={false}
+          hideColorTypeBtns={false}
+          hideInputType={false}
           height={147}
         />
         <div className="colourReset">
