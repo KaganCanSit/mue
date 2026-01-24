@@ -1,13 +1,14 @@
 import variables from 'config/variables';
 import { MARKETPLACE_URL } from 'config/constants';
 import { memo, useEffect, useRef, useState } from 'react';
+import { updateHash } from 'utils/deepLinking';
 import { MdOutlineWifiOff } from 'react-icons/md';
 import Modal from 'react-modal';
 import Tabs from 'components/Elements/MainModal/backend/Tabs';
 import { useMarketplaceInstall } from 'features/marketplace/components/hooks/useMarketplaceInstall';
 import Lightbox from 'features/marketplace/components/Elements/Lightbox/Lightbox';
 
-function DiscoverContent({ category, onBreadcrumbsChange }) {
+function DiscoverContent({ category, onBreadcrumbsChange, deepLinkData }) {
   const iframeRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showLightbox, setShowLightbox] = useState(false);
@@ -42,6 +43,11 @@ function DiscoverContent({ category, onBreadcrumbsChange }) {
   };
 
   useEffect(() => {
+    // Skip category navigation if we have a deep link item to navigate to
+    if (deepLinkData?.itemId) {
+      return;
+    }
+
     // Show loader when category changes
     setIsLoading(true);
     // Clear breadcrumbs when navigating to a new category
@@ -62,7 +68,7 @@ function DiscoverContent({ category, onBreadcrumbsChange }) {
         iframeRef.current.src = `${MARKETPLACE_URL}?embed=true&type=${category}${previewParam}${themeParam}`;
       }
     }
-  }, [category, onBreadcrumbsChange, previewParam]);
+  }, [category, onBreadcrumbsChange, previewParam, deepLinkData]);
 
   useEffect(() => {
     // Check for item parameter in URL and update iframe
@@ -114,6 +120,25 @@ function DiscoverContent({ category, onBreadcrumbsChange }) {
       window.removeEventListener('popstate', checkAndLoadItem);
     };
   }, [category, previewParam]);
+
+  // Handle deep link item navigation on mount
+  useEffect(() => {
+    if (deepLinkData?.itemId && iframeRef.current) {
+      setIsLoading(true);
+      const theme = getResolvedTheme();
+      const themeParam = `&theme=${theme}`;
+
+      // Map category to URL path segment
+      const pathMap = {
+        photo_packs: 'packs',
+        quote_packs: 'packs',
+        preset_settings: 'presets',
+      };
+
+      const pathSegment = deepLinkData.category ? (pathMap[deepLinkData.category] || 'packs') : 'packs';
+      iframeRef.current.src = `${MARKETPLACE_URL}/${pathSegment}/${deepLinkData.itemId}?embed=true${previewParam}${themeParam}`;
+    }
+  }, [deepLinkData, previewParam]);
 
   useEffect(() => {
     // Listen for postMessage events from the iframe
@@ -198,6 +223,15 @@ function DiscoverContent({ category, onBreadcrumbsChange }) {
           }
           break;
 
+        case 'marketplace:navigate':
+          // Update parent URL when iframe navigates
+          if (payload?.itemId) {
+            updateHash(`#discover/${payload.itemId}`);
+          } else if (payload?.category) {
+            updateHash(`#discover/${payload.category}`);
+          }
+          break;
+
         default:
           break;
       }
@@ -278,6 +312,16 @@ function DiscoverContent({ category, onBreadcrumbsChange }) {
         src={(() => {
           const theme = getResolvedTheme();
           const themeParam = `&theme=${theme}`;
+          // If we have a deep link item ID, navigate directly to the item
+          if (deepLinkData?.itemId) {
+            const pathMap = {
+              photo_packs: 'packs',
+              quote_packs: 'packs',
+              preset_settings: 'presets',
+            };
+            const pathSegment = deepLinkData.category ? (pathMap[deepLinkData.category] || 'packs') : 'packs';
+            return `${MARKETPLACE_URL}/${pathSegment}/${deepLinkData.itemId}?embed=true${previewParam}${themeParam}`;
+          }
           return category === 'collections'
             ? `${MARKETPLACE_URL}/collections?embed=true${previewParam}${themeParam}`
             : `${MARKETPLACE_URL}?embed=true&type=${category}${previewParam}${themeParam}`;
@@ -316,7 +360,7 @@ function Discover(props) {
     >
       {sections.map(({ label, name }) => (
         <div key={name} label={variables.getMessage(label)} name={name}>
-          <DiscoverContent category={name} onBreadcrumbsChange={props.onBreadcrumbsChange} />
+          <DiscoverContent category={name} onBreadcrumbsChange={props.onBreadcrumbsChange} deepLinkData={props.deepLinkData} />
         </div>
       ))}
     </Tabs>
