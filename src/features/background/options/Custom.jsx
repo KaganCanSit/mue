@@ -148,19 +148,22 @@ const CustomSettings = memo(() => {
     setCurrentBackgroundIndex(newIndex);
   }, [customBackground.length]);
 
-  const addCustomURL = useCallback(async (e) => {
-    // regex: https://ihateregex.io/expr/url/
-    const urlRegex =
-      /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,63}\b([-a-zA-Z0-9()!@:%_.~#?&=]*)/;
-    if (urlRegex.test(e) === false) {
-      return setUrlError(variables.getMessage('widgets.quicklinks.url_error'));
-    }
+  const addCustomURL = useCallback(
+    async (e) => {
+      // regex: https://ihateregex.io/expr/url/
+      const urlRegex =
+        /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,63}\b([-a-zA-Z0-9()!@:%_.~#?&=]*)/;
+      if (urlRegex.test(e) === false) {
+        return setUrlError(variables.getMessage('widgets.quicklinks.url_error'));
+      }
 
-    const newIndex = customBackground.length;
-    setCustomURLModal(false);
-    setCurrentBackgroundIndex(newIndex);
-    await handleCustomBackground({ target: { result: e } }, newIndex);
-  }, [customBackground.length, handleCustomBackground]);
+      const newIndex = customBackground.length;
+      setCustomURLModal(false);
+      setCurrentBackgroundIndex(newIndex);
+      await handleCustomBackground({ target: { result: e } }, newIndex);
+    },
+    [customBackground.length, handleCustomBackground],
+  );
 
   useEffect(() => {
     const dnd = customDnd.current;
@@ -229,7 +232,7 @@ const CustomSettings = memo(() => {
         dnd.ondrop = null;
       }
     };
-  }, [currentBackgroundIndex, handleCustomBackground]);
+  }, [customBackground.length, handleCustomBackground]);
 
   const hasVideo = customBackground.filter((bg) => bg && videoCheck(bg)).length > 0;
 
@@ -265,9 +268,7 @@ const CustomSettings = memo(() => {
               type="settings"
               onClick={uploadCustomBackground}
               icon={<MdOutlineFileUpload />}
-              label={variables.getMessage(
-                'modals.main.settings.sections.background.source.upload',
-              )}
+              label={variables.getMessage('modals.main.settings.sections.background.source.upload')}
             />
             <Button
               type="settings"
@@ -285,10 +286,7 @@ const CustomSettings = memo(() => {
               {customBackground.map((url, index) => (
                 <div key={index}>
                   {url && !videoCheck(url) ? (
-                    <img
-                      alt={'Custom background ' + (index || 0)}
-                      src={customBackground[index]}
-                    />
+                    <img alt={'Custom background ' + (index || 0)} src={customBackground[index]} />
                   ) : url && videoCheck(url) ? (
                     <MdPersonalVideo className="customvideoicon" />
                   ) : null}
@@ -318,12 +316,9 @@ const CustomSettings = memo(() => {
                   )}
                 </span>
                 <span className="subtitle">
-                  {variables.getMessage(
-                    'modals.main.settings.sections.background.source.formats',
-                    {
-                      list: 'jpeg, png, webp, webm, gif, mp4, webm, ogg',
-                    },
-                  )}
+                  {variables.getMessage('modals.main.settings.sections.background.source.formats', {
+                    list: 'jpeg, png, webp, webm, gif, mp4, webm, ogg',
+                  })}
                 </span>
                 <Button
                   type="settings"

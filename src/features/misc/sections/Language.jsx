@@ -7,6 +7,7 @@ import { TextField, InputAdornment } from '@mui/material';
 import { Radio, Checkbox } from 'components/Form/Settings';
 
 import languages from '@/i18n/languages.json';
+import translationPercentages from '@/i18n/translationPercentages.json';
 
 const LanguageOptions = () => {
   const t = useT();
@@ -29,6 +30,7 @@ const LanguageOptions = () => {
       // Convert language code to ISO format for Intl.DisplayNames
       // e.g., "en_GB" -> "en-GB", "zh_CN" -> "zh-CN"
       const isoCode = lang.value.replace('_', '-');
+      const percentage = translationPercentages[lang.value]?.percent || 0;
 
       let translatedName;
       try {
@@ -37,25 +39,31 @@ const LanguageOptions = () => {
         if (translatedName) {
           translatedName = translatedName.split(' (')[0];
         }
-      } catch (e) {
+      } catch {
         // Fallback if the code isn't recognized
         translatedName = nativeName;
       }
 
       // Show native name first, then translated name in brackets (greyed and smaller)
-      const displayName = !translatedName || translatedName === nativeName
-        ? nativeName
-        : (
-            <>
-              {nativeName}{' '}
-              <span style={{ color: '#999', fontSize: '0.85em' }}>({translatedName})</span>
-            </>
-          );
+      const displayName =
+        !translatedName || translatedName === nativeName ? (
+          <>
+            {nativeName} <span style={{ color: '#999', fontSize: '0.85em' }}>({percentage}%)</span>
+          </>
+        ) : (
+          <>
+            {nativeName}{' '}
+            <span style={{ color: '#999', fontSize: '0.85em' }}>
+              ({translatedName} • {percentage}%)
+            </span>
+          </>
+        );
 
       return {
         name: displayName,
         value: lang.value,
         nativeName,
+        percentage,
         searchText: `${nativeName} ${translatedName || ''}`.toLowerCase(),
       };
     });
@@ -68,26 +76,26 @@ const LanguageOptions = () => {
   const filteredLanguages = useMemo(() => {
     if (!searchQuery.trim()) return languageOptions;
     const query = searchQuery.toLowerCase();
-    return languageOptions.filter(lang => lang.searchText.includes(query));
+    return languageOptions.filter((lang) => lang.searchText.includes(query));
   }, [languageOptions, searchQuery]);
 
   // Detect system language
   const systemLanguage = useMemo(() => {
     const browserLang = navigator.language.replace('-', '_');
     // Check exact match first, then base language
-    return languages.find(l => l.value === browserLang) ||
-           languages.find(l => l.value.startsWith(browserLang.split('_')[0]));
+    return (
+      languages.find((l) => l.value === browserLang) ||
+      languages.find((l) => l.value.startsWith(browserLang.split('_')[0]))
+    );
   }, []);
 
   // Find current language option for display
-  const currentLangOption = languageOptions.find(l => l.value === currentLanguage);
+  const currentLangOption = languageOptions.find((l) => l.value === currentLanguage);
 
   return (
     <>
       <div className="modalHeader">
-        <span className="mainTitle">
-          {languageTitle}
-        </span>
+        <span className="mainTitle">{languageTitle}</span>
         <div className="headerActions">
           <a
             className="link"
@@ -107,7 +115,14 @@ const LanguageOptions = () => {
           category="other"
         />
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: 16,
+        }}
+      >
         <TextField
           placeholder={t('modals.main.settings.sections.language.search')}
           value={searchQuery}
@@ -140,7 +155,8 @@ const LanguageOptions = () => {
         />
         {currentLangOption && (
           <div style={{ color: '#888', whiteSpace: 'nowrap' }}>
-            {t('modals.main.settings.sections.language.current')}: <strong style={{ color: 'var(--fg)' }}>{currentLangOption.nativeName}</strong>
+            {t('modals.main.settings.sections.language.current')}:{' '}
+            <strong style={{ color: 'var(--fg)' }}>{currentLangOption.nativeName}</strong>
           </div>
         )}
       </div>

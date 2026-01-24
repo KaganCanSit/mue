@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { MdOutlineOpenInNew, MdSearch } from 'react-icons/md';
 import { TextField, InputAdornment } from '@mui/material';
 import languages from '@/i18n/languages.json';
+import translationPercentages from '@/i18n/translationPercentages.json';
 import { useT, useTranslation } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 
@@ -23,6 +24,7 @@ function ChooseLanguage() {
     const mappedLanguages = languages.map((lang) => {
       const nativeName = lang.name;
       const isoCode = lang.value.replace('_', '-');
+      const percentage = translationPercentages[lang.value]?.percent || 0;
 
       let translatedName;
       try {
@@ -30,17 +32,21 @@ function ChooseLanguage() {
         if (translatedName) {
           translatedName = translatedName.split(' (')[0];
         }
-      } catch (e) {
+      } catch {
         translatedName = nativeName;
       }
 
       const displayName =
         !translatedName || translatedName === nativeName ? (
-          nativeName
+          <>
+            {nativeName} <span style={{ color: '#999', fontSize: '0.85em' }}>({percentage}%)</span>
+          </>
         ) : (
           <>
             {nativeName}{' '}
-            <span style={{ color: '#999', fontSize: '0.85em' }}>({translatedName})</span>
+            <span style={{ color: '#999', fontSize: '0.85em' }}>
+              ({translatedName} • {percentage}%)
+            </span>
           </>
         );
 
@@ -48,6 +54,7 @@ function ChooseLanguage() {
         name: displayName,
         value: lang.value,
         nativeName,
+        percentage,
         searchText: `${nativeName} ${translatedName || ''}`.toLowerCase(),
       };
     });
@@ -60,14 +67,16 @@ function ChooseLanguage() {
   const filteredLanguages = useMemo(() => {
     if (!searchQuery.trim()) return languageOptions;
     const query = searchQuery.toLowerCase();
-    return languageOptions.filter(lang => lang.searchText.includes(query));
+    return languageOptions.filter((lang) => lang.searchText.includes(query));
   }, [languageOptions, searchQuery]);
 
   // Detect system language
   const systemLanguage = useMemo(() => {
     const browserLang = navigator.language.replace('-', '_');
-    return languages.find(l => l.value === browserLang) ||
-           languages.find(l => l.value.startsWith(browserLang.split('_')[0]));
+    return (
+      languages.find((l) => l.value === browserLang) ||
+      languages.find((l) => l.value.startsWith(browserLang.split('_')[0]))
+    );
   }, []);
 
   return (

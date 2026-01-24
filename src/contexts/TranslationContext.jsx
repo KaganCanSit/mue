@@ -1,4 +1,12 @@
-import { createContext, useContext, useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useRef,
+} from 'react';
 import { initTranslations, translations } from 'lib/translations';
 import variables from 'config/variables';
 import EventBus from 'utils/eventbus';
@@ -20,37 +28,47 @@ export function TranslationProvider({ children, initialLanguage }) {
   }, [currentLanguage, initialLanguage]);
 
   // Change language function
-  const changeLanguage = useCallback((newLanguage) => {
-    // Update the i18n instance
-    i18nInstance.current = initTranslations(newLanguage);
-    variables.language = i18nInstance.current;
-    variables.languagecode = newLanguage;
-    document.documentElement.lang = newLanguage.replace('_', '-');
+  const changeLanguage = useCallback(
+    (newLanguage) => {
+      // Update the i18n instance
+      i18nInstance.current = initTranslations(newLanguage);
+      variables.language = i18nInstance.current;
+      variables.languagecode = newLanguage;
+      document.documentElement.lang = newLanguage.replace('_', '-');
 
-    // Update tab name if it's still the default
-    const currentTabName = localStorage.getItem('tabName');
-    const oldDefaultTabName = i18nInstance.current?.getMessage(currentLanguage, 'tabname');
+      // Update tab name if it's still the default
+      const currentTabName = localStorage.getItem('tabName');
+      const oldDefaultTabName = i18nInstance.current?.getMessage(currentLanguage, 'tabname');
 
-    if (currentTabName === oldDefaultTabName || !currentTabName) {
-      const newTabName = translations[newLanguage.replace('-', '_')]?.tabname ||
-                        i18nInstance.current?.getMessage(newLanguage, 'tabname') ||
-                        'Mue';
-      localStorage.setItem('tabName', newTabName);
-      document.title = newTabName;
-    }
+      if (currentTabName === oldDefaultTabName || !currentTabName) {
+        const newTabName =
+          translations[newLanguage.replace('-', '_')]?.tabname ||
+          i18nInstance.current?.getMessage(newLanguage, 'tabname') ||
+          'Mue';
+        localStorage.setItem('tabName', newTabName);
+        document.title = newTabName;
+      }
 
-    // Update language in localStorage
-    localStorage.setItem('language', newLanguage);
+      // Update language in localStorage
+      localStorage.setItem('language', newLanguage);
 
-    // Update state to trigger re-render
-    setCurrentLanguage(newLanguage);
-  }, [currentLanguage]);
+      // Clear weather cache so it refreshes with the new language
+      localStorage.removeItem('currentWeather');
+
+      // Update state to trigger re-render
+      setCurrentLanguage(newLanguage);
+    },
+    [currentLanguage],
+  );
 
   // Single translation function - the main API
-  const t = useCallback((key, optional = {}) => {
-    if (!i18nInstance.current) return key;
-    return i18nInstance.current.getMessage(currentLanguage, key, optional);
-  }, [currentLanguage]);
+  const t = useCallback(
+    (key, optional = {}) => {
+      if (!i18nInstance.current) return key;
+      return i18nInstance.current.getMessage(currentLanguage, key, optional);
+    },
+    [currentLanguage],
+  );
 
   // Listen for EventBus language change events (for backward compatibility)
   useEffect(() => {
@@ -72,18 +90,17 @@ export function TranslationProvider({ children, initialLanguage }) {
     variables.getMessage = (key, optional = {}) => t(key, optional);
   }, [t]);
 
-  const value = useMemo(() => ({
-    language: currentLanguage,
-    languagecode: currentLanguage, // Alias for backward compatibility
-    changeLanguage,
-    t,
-  }), [currentLanguage, changeLanguage, t]);
-
-  return (
-    <TranslationContext.Provider value={value}>
-      {children}
-    </TranslationContext.Provider>
+  const value = useMemo(
+    () => ({
+      language: currentLanguage,
+      languagecode: currentLanguage, // Alias for backward compatibility
+      changeLanguage,
+      t,
+    }),
+    [currentLanguage, changeLanguage, t],
   );
+
+  return <TranslationContext.Provider value={value}>{children}</TranslationContext.Provider>;
 }
 
 export function useTranslation() {
