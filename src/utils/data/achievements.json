@@ -3,7 +3,7 @@
     "id": "tentabs",
     "condition": {
       "type": "tabsOpened",
-      "amount": 3
+      "amount": 10
     }
   },
   {

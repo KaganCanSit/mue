@@ -30,8 +30,7 @@ const Stats = () => {
   const [clearmodal, setClearmodal] = useState(false);
 
   const updateAchievements = useCallback(() => {
-    const achieved = checkAchievements(stats);
-    setAchievements(achieved);
+    setAchievements(checkAchievements(stats));
   }, [stats]);
 
   useEffect(() => {
@@ -45,11 +44,14 @@ const Stats = () => {
   const resetStats = () => {
     const emptyStats = {};
     localStorage.setItem('statsData', JSON.stringify(emptyStats));
-    localStorage.setItem('achievements', JSON.stringify(initialAchievements));
+    localStorage.setItem('achievements', JSON.stringify([]));
+    localStorage.setItem('achievementTimestamps', JSON.stringify({}));
     setStats(emptyStats);
+    // Reset achievements to initial state (all locked, no timestamps)
+    const resetAchievements = initialAchievements.map((a) => ({ ...a, achieved: false, timestamp: undefined }));
+    setAchievements(resetAchievements);
     setClearmodal(false);
     toast(variables.getMessage('toasts.stats_reset'));
-    updateAchievements(); // Call updateAchievements to refresh achievements after reset
   };
 
   const downloadStats = () => {
