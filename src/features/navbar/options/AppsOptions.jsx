@@ -3,6 +3,7 @@ import variables from 'config/variables';
 import { useState } from 'react';
 
 import Modal from 'react-modal';
+import EventBus from 'utils/eventbus';
 import { MdAddLink } from 'react-icons/md';
 
 import { AddModal } from 'components/Elements/AddModal';
@@ -61,6 +62,7 @@ function AppsOptions({ appsEnabled }) {
       iconError: '',
     });
 
+    EventBus.emit('refresh', 'navbar');
     variables.stats.postEvent('feature', 'App link add');
   };
 
@@ -87,6 +89,8 @@ function AppsOptions({ appsEnabled }) {
       edit: false,
       newLink: false,
     }));
+
+    EventBus.emit('refresh', 'navbar');
   };
 
   const deleteLink = (key, event) => {
@@ -102,6 +106,7 @@ function AppsOptions({ appsEnabled }) {
       items: data,
     }));
 
+    EventBus.emit('refresh', 'navbar');
     variables.stats.postEvent('feature', 'App link delete');
   };
 
