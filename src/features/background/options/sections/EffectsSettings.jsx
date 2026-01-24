@@ -32,7 +32,7 @@ const EffectsSettings = ({ backgroundFilter, onFilterChange }) => {
           name="brightness"
           min="0"
           max="100"
-          default="90"
+          default="100"
           display="%"
           marks={values.background}
           category="backgroundeffect"

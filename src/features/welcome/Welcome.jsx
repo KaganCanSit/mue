@@ -29,7 +29,7 @@ function WelcomeModal({ modalClose, modalSkip }) {
   const [importedSettings, setImportedSettings] = useState([]);
   const finalTab = 6;
 
-  // useEffect hook to handle tab changes and event bus listener
+  // useEffect hook to handle tab changes
   useEffect(() => {
     // Get the current welcome tab from local storage
     const welcomeTab = localStorage.getItem('welcomeTab');
@@ -42,24 +42,7 @@ function WelcomeModal({ modalClose, modalSkip }) {
           : variables.getMessage('modals.welcome.buttons.finish'),
       );
     }
-
-    // Listener for the 'refresh' event
-    const refreshListener = (data) => {
-      if (data === 'welcomeLanguage') {
-        localStorage.setItem('welcomeTab', currentTab);
-        localStorage.setItem('bgtransition', false);
-        window.location.reload();
-      }
-    };
-
-    // Subscribe to the 'refresh' event
-    EventBus.on('refresh', refreshListener);
-
-    // Cleanup function to unsubscribe from the 'refresh' event
-    return () => {
-      EventBus.off('refresh', refreshListener);
-    };
-  }, [currentTab, finalTab]);
+  }, [finalTab]);
 
   // Function to update the current tab and button text
   const updateTabAndButtonText = (newTab) => {
