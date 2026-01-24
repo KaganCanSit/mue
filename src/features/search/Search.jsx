@@ -1,8 +1,10 @@
 /* global chrome */
 import variables from 'config/variables';
-import { memo, createRef, useEffect, useState, useCallback } from 'react';
+import { memo, useRef, useEffect, useState, useCallback } from 'react';
 import { MdSearch, MdMic } from 'react-icons/md';
 import { Tooltip } from 'components/Elements';
+
+import EventBus from 'utils/eventbus';
 
 import './search.scss';
 
@@ -12,7 +14,7 @@ function Search() {
     localStorage.getItem('widgetStyle') === 'legacy' ? 'searchIcons old' : 'searchIcons',
   );
 
-  const micIcon = createRef();
+  const micIcon = useRef(null);
 
   const startSpeechRecognition = useCallback(() => {
     const voiceSearch = new window.webkitSpeechRecognition();
@@ -64,8 +66,10 @@ function Search() {
           <MdMic className="micIcon" />
         </button>,
       );
+    } else {
+      setMicrophone(null);
     }
-  }, [micIcon, startSpeechRecognition]);
+  }, [startSpeechRecognition]);
 
   useEffect(() => {
     init();
@@ -75,6 +79,12 @@ function Search() {
         element.focus();
       }
     }
+
+    EventBus.on('refresh', (data) => {
+      if (data === 'search') {
+        init();
+      }
+    });
   }, [init]);
 
   function searchButton(e) {
