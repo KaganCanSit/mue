@@ -184,7 +184,7 @@ class About extends PureComponent {
         </div>
 
         <div className="settingsRow" style={{ flexFlow: 'column', alignItems: 'flex-start' }}>
-          <span className="title">
+          <span className="title" style={{ marginBottom: '1em' }}>
             {variables.getMessage('modals.main.settings.sections.about.contact_us')}
           </span>
           <div className="aboutContact">

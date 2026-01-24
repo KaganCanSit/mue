@@ -162,6 +162,12 @@ legend,
   .MuiFormControlLabel-root {
     width: 100%;
   }
+
+  p {
+    @include themed {
+      color: t($subColor) !important;
+    }
+  }
 }
 
 .css-w66kx-MuiChip-root {
