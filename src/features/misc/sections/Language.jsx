@@ -4,7 +4,7 @@ import { useT, useTranslation } from 'contexts/TranslationContext';
 import { MdOutlineOpenInNew, MdSearch, MdComputer } from 'react-icons/md';
 import { TextField, InputAdornment } from '@mui/material';
 
-import { Radio } from 'components/Form/Settings';
+import { Radio, Checkbox } from 'components/Form/Settings';
 
 import languages from '@/i18n/languages.json';
 
@@ -99,6 +99,13 @@ const LanguageOptions = () => {
             <MdOutlineOpenInNew />
           </a>
         </div>
+      </div>
+      <div style={{ marginBottom: '16px' }}>
+        <Checkbox
+          name="localeFormatting"
+          text={t('modals.main.settings.sections.language.locale_formatting')}
+          category="other"
+        />
       </div>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
         <TextField

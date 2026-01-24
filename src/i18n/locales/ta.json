@@ -479,7 +479,8 @@
             "quote": "மேற்கோள் மொழி",
             "search": "Search languages...",
             "current": "Current",
-            "use_system": "Use system language"
+            "use_system": "Use system language",
+            "locale_formatting": "Format numbers for your language"
           },
           "changelog": {
             "title": "பதிவை மாற்றவும்",

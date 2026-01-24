@@ -41,7 +41,7 @@ import zh_Hant from 'translations/zh_Hant.json';
  * @returns The i18n object.
  */
 export function initTranslations(locale) {
-  const i18n = new I18n(locale, {
+  const i18n = new I18n('en_GB', {
     ar,
     arz,
     az,

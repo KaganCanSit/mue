@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 
 import { convertTimezone } from 'utils/date';
+import { formatPercentage } from 'utils/formatNumber';
 import { AnalogClock } from './components/AnalogClock';
 import { VerticalClock } from './components/VerticalClock';
 import EventBus from 'utils/eventbus';
@@ -33,7 +34,7 @@ const Clock = () => {
 
       switch (localStorage.getItem('timeType')) {
         case 'percentageComplete':
-          setTime((now.getHours() / 24).toFixed(2).replace('0.', '') + '%');
+          setTime(formatPercentage(now.getHours() / 24));
           setAmpm('');
           break;
         case 'analogue':

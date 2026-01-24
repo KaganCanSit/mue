@@ -16,6 +16,7 @@ import { Header, CustomActions } from 'components/Layout/Settings';
 import { ClearModal } from './ClearModal';
 
 import { saveFile } from 'utils/saveFile';
+import { formatNumber } from 'utils/formatNumber';
 import variables from 'config/variables';
 import {
   getLocalisedAchievementData,
@@ -82,7 +83,7 @@ const Stats = () => {
   const StatsElement = ({ title, value }) => (
     <div>
       <span className="subtitle">{title}</span>
-      <span>{value}</span>
+      <span>{formatNumber(value)}</span>
     </div>
   );
 
