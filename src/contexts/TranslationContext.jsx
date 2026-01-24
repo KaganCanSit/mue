@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { initTranslations, translations } from 'lib/translations';
 import variables from 'config/variables';
 import EventBus from 'utils/eventbus';
@@ -6,25 +6,51 @@ import EventBus from 'utils/eventbus';
 const TranslationContext = createContext();
 
 export function TranslationProvider({ children, initialLanguage }) {
-  const [languagecode, setLanguagecode] = useState(initialLanguage);
+  const [currentLanguage, setCurrentLanguage] = useState(initialLanguage);
+  const i18nInstance = useRef(null);
 
+  // Initialize i18n instance once
+  useEffect(() => {
+    i18nInstance.current = initTranslations(currentLanguage);
+    variables.language = i18nInstance.current;
+    variables.languagecode = currentLanguage;
+    document.documentElement.lang = currentLanguage.replace('_', '-');
+  }, [currentLanguage]);
+
+  // Change language function
   const changeLanguage = useCallback((newLanguage) => {
     // Update the i18n instance
-    variables.language = initTranslations(newLanguage);
+    i18nInstance.current = initTranslations(newLanguage);
+    variables.language = i18nInstance.current;
     variables.languagecode = newLanguage;
     document.documentElement.lang = newLanguage.replace('_', '-');
 
     // Update tab name if it's still the default
-    if (localStorage.getItem('tabName') === variables.getMessage('tabname')) {
-      const newTabName = translations[newLanguage.replace('-', '_')]?.tabname || variables.getMessage('tabname');
+    const currentTabName = localStorage.getItem('tabName');
+    const oldDefaultTabName = i18nInstance.current?.getMessage(currentLanguage, 'tabname');
+
+    if (currentTabName === oldDefaultTabName || !currentTabName) {
+      const newTabName = translations[newLanguage.replace('-', '_')]?.tabname ||
+                        i18nInstance.current?.getMessage(newLanguage, 'tabname') ||
+                        'Mue';
       localStorage.setItem('tabName', newTabName);
       document.title = newTabName;
     }
 
-    // Update state to trigger re-render
-    setLanguagecode(newLanguage);
-  }, []);
+    // Update language in localStorage
+    localStorage.setItem('language', newLanguage);
 
+    // Update state to trigger re-render
+    setCurrentLanguage(newLanguage);
+  }, [currentLanguage]);
+
+  // Single translation function - the main API
+  const t = useCallback((key, optional = {}) => {
+    if (!i18nInstance.current) return key;
+    return i18nInstance.current.getMessage(currentLanguage, key, optional);
+  }, [currentLanguage]);
+
+  // Listen for EventBus language change events (for backward compatibility)
   useEffect(() => {
     const handleLanguageChange = (data) => {
       if (data?.language) {
@@ -39,8 +65,20 @@ export function TranslationProvider({ children, initialLanguage }) {
     };
   }, [changeLanguage]);
 
+  // Update variables.getMessage for backward compatibility
+  useEffect(() => {
+    variables.getMessage = (key, optional = {}) => t(key, optional);
+  }, [t]);
+
+  const value = useMemo(() => ({
+    language: currentLanguage,
+    languagecode: currentLanguage, // Alias for backward compatibility
+    changeLanguage,
+    t,
+  }), [currentLanguage, changeLanguage, t]);
+
   return (
-    <TranslationContext.Provider value={{ languagecode, changeLanguage }}>
+    <TranslationContext.Provider value={value}>
       {children}
     </TranslationContext.Provider>
   );
@@ -54,10 +92,8 @@ export function useTranslation() {
   return context;
 }
 
-// Hook for reactive translations - triggers re-render when language changes
-export function useMessage(key, optional = {}) {
-  const { languagecode } = useTranslation();
-  // The languagecode dependency ensures this hook re-evaluates when language changes
-  // This is intentional - we use it to trigger re-renders even though it's not directly used
-  return languagecode ? variables.getMessage(key, optional) : '';
+// Convenience hook - just returns the t function
+export function useT() {
+  const { t } = useTranslation();
+  return t;
 }

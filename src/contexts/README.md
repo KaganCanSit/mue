@@ -1,43 +1,96 @@
 # Translation System
 
-## Using Reactive Translations
+## Refactored Translation System ✨
 
-The app now supports instant language switching without page refresh!
+The app now has a robust, centralized translation system that updates instantly without page refresh!
 
-### For new components
+### Using Translations (New API)
 
-Use the `useMessage` hook for reactive translations:
+**Recommended approach** - Use the `useT()` hook:
 
 ```jsx
-import { useMessage } from 'contexts/TranslationContext';
+import { useT } from 'contexts/TranslationContext';
 
 function MyComponent() {
-  const title = useMessage('modals.main.title');
-  const description = useMessage('modals.main.description');
+  const t = useT();
 
   return (
     <div>
-      <h1>{title}</h1>
-      <p>{description}</p>
+      <h1>{t('modals.main.title')}</h1>
+      <p>{t('modals.main.description')}</p>
     </div>
   );
 }
 ```
 
-### For existing components
+**Alternative** - Use the full hook:
 
-The old `variables.getMessage()` method still works but won't automatically update when language changes. Gradually migrate to `useMessage` for components that display translations prominently.
+```jsx
+import { useTranslation } from 'contexts/TranslationContext';
 
-### How it works
+function MyComponent() {
+  const { t, language, changeLanguage } = useTranslation();
 
-1. `TranslationProvider` wraps the app and listens for language change events
-2. When language is changed via the Radio component, it emits a `languageChange` event
-3. The provider updates the i18n instance and triggers re-renders
-4. Components using `useMessage` automatically update to show new translations
+  return (
+    <div>
+      <h1>{t('modals.main.title')}</h1>
+      <button onClick={() => changeLanguage('es')}>Español</button>
+    </div>
+  );
+}
+```
+
+### Backward Compatibility
+
+The old `variables.getMessage()` method still works and is automatically reactive:
+
+```jsx
+// This still works and updates on language change
+const title = variables.getMessage('modals.main.title');
+```
+
+This allows gradual migration of components.
+
+### How It Works
+
+1. **TranslationProvider** wraps the app and manages the i18n instance
+2. **Single source of truth** - All translation logic is centralized in the context
+3. **Automatic reactivity** - Components using `t()` automatically re-render on language change
+4. **Backward compatible** - `variables.getMessage()` is updated to use the context internally
+5. **No EventBus needed** - Direct context updates for language changes
 
 ### Benefits
 
-- No page refresh needed
-- Minimal performance impact (translations already loaded)
-- Backward compatible with existing code
-- Smooth user experience
+✅ **Instant updates** - No page refresh needed
+✅ **Single API** - One consistent way to translate
+✅ **Automatic re-renders** - React handles updates efficiently
+✅ **Minimal performance impact** - Translations pre-loaded, only switching active language
+✅ **Type-safe ready** - Easy to add TypeScript support later
+✅ **Clean architecture** - Centralized translation logic
+
+### Migration Guide
+
+**Before:**
+```jsx
+const title = variables.getMessage('modals.main.title');
+```
+
+**After:**
+```jsx
+const t = useT();
+const title = t('modals.main.title');
+```
+
+### Components Updated
+
+Core navigation and UI:
+- ✅ TranslationContext (centralized API)
+- ✅ Radio component (language selector)
+- ✅ Tab, Tabs (sidebar navigation)
+- ✅ ModalTopBar (breadcrumbs)
+- ✅ Settings view
+- ✅ Language section
+- ✅ Refresh button
+- ✅ Welcome modal
+
+All other components continue to work via backward compatibility.

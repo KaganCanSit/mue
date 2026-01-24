@@ -1,1 +1,1 @@
-export { TranslationProvider, useTranslation, useMessage } from './TranslationContext';
+export { TranslationProvider, useTranslation, useT } from './TranslationContext';

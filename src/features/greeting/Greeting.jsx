@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import variables from 'config/variables';
 import { nth, convertTimezone } from 'utils/date';
 import EventBus from 'utils/eventbus';
+import { useT } from 'contexts';
 import './greeting.scss';
 
 /**
@@ -44,6 +45,7 @@ const calculateAge = (date) => {
 };
 
 const Greeting = () => {
+  const t = useT();
   const [greeting, setGreeting] = useState('');
   const [display, setDisplay] = useState('block');
   const [fontSize, setFontSize] = useState('1.6em');
@@ -63,13 +65,13 @@ const Greeting = () => {
       let message;
       switch (true) {
         case hour < 12:
-          message = variables.getMessage('widgets.greeting.morning');
+          message = t('widgets.greeting.morning');
           break;
         case hour < 18:
-          message = variables.getMessage('widgets.greeting.afternoon');
+          message = t('widgets.greeting.afternoon');
           break;
         default:
-          message = variables.getMessage('widgets.greeting.evening');
+          message = t('widgets.greeting.evening');
           break;
       }
 
@@ -103,10 +105,10 @@ const Greeting = () => {
 
         if (birth.getDate() === now.getDate() && birth.getMonth() === now.getMonth()) {
           if (localStorage.getItem('birthdayage') === 'true' && calculateAge(birth) !== 0) {
-            const text = variables.getMessage('widgets.greeting.birthday').split(' ');
+            const text = t('widgets.greeting.birthday').split(' ');
             message = `${text[0]} ${nth(calculateAge(birth))} ${text[1]}`;
           } else {
-            message = variables.getMessage('widgets.greeting.birthday');
+            message = t('widgets.greeting.birthday');
           }
         }
       }
@@ -149,7 +151,7 @@ const Greeting = () => {
         clearTimeout(timerRef.current);
       }
     };
-  }, []);
+  }, [t]);
 
   return (
     <span className="greeting" ref={greetingRef} style={{ display, fontSize }}>

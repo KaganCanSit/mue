@@ -1,21 +1,20 @@
-import variables from 'config/variables';
 import { memo, useState, useEffect } from 'react';
-import { useTranslation } from 'contexts/TranslationContext';
+import { useT } from 'contexts/TranslationContext';
 import { getIconComponent, DIVIDER_LABELS } from '../constants/tabConfig';
 
 function Tab({ label, currentTab, onClick, navbarTab }) {
-  const { languagecode } = useTranslation();
+  const t = useT();
   const [isExperimental, setIsExperimental] = useState(true);
 
   useEffect(() => {
     setIsExperimental(localStorage.getItem('experimental') !== 'false');
   }, []);
 
-  // Get the icon component for this label
-  const IconComponent = getIconComponent(label, variables);
+  // Get the icon component for this label (label is already translated)
+  const IconComponent = getIconComponent(label, { getMessage: t });
 
   // Determine if this label should have a divider after it
-  const hasDivider = DIVIDER_LABELS.some((key) => variables.getMessage(key) === label);
+  const hasDivider = DIVIDER_LABELS.some((key) => t(key) === label);
 
   // Build className
   const baseClass = navbarTab ? 'navbar-item' : 'tab-list-item';
@@ -23,8 +22,7 @@ function Tab({ label, currentTab, onClick, navbarTab }) {
   const className = `${baseClass}${currentTab === label ? ` ${activeClass}` : ''}`;
 
   // Hide experimental tab if experimental mode is disabled
-  const isExperimentalTab =
-    label === variables.getMessage('modals.main.settings.sections.experimental.title');
+  const isExperimentalTab = label === t('modals.main.settings.sections.experimental.title');
   if (isExperimentalTab && !isExperimental) {
     return <hr />;
   }

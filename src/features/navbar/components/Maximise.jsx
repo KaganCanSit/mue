@@ -1,11 +1,13 @@
 import variables from 'config/variables';
 import { memo, useState, useCallback } from 'react';
+import { useT } from 'contexts';
 
 import { MdCropFree } from 'react-icons/md';
 
 import { Tooltip } from 'components/Elements';
 
 const Maximise = memo(({ fontSize }) => {
+  const t = useT();
   const [hidden, setHidden] = useState(false);
 
   const setAttribute = useCallback((blur, brightness, filter) => {
@@ -44,7 +46,7 @@ const Maximise = memo(({ fontSize }) => {
   const maximise = useCallback(() => {
     // hide widgets
     const widgets = document.getElementById('widgets');
-    
+
     if (!hidden) {
       widgets.style.display = 'none';
       setHidden(true);
@@ -60,13 +62,13 @@ const Maximise = memo(({ fontSize }) => {
 
   return (
     <Tooltip
-      title={variables.getMessage('modals.main.settings.sections.background.buttons.view')}
+      title={t('modals.main.settings.sections.background.buttons.view')}
     >
       <button
         className="navbarButton"
         style={{ fontSize }}
         onClick={maximise}
-        aria-label={variables.getMessage('modals.main.settings.sections.background.buttons.view')}
+        aria-label={t('modals.main.settings.sections.background.buttons.view')}
       >
         <MdCropFree className="topicons" />
       </button>

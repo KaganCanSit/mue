@@ -1,34 +1,39 @@
 import { useState, useEffect } from 'react';
-import variables from 'config/variables';
+import { useT } from 'contexts/TranslationContext';
 import { MdRefresh } from 'react-icons/md';
 import { Tooltip } from 'components/Elements';
 import EventBus from 'utils/eventbus';
-import { useTranslation } from 'contexts/TranslationContext';
+import variables from 'config/variables';
 
 function Refresh() {
-  const { languagecode } = useTranslation();
+  const t = useT();
   const [refreshText, setRefreshText] = useState('');
   const [refreshOption, setRefreshOption] = useState(localStorage.getItem('refreshOption') || '');
 
   useEffect(() => {
-    EventBus.on('refresh', (data) => {
+    const handleRefresh = (data) => {
       if (data === 'navbar' || data === 'background' || data === 'language') {
         setRefreshOption(localStorage.getItem('refreshOption'));
         updateRefreshText();
       }
-    });
+    };
 
+    EventBus.on('refresh', handleRefresh);
     updateRefreshText();
-  }, [languagecode]);
+
+    return () => {
+      EventBus.off('refresh', handleRefresh);
+    };
+  }, [t]);
 
   function updateRefreshText() {
     let text;
     switch (localStorage.getItem('refreshOption')) {
       case 'background':
-        text = variables.getMessage('modals.main.settings.sections.background.title');
+        text = t('modals.main.settings.sections.background.title');
         break;
       case 'quote':
-        text = variables.getMessage('modals.main.settings.sections.quote.title');
+        text = t('modals.main.settings.sections.quote.title');
         break;
       case 'quotebackground':
         text = new Intl.ListFormat(
@@ -38,14 +43,12 @@ function Refresh() {
             type: 'conjunction',
           },
         ).format([
-          variables.getMessage('modals.main.settings.sections.quote.title'),
-          variables.getMessage('modals.main.settings.sections.background.title'),
+          t('modals.main.settings.sections.quote.title'),
+          t('modals.main.settings.sections.background.title'),
         ]);
         break;
       default:
-        text = variables.getMessage(
-          'modals.main.settings.sections.appearance.navbar.refresh_options.page',
-        );
+        text = t('modals.main.settings.sections.appearance.navbar.refresh_options.page');
         break;
     }
 

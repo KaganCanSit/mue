@@ -1,6 +1,6 @@
-import variables from 'config/variables';
 import { useState, useEffect } from 'react';
-import { useTranslation } from 'contexts/TranslationContext';
+import { useT } from 'contexts/TranslationContext';
+import variables from 'config/variables';
 import Tab from './Tab';
 import ReminderInfo from '../components/ReminderInfo';
 import ErrorBoundary from '../../../../features/misc/modals/ErrorBoundary';
@@ -16,7 +16,7 @@ const Tabs = ({
   navigationTrigger,
   sections,
 }) => {
-  const { languagecode } = useTranslation();
+  const t = useT();
 
   // Find initial section from deep link if available
   const getInitialSection = () => {
@@ -24,7 +24,7 @@ const Tabs = ({
       const section = sections.find((s) => s.name === deepLinkData.section);
       if (section) {
         return {
-          label: variables.getMessage(section.label),
+          label: t(section.label),
           name: section.name,
         };
       }
@@ -66,23 +66,23 @@ const Tabs = ({
     if (sections && currentName) {
       const section = sections.find((s) => s.name === currentName);
       if (section) {
-        const newLabel = variables.getMessage(section.label);
+        const newLabel = t(section.label);
         setCurrentTab(newLabel);
       }
     }
-  }, [languagecode]);
+  }, [t, sections, currentName]);
 
   // Handle navigation trigger for settings sections (popstate)
   useEffect(() => {
     if (navigationTrigger?.type === 'settings-section' && sections) {
       const section = sections.find((s) => s.name === navigationTrigger.data);
       if (section) {
-        const label = variables.getMessage(section.label);
+        const label = t(section.label);
         setCurrentTab(label);
         setCurrentName(section.name);
       }
     }
-  }, [navigationTrigger, sections]);
+  }, [navigationTrigger, sections, t]);
 
   // Reset to first tab when requested
   useEffect(() => {

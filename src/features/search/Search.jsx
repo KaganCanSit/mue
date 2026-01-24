@@ -3,12 +3,14 @@ import variables from 'config/variables';
 import { memo, useRef, useEffect, useState, useCallback } from 'react';
 import { MdSearch, MdMic } from 'react-icons/md';
 import { Tooltip } from 'components/Elements';
+import { useT } from 'contexts';
 
 import EventBus from 'utils/eventbus';
 
 import './search.scss';
 
 function Search() {
+  const t = useT();
   const [microphone, setMicrophone] = useState(null);
   const [classList] = useState(
     localStorage.getItem('widgetStyle') === 'legacy' ? 'searchIcons old' : 'searchIcons',
@@ -113,14 +115,14 @@ function Search() {
       <div className="searchMain">
         <div className={classList}>
           <Tooltip
-            title={variables.getMessage('modals.main.settings.sections.search.voice_search')}
+            title={t('modals.main.settings.sections.search.voice_search')}
           >
             {microphone}
           </Tooltip>
         </div>
         <form onSubmit={searchButton} className="searchBar">
           <div className={classList}>
-            <Tooltip title={variables.getMessage('widgets.search')}>
+            <Tooltip title={t('widgets.search')}>
               <button className="navbarButton" onClick={searchButton} aria-label="Search">
                 <MdSearch />
               </button>
@@ -128,7 +130,7 @@ function Search() {
           </div>
           <input
             type="text"
-            placeholder={variables.getMessage('widgets.search')}
+            placeholder={t('widgets.search')}
             id="searchtext"
             className="searchInput"
           />

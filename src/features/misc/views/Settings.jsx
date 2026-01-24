@@ -1,6 +1,5 @@
-import variables from 'config/variables';
 import { memo, useMemo } from 'react';
-import { useTranslation } from 'contexts/TranslationContext';
+import { useT } from 'contexts/TranslationContext';
 
 import Tabs from 'components/Elements/MainModal/backend/Tabs';
 
@@ -90,15 +89,15 @@ const sections = [
 ];
 
 function Settings(props) {
-  const { languagecode } = useTranslation();
+  const t = useT();
 
   // Recalculate section labels when language changes
   const translatedSections = useMemo(() =>
     sections.map(section => ({
       ...section,
-      translatedLabel: variables.getMessage(section.label)
+      translatedLabel: t(section.label)
     })),
-    [languagecode]
+    [t]
   );
 
   return (

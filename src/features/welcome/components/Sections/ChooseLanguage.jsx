@@ -1,14 +1,15 @@
-import variables from 'config/variables';
 import { MdOutlineOpenInNew } from 'react-icons/md';
 import languages from '@/i18n/languages.json';
-import { useMessage } from 'contexts/TranslationContext';
+import { useT } from 'contexts/TranslationContext';
+import variables from 'config/variables';
 
 import { Radio } from 'components/Form/Settings';
 import { Header, Content } from '../Layout';
 
 function ChooseLanguage() {
-  const title = useMessage('modals.welcome.sections.language.title');
-  const description = useMessage('modals.welcome.sections.language.description');
+  const t = useT();
+  const title = t('modals.welcome.sections.language.title');
+  const description = t('modals.welcome.sections.language.description');
 
   return (
     <Content>

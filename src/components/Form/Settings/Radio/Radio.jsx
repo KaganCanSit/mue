@@ -1,5 +1,6 @@
 import variables from 'config/variables';
 import { memo, useState, useCallback } from 'react';
+import { useTranslation } from 'contexts/TranslationContext';
 import {
   Radio as RadioUI,
   RadioGroup,
@@ -9,9 +10,9 @@ import {
 } from '@mui/material';
 
 import EventBus from 'utils/eventbus';
-import { translations } from 'lib/translations';
 
 const Radio = memo((props) => {
+  const { changeLanguage } = useTranslation();
   const [value, setValue] = useState(localStorage.getItem(props.name));
 
   const handleChange = useCallback(async (e) => {
@@ -22,14 +23,8 @@ const Radio = memo((props) => {
     }
 
     if (props.name === 'language') {
-      // old tab name
-      if (localStorage.getItem('tabName') === variables.getMessage('tabname')) {
-        localStorage.setItem('tabName', translations[newValue.replace('-', '_')].tabname);
-      }
-
-      // Emit language change event for instant update
-      localStorage.setItem(props.name, newValue);
-      EventBus.emit('languageChange', { language: newValue });
+      // Use context to change language directly - no EventBus needed
+      changeLanguage(newValue);
       setValue(newValue);
 
       variables.stats.postEvent('setting', `${props.name} from ${value} to ${newValue}`);
@@ -59,7 +54,7 @@ const Radio = memo((props) => {
     }
 
     EventBus.emit('refresh', props.category);
-  }, [value, props]);
+  }, [value, props, changeLanguage]);
 
   return (
     <FormControl component="fieldset">

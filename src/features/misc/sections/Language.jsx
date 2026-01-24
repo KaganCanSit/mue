@@ -1,6 +1,6 @@
-import variables from 'config/variables';
 import { useState, useEffect, useRef } from 'react';
-import { useMessage } from 'contexts/TranslationContext';
+import { useT } from 'contexts/TranslationContext';
+import variables from 'config/variables';
 
 import { MdOutlineOpenInNew } from 'react-icons/md';
 
@@ -9,10 +9,11 @@ import { Radio } from 'components/Form/Settings';
 import languages from '@/i18n/languages.json';
 
 const LanguageOptions = () => {
-  const loadingText = useMessage('modals.main.loading');
-  const offlineText = useMessage('modals.main.marketplace.offline.description');
-  const languageTitle = useMessage('modals.main.settings.sections.language.title');
-  const quoteTitle = useMessage('modals.main.settings.sections.language.quote');
+  const t = useT();
+  const loadingText = t('modals.main.loading');
+  const offlineText = t('modals.main.marketplace.offline.description');
+  const languageTitle = t('modals.main.settings.sections.language.title');
+  const quoteTitle = t('modals.main.settings.sections.language.quote');
 
   const [quoteLanguages, setQuoteLanguages] = useState([
     {

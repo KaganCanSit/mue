@@ -1,5 +1,6 @@
 import variables from 'config/variables';
 import { useState, memo } from 'react';
+import { useT } from 'contexts';
 import Favourite from './Favourite';
 import {
   MdInfo,
@@ -54,6 +55,7 @@ const downloadImage = async (info) => {
 };
 
 function PhotoInformation({ info, url, api }) {
+  const t = useT();
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
   const [usePhotoMap, setPhotoMap] = useState(false);
@@ -64,7 +66,7 @@ function PhotoInformation({ info, url, api }) {
   const [shareModal, openShareModal] = useState(false);
   const [excludeModal, openExcludeModal] = useState(false);
   const [favouriteTooltipText, setFavouriteTooltipText] = useState(
-    variables.getMessage('widgets.quote.favourite'),
+    t('widgets.quote.favourite'),
   );
 
   if (info.hidden === true || !info.credit) {
@@ -72,7 +74,7 @@ function PhotoInformation({ info, url, api }) {
   }
 
   let credit = info.credit;
-  let photo = variables.getMessage('widgets.background.credit');
+  let photo = t('widgets.background.credit');
 
   // unsplash credit
   if (info.photographerURL && info.photographerURL !== '' && !info.offline && api) {
@@ -142,31 +144,31 @@ function PhotoInformation({ info, url, api }) {
     return (
       <div className="extra-content">
         {info.location && info.location !== 'N/A' ? (
-          <div className="row" title={variables.getMessage('widgets.background.location')}>
+          <div className="row" title={t('widgets.background.location')}>
             <MdLocationOn />
             <span id="infoLocation">{info.location}</span>
           </div>
         ) : null}
         {info.camera && info.camera !== 'N/A' ? (
-          <div className="row" title={variables.getMessage('widgets.background.camera')}>
+          <div className="row" title={t('widgets.background.camera')}>
             <MdPhotoCamera />
             <span id="infoCamera">{info.camera}</span>
           </div>
         ) : null}
-        <div className="row" title={variables.getMessage('widgets.background.resolution')}>
+        <div className="row" title={t('widgets.background.resolution')}>
           <Resolution />
           <span id="infoResolution">
             {width}x{height}
           </span>
         </div>
         {info.category && (
-          <div className="row" title={variables.getMessage('widgets.background.category')}>
+          <div className="row" title={t('widgets.background.category')}>
             <Category />
             <span id="infoCategory">{info.category[0].toUpperCase() + info.category.slice(1)}</span>
           </div>
         )}
         {api && (
-          <div className="row" title={variables.getMessage('widgets.background.source')}>
+          <div className="row" title={t('widgets.background.source')}>
             <Source />
             <span id="infoSource">
               {info.photoURL ? (
@@ -189,7 +191,7 @@ function PhotoInformation({ info, url, api }) {
     return (
       <div className="buttons">
         {!info.offline && (
-          <Tooltip title={variables.getMessage('widgets.quote.share')} key="share" placement="top">
+          <Tooltip title={t('widgets.quote.share')} key="share" placement="top">
             <Share onClick={() => openShareModal(true)} />
           </Tooltip>
         )}
@@ -204,7 +206,7 @@ function PhotoInformation({ info, url, api }) {
         </Tooltip>
         {!info.offline && (
           <Tooltip
-            title={variables.getMessage('widgets.background.download')}
+            title={t('widgets.background.download')}
             key="download"
             placement="top"
           >
@@ -213,7 +215,7 @@ function PhotoInformation({ info, url, api }) {
         )}
         {info.pun && info.category && (
           <Tooltip
-            title={variables.getMessage('widgets.background.exclude')}
+            title={t('widgets.background.exclude')}
             key="exclude"
             placement="top"
           >
@@ -227,16 +229,16 @@ function PhotoInformation({ info, url, api }) {
   const UnsplashStats = () => {
     return (
       <div className="unsplashStats">
-        <div title={variables.getMessage('widgets.background.views')}>
+        <div title={t('widgets.background.views')}>
           <Views />
           <span>{info.views.toLocaleString()}</span>
         </div>
-        <div title={variables.getMessage('widgets.background.downloads')}>
+        <div title={t('widgets.background.downloads')}>
           <Download />
           <span>{info.downloads.toLocaleString()}</span>
         </div>
         {info.likes ? (
-          <div title={variables.getMessage('widgets.background.likes')}>
+          <div title={t('widgets.background.likes')}>
             <MdFavourite />
             <span>{info.likes.toLocaleString()}</span>
           </div>
@@ -366,7 +368,7 @@ function PhotoInformation({ info, url, api }) {
           {(showExtraInfo || other) && excludeModal === false ? (
             <>
               <span className="subtitle">
-                {variables.getMessage('widgets.background.information')}
+                {t('widgets.background.information')}
               </span>
               <InformationItems />
               <ActionButtons />

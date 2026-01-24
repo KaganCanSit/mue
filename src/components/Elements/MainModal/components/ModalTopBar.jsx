@@ -1,5 +1,4 @@
-import variables from 'config/variables';
-import { useTranslation } from 'contexts/TranslationContext';
+import { useT } from 'contexts/TranslationContext';
 import { MdClose, MdChevronRight, MdArrowBack, MdArrowForward } from 'react-icons/md';
 import { Tooltip, Button } from 'components/Elements';
 import { NAVBAR_BUTTONS } from '../constants/tabConfig';
@@ -32,13 +31,11 @@ function ModalTopBar({
   canGoBack,
   canGoForward,
 }) {
-  const { languagecode } = useTranslation();
+  const t = useT();
 
-  // Get the current tab label (uses languagecode to re-evaluate on language change)
+  // Get the current tab label
   const currentTabButton = NAVBAR_BUTTONS.find(({ tab }) => tab === currentTab);
-  const currentTabLabel = languagecode && currentTabButton
-    ? variables.getMessage(currentTabButton.messageKey)
-    : '';
+  const currentTabLabel = currentTabButton ? t(currentTabButton.messageKey) : '';
 
   // Utility function to get translated sub-section label
   const getSubSectionLabel = (subSection, sectionName) => {
@@ -46,7 +43,7 @@ function ModalTopBar({
 
     // Use the same translation pattern as the section components
     const translationKey = `modals.main.settings.sections.${sectionName}.${subSection}.title`;
-    const translated = variables.getMessage(translationKey);
+    const translated = t(translationKey);
 
     // If translation key is returned as-is or empty, it means translation doesn't exist
     // Fall back to capitalized sub-section name
@@ -107,7 +104,7 @@ function ModalTopBar({
           const categoryKey = MARKETPLACE_TYPE_TO_KEY[productView.type];
           if (categoryKey) {
             breadcrumbPath.push({
-              label: variables.getMessage(categoryKey),
+              label: t(categoryKey),
               onClick: productView.onBack || null,
             });
           }
@@ -214,11 +211,11 @@ function ModalTopBar({
               onClick={() => onTabChange(tab)}
               active={currentTab === tab}
               icon={<Icon />}
-              label={variables.getMessage(messageKey)}
+              label={t(messageKey)}
             />
           ))}
         </div>
-        <Tooltip title={variables.getMessage('modals.welcome.buttons.close')} key="closeTooltip">
+        <Tooltip title={t('modals.welcome.buttons.close')} key="closeTooltip">
           <span className="closeModal" onClick={onClose}>
             <MdClose />
           </span>
