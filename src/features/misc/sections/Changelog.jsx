@@ -1,15 +1,29 @@
 import variables from 'config/variables';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { MdOutlineWifiOff } from 'react-icons/md';
 
 const Changelog = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const iframeRef = useRef(null);
 
   const offlineMode = localStorage.getItem('offlineMode') === 'true';
   const isOffline = navigator.onLine === false || offlineMode;
 
   const handleLoad = () => {
     setIsLoading(false);
+
+    // Send theme to iframe after it loads
+    if (iframeRef.current?.contentWindow) {
+      const theme = localStorage.getItem('theme') || 'auto';
+      const blogOrigin = new URL(variables.constants.CHANGELOG_URL).origin;
+      iframeRef.current.contentWindow.postMessage(
+        {
+          type: 'mue:theme',
+          payload: { theme },
+        },
+        blogOrigin
+      );
+    }
   };
 
   // Show offline error message if offline
@@ -45,7 +59,11 @@ const Changelog = () => {
         </div>
       )}
       <iframe
-        src={variables.constants.CHANGELOG_URL + '?embed=true'}
+        ref={iframeRef}
+        src={(() => {
+          const theme = localStorage.getItem('theme') || 'auto';
+          return `${variables.constants.CHANGELOG_URL}?embed=true&theme=${theme}`;
+        })()}
         onLoad={handleLoad}
         style={{
           width: '100%',

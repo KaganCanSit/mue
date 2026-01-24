@@ -89,13 +89,14 @@
   height: 80vh;
   width: clamp(60vw, 1400px, 90vw);
 
-  background-color: rgba(1, 1, 1, 0.7);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
   backdrop-filter: blur(16px) saturate(180%);
+  overflow: hidden;
+  border-radius: 12px;
 
-  // @include themed {
-  //   background-color: t($modal-background);
-  // }
+  @include themed {
+    background-color: t($modal-background);
+  }
 }
 
 /* fixes for font size on extension */

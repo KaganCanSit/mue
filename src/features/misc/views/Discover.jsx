@@ -38,13 +38,17 @@ function DiscoverContent({ category, onBreadcrumbsChange }) {
       onBreadcrumbsChange([]);
     }
 
+    // Get current theme
+    const theme = localStorage.getItem('theme') || 'auto';
+    const themeParam = `&theme=${theme}`;
+
     // Update iframe src with category
     if (iframeRef.current) {
       // Collections use path-based routing, others use query params
       if (category === 'collections') {
-        iframeRef.current.src = `${MARKETPLACE_URL}/collections?embed=true${previewParam}`;
+        iframeRef.current.src = `${MARKETPLACE_URL}/collections?embed=true${previewParam}${themeParam}`;
       } else {
-        iframeRef.current.src = `${MARKETPLACE_URL}?embed=true&type=${category}${previewParam}`;
+        iframeRef.current.src = `${MARKETPLACE_URL}?embed=true&type=${category}${previewParam}${themeParam}`;
       }
     }
   }, [category, onBreadcrumbsChange, previewParam]);
@@ -58,6 +62,10 @@ function DiscoverContent({ category, onBreadcrumbsChange }) {
 
       if (itemId && iframeRef.current) {
         setIsLoading(true);
+
+        // Get current theme
+        const theme = localStorage.getItem('theme') || 'auto';
+        const themeParam = `&theme=${theme}`;
 
         // Get item from localStorage to determine type
         const installed = JSON.parse(localStorage.getItem('installed')) || [];
@@ -75,10 +83,10 @@ function DiscoverContent({ category, onBreadcrumbsChange }) {
           const itemIdToUse = item.id || itemId;
 
           // Navigate to /packs/{id} or /presets/{id}
-          iframeRef.current.src = `${MARKETPLACE_URL}/${pathSegment}/${itemIdToUse}?embed=true${previewParam}`;
+          iframeRef.current.src = `${MARKETPLACE_URL}/${pathSegment}/${itemIdToUse}?embed=true${previewParam}${themeParam}`;
         } else {
           // Fallback if item not found in localStorage
-          iframeRef.current.src = `${MARKETPLACE_URL}/packs/${itemId}?embed=true${previewParam}`;
+          iframeRef.current.src = `${MARKETPLACE_URL}/packs/${itemId}?embed=true${previewParam}${themeParam}`;
         }
       }
     };
@@ -186,6 +194,18 @@ function DiscoverContent({ category, onBreadcrumbsChange }) {
 
   const handleLoad = () => {
     setIsLoading(false);
+
+    // Send theme to iframe after it loads
+    if (iframeRef.current?.contentWindow) {
+      const theme = localStorage.getItem('theme') || 'auto';
+      iframeRef.current.contentWindow.postMessage(
+        {
+          type: 'marketplace:theme',
+          payload: { theme },
+        },
+        MARKETPLACE_URL
+      );
+    }
   };
 
   // Show offline error message if offline
@@ -232,7 +252,13 @@ function DiscoverContent({ category, onBreadcrumbsChange }) {
       )}
       <iframe
         ref={iframeRef}
-        src={category === 'collections' ? `${MARKETPLACE_URL}/collections?embed=true${previewParam}` : `${MARKETPLACE_URL}?embed=true&type=${category}${previewParam}`}
+        src={(() => {
+          const theme = localStorage.getItem('theme') || 'auto';
+          const themeParam = `&theme=${theme}`;
+          return category === 'collections'
+            ? `${MARKETPLACE_URL}/collections?embed=true${previewParam}${themeParam}`
+            : `${MARKETPLACE_URL}?embed=true&type=${category}${previewParam}${themeParam}`;
+        })()}
         onLoad={handleLoad}
         scrolling="no"
         style={{
