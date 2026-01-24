@@ -184,26 +184,31 @@ const CustomSettings = memo(() => {
             handleCustomBackground({ target: { result: reader.result } }, fileIndex);
           };
           reader.readAsDataURL(file);
-          return;
+        } else {
+          // Handle image files
+          compressAccurately(file, {
+            size: 450,
+            accuracy: 0.9,
+          })
+            .then(async (res) => {
+              if (settingsSize + res.size > 4850000) {
+                return toast(variables.getMessage('toasts.no_storage'));
+              }
+
+              handleCustomBackground(
+                {
+                  target: {
+                    result: await filetoDataURL(res),
+                  },
+                },
+                fileIndex,
+              );
+            })
+            .catch((error) => {
+              console.error('Error compressing image:', error);
+              toast(variables.getMessage('toasts.error'));
+            });
         }
-
-        compressAccurately(file, {
-          size: 450,
-          accuracy: 0.9,
-        }).then(async (res) => {
-          if (settingsSize + res.size > 4850000) {
-            return toast(variables.getMessage('toasts.no_storage'));
-          }
-
-          handleCustomBackground(
-            {
-              target: {
-                result: await filetoDataURL(res),
-              },
-            },
-            fileIndex,
-          );
-        });
       });
     };
 
