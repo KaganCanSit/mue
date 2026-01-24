@@ -22,7 +22,7 @@ export default function Quote() {
   const [display, setDisplay] = useState('block');
   const [fontSize, setFontSize] = useState(() => {
     const zoomQuote = localStorage.getItem('zoomQuote');
-    return `${0.8 * Number((zoomQuote || 100) / 100)}em`;
+    return `${1.2 * Number((zoomQuote || 100) / 100)}em`;
   });
   const [authorDetails, setAuthorDetails] = useState(localStorage.getItem('authorDetails') === 'true');
   const [isLegacyStyle, setIsLegacyStyle] = useState(localStorage.getItem('widgetStyle') === 'legacy');
@@ -47,7 +47,7 @@ export default function Quote() {
         const widgetStyle = localStorage.getItem('widgetStyle');
 
         setDisplay(quoteSetting === 'false' ? 'none' : 'block');
-        setFontSize(`${0.8 * Number((zoomQuote || 100) / 100)}em`);
+        setFontSize(`${1.2 * Number((zoomQuote || 100) / 100)}em`);
         setAuthorDetails(authorDetailsSetting === 'true');
         setIsLegacyStyle(widgetStyle === 'legacy');
       } else if (data === 'marketplacequoteuninstall' || data === 'quoterefresh') {

@@ -1,6 +1,7 @@
 @use 'scss/variables' as *;
 
 .quote {
+  display: block;
   font-size: 0.8em;
   text-shadow: 0 0 10px rgb(0 0 0 / 30%);
   cursor: initial;
@@ -10,7 +11,7 @@
 
   color: #fff;
   font-weight: 600;
-  width: 40vw;
+  max-width: 45vw;
 }
 
 .quoteauthor {
