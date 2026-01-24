@@ -20,6 +20,15 @@ const Modals = () => {
   const [deepLinkData, setDeepLinkData] = useState(null);
 
   useEffect(() => {
+    // Check for preview mode - block deep links and redirect to /
+    const isPreviewMode = localStorage.getItem('showWelcome') === 'true';
+    if (isPreviewMode && shouldAutoOpenModal()) {
+      window.history.replaceState(null, null, '/');
+      setWelcomeModal(true);
+      setPreview(false);
+      return;
+    }
+
     // Check for deep link first (has priority)
     if (shouldAutoOpenModal()) {
       const linkData = parseDeepLink();

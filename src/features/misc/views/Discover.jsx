@@ -16,6 +16,9 @@ function DiscoverContent({ category, onBreadcrumbsChange }) {
 
   // Check for offline mode
   const offlineMode = localStorage.getItem('offlineMode') === 'true';
+  // Check for preview mode
+  const isPreviewMode = localStorage.getItem('welcomePreview') === 'true';
+  const previewParam = isPreviewMode ? '&preview=true' : '';
   const isOffline = navigator.onLine === false || offlineMode;
 
   // Clear breadcrumbs when component unmounts (navigating away from discover)
@@ -39,12 +42,12 @@ function DiscoverContent({ category, onBreadcrumbsChange }) {
     if (iframeRef.current) {
       // Collections use path-based routing, others use query params
       if (category === 'collections') {
-        iframeRef.current.src = `${MARKETPLACE_URL}/collections?embed=true`;
+        iframeRef.current.src = `${MARKETPLACE_URL}/collections?embed=true${previewParam}`;
       } else {
-        iframeRef.current.src = `${MARKETPLACE_URL}?embed=true&type=${category}`;
+        iframeRef.current.src = `${MARKETPLACE_URL}?embed=true&type=${category}${previewParam}`;
       }
     }
-  }, [category, onBreadcrumbsChange]);
+  }, [category, onBreadcrumbsChange, previewParam]);
 
   useEffect(() => {
     // Check for item parameter in URL and update iframe
@@ -72,10 +75,10 @@ function DiscoverContent({ category, onBreadcrumbsChange }) {
           const itemIdToUse = item.id || itemId;
 
           // Navigate to /packs/{id} or /presets/{id}
-          iframeRef.current.src = `${MARKETPLACE_URL}/${pathSegment}/${itemIdToUse}?embed=true`;
+          iframeRef.current.src = `${MARKETPLACE_URL}/${pathSegment}/${itemIdToUse}?embed=true${previewParam}`;
         } else {
           // Fallback if item not found in localStorage
-          iframeRef.current.src = `${MARKETPLACE_URL}/packs/${itemId}?embed=true`;
+          iframeRef.current.src = `${MARKETPLACE_URL}/packs/${itemId}?embed=true${previewParam}`;
         }
       }
     };
@@ -91,7 +94,7 @@ function DiscoverContent({ category, onBreadcrumbsChange }) {
       window.removeEventListener('hashchange', checkAndLoadItem);
       window.removeEventListener('popstate', checkAndLoadItem);
     };
-  }, [category]);
+  }, [category, previewParam]);
 
   useEffect(() => {
     // Listen for postMessage events from the iframe
@@ -229,7 +232,7 @@ function DiscoverContent({ category, onBreadcrumbsChange }) {
       )}
       <iframe
         ref={iframeRef}
-        src={category === 'collections' ? `${MARKETPLACE_URL}/collections?embed=true` : `${MARKETPLACE_URL}?embed=true&type=${category}`}
+        src={category === 'collections' ? `${MARKETPLACE_URL}/collections?embed=true${previewParam}` : `${MARKETPLACE_URL}?embed=true&type=${category}${previewParam}`}
         onLoad={handleLoad}
         scrolling="no"
         style={{
