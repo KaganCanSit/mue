@@ -210,7 +210,7 @@ body {
     width: 100%;
     background: linear-gradient(-90deg, #efefef 0%, #ccc 50%, #efefef 100%);
     background-size: 400% 400%;
-    animation: pulse 1.2s ease-in-out infinite;
+    animation: pulse 0.8s ease-in-out infinite;
 
     @keyframes pulse {
       0% {
@@ -230,7 +230,7 @@ body {
     width: 100%;
     background: linear-gradient(-90deg, #000 0%, rgb(83 83 83) 50%, #000 100%);
     background-size: 400% 400%;
-    animation: pulse 1.2s ease-in-out infinite;
+    animation: pulse 0.8s ease-in-out infinite;
 
     @keyframes pulse {
       0% {

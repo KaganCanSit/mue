@@ -1,9 +1,10 @@
 import variables from 'config/variables';
+import SidebarSkeleton from './SidebarSkeleton';
 
-const ModalLoader = () => (
+const ModalLoader = ({ currentTab }) => (
   <div style={{ display: 'flex', width: '100%', minHeight: '100%' }}>
     <div className="modalSidebar">
-      <span className="mainTitle">Mue</span>
+      <SidebarSkeleton currentTab={currentTab} />
     </div>
     <div className="modalTabContent">
       <div className="emptyItems">

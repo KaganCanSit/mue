@@ -182,7 +182,7 @@ function MainModal({ modalClose, deepLinkData }) {
         canGoForward={canGoForward}
       />
       <div style={{ flex: 1, display: 'flex', overflow: 'hidden', minHeight: 0 }}>
-        <Suspense fallback={<ModalLoader />}>
+        <Suspense fallback={<ModalLoader currentTab={currentTab} />}>
           <TabComponent
             key={currentTab}
             changeTab={handleChangeTab}
