@@ -9,7 +9,6 @@ export const WEBSITE_URL = 'https://muetab.com';
 export const MARKETPLACE_URL = 'https://muetab.com/marketplace';
 export const CHANGELOG_URL = 'https://muetab.com/blog/changelog';
 export const PRIVACY_URL = 'https://muetab.com/privacy';
-export const TRANSLATIONS_URL = 'https://muetab.com/docs/translations';
 export const WEBLATE_URL = 'https://hosted.weblate.org/projects/mue/mue-tab/';
 export const REPORT_ITEM =
   'https://github.com/mue/marketplace/issues/new?assignees=&labels=item%2Creport&projects=&template=item_issue_report.yml&title=%5BItem+Report%5D+Insert+marketplace+item+name+here';
