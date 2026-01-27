@@ -10,7 +10,6 @@ import {
   Section,
 } from 'components/Layout/Settings';
 import { Checkbox, Switch, Text } from 'components/Form/Settings';
-import { TextareaAutosize } from '@mui/material';
 import { Button } from 'components/Elements';
 import { toast } from 'react-toastify';
 
@@ -192,15 +191,15 @@ const GreetingOptions = ({ currentSubSection, onSubSectionChange, sectionName })
                   <span className="subtitle">
                     {variables.getMessage(`${GREETING_SECTION}.event_name`)}
                   </span>
-                  <TextareaAutosize
+                  <input
+                    type="text"
+                    className="text-field-input"
                     value={event.name}
                     placeholder={variables.getMessage(`${GREETING_SECTION}.event_name`)}
                     onChange={(e) => {
                       const updatedEvent = { ...event, name: e.target.value };
                       updateEvent(index, updatedEvent);
                     }}
-                    varient="outlined"
-                    style={{ padding: '0' }}
                   />
                 </div>
               </div>
@@ -212,11 +211,16 @@ const GreetingOptions = ({ currentSubSection, onSubSectionChange, sectionName })
                     </label>
                     <input
                       id="day"
-                      type="tel"
+                      type="number"
+                      min="1"
+                      max="31"
                       value={event.date}
                       onChange={(e) => {
-                        const updatedEvent = { ...event, date: parseInt(e.target.value, 10) };
-                        updateEvent(index, updatedEvent);
+                        const value = parseInt(e.target.value, 10);
+                        if (value >= 1 && value <= 31) {
+                          const updatedEvent = { ...event, date: value };
+                          updateEvent(index, updatedEvent);
+                        }
                       }}
                     />
                     <hr />
@@ -225,11 +229,16 @@ const GreetingOptions = ({ currentSubSection, onSubSectionChange, sectionName })
                     </label>
                     <input
                       id="month"
-                      type="tel"
+                      type="number"
+                      min="1"
+                      max="12"
                       value={event.month}
                       onChange={(e) => {
-                        const updatedEvent = { ...event, month: parseInt(e.target.value, 10) };
-                        updateEvent(index, updatedEvent);
+                        const value = parseInt(e.target.value, 10);
+                        if (value >= 1 && value <= 12) {
+                          const updatedEvent = { ...event, month: value };
+                          updateEvent(index, updatedEvent);
+                        }
                       }}
                     />
                   </div>

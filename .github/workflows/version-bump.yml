@@ -54,12 +54,6 @@ jobs:
           BASE_VERSION=$(echo $CURRENT_VERSION | sed 's/-.*$//')
           IFS='.' read -r -a VERSION_PARTS <<< "$BASE_VERSION"
           
-          # Detect if current version is already a pre-release
-          IS_PRERELEASE=false
-          case "$CURRENT_VERSION" in
-            *-*) IS_PRERELEASE=true ;;
-          esac
-          
           MAJOR="${VERSION_PARTS[0]}"
           MINOR="${VERSION_PARTS[1]}"
           PATCH="${VERSION_PARTS[2]}"
